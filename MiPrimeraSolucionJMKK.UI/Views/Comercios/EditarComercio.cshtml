@@ -1,0 +1,75 @@
+﻿@model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios.ComercioDto
+
+@{
+    ViewBag.Title = "EditarComercio";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4 text-center"><i class="bi bi-shop"></i> Editar Comercio</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.IdComercio)
+
+        <div class="row g-3">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.TipoDeComercio, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.TipoDeComercio,
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Restaurantes", Value = "1" },
+                        new SelectListItem { Text = "Supermercados", Value = "2" },
+                        new SelectListItem { Text = "Ferreterías", Value = "3" },
+                        new SelectListItem { Text = "Otros", Value = "4" }
+                    },
+                    "Tipo de Comercio",
+                    new { @class = "form-select" })
+                @Html.ValidationMessageFor(model => model.TipoDeComercio, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.Telefono, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.CorreoElectronico, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.CorreoElectronico, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CorreoElectronico, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Direccion, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-12 d-flex align-items-center">
+                <div class="form-check">
+                    @Html.CheckBoxFor(model => model.Estado, new { @class = "form-check-input" })
+                    @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "form-check-label ms-2" })
+                </div>
+            </div>
+
+            <div class="col-12 text-center mt-3">
+                <input type="submit" value="Guardar cambios" class="btn btn-primary btn-lg rounded-pill" />
+            </div>
+        </div>
+    }
+
+    <div class="mt-4 text-center">
+        @Html.ActionLink("Volver al listado", "Index", null, new { @class = "btn btn-secondary btn-lg rounded-pill" })
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

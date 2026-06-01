@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MiPrimeraSolucionJMKK.Abstracciones.Modelos.ReportesMensuales.ReportesMensualesDto>
+
+@{
+    ViewBag.Title = "Reportes Mensuales";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Reportes Mensuales</h2>
+
+        @using (Html.BeginForm("GenerarReportesMensuales", "ReportesMensuales", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                Generar reportes
+            </button>
+        }
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre del comercio</th>
+                        <th>Cantidad de cajas</th>
+                        <th>Monto recaudado</th>
+                        <th>Cantidad de SINPES</th>
+                        <th>Monto total de comision</th>
+                        <th>Fecha del reporte</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.NombreComercio</td>
+                            <td>@item.CantidadDeCajas</td>
+                            <td>@item.MontoTotalRecaudado</td>
+                            <td>@item.CantidadDeSINPES</td>
+                            <td>@item.MontoTotalComision</td>
+                            <td>@item.FechaDelReporte</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

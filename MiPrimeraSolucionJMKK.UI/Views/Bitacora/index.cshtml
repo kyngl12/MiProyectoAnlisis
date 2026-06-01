@@ -1,0 +1,65 @@
+﻿@model List<MiPrimeraSolucionJMKK.Abstacciones.Modelos.Bitacora.BitacoraEventoDto>
+
+<div class="container py-4">
+    <h2 class="mb-4 text-center"><i class="bi bi-journal-check"></i> Bitácora de Eventos</h2>
+
+    <div class="table-responsive shadow-sm rounded-4">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>#</th>
+                    <th>Tabla</th>
+                    <th>Tipo</th>
+                    <th>Fecha</th>
+                    <th>Descripcion</th>
+                    <th>StackTrace</th>
+                    <th>Datos Anteriores</th>
+                    <th>Datos Posteriores</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var tipoClase = item.TipoDeEvento switch
+                    {
+                        "Error" => "table-danger",
+                        "Info" => "table-info",
+                        "Advertencia" => "table-warning",
+                        _ => ""
+                    };
+                    <tr class="@tipoClase">
+                        <td class="text-center fw-bold">@item.IdEvento</td>
+                        <td>@item.TablaDeEvento</td>
+                        <td class="text-center">@item.TipoDeEvento</td>
+                        <td class="text-center">@item.FechaDeEvento.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@item.DescripcionDeEvento</td>
+
+                        <td class="text-break" style="max-width:200px; overflow:auto;"
+                            data-bs-toggle="tooltip" title="@item.StackTrace">
+                            @(item.StackTrace?.Length > 50 ? item.StackTrace.Substring(0,50) + "..." : item.StackTrace)
+                        </td>
+
+                        <td class="text-break" style="max-width:200px; overflow:auto;"
+                            data-bs-toggle="tooltip" title="@item.DatosAnteriores">
+                            @(item.DatosAnteriores?.Length > 50 ? item.DatosAnteriores.Substring(0,50) + "..." : item.DatosAnteriores)
+                        </td>
+
+                        <td class="text-break" style="max-width:200px; overflow:auto;"
+                            data-bs-toggle="tooltip" title="@item.DatosPosteriores">
+                            @(item.DatosPosteriores?.Length > 50 ? item.DatosPosteriores.Substring(0,50) + "..." : item.DatosPosteriores)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}

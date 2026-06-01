@@ -1,0 +1,84 @@
+﻿@model IEnumerable<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios.ComercioDto>
+
+@{
+    ViewBag.Title = "Todos los Comercios";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Todos los Comercios</h2>
+        @Html.ActionLink(
+            "Agregar Comercio",
+            "AgregarComercio",
+            null,
+            new { @class = "btn btn-primary btn-lg rounded-pill shadow-sm" }
+        )
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Identificacion</th>
+                        <th>Tipo de identificacion</th>
+                        <th>Nombre</th>
+                        <th>Tipo de Comercio</th>
+                        <th>Telefono</th>
+                        <th>Correo electronico</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Identificacion</td>
+                            <td>
+                                @if (item.TipoIdentificacion == 1)
+                                {<span class="badge bg-info text-dark">Física</span> }
+                                else if (item.TipoIdentificacion == 2)
+                                { <span class="badge bg-warning text-dark">Jurídica</span>}
+                            </td>
+                            <td>@item.Nombre</td>
+                            <td>
+                                @{
+                                    string tipoComercio = item.TipoDeComercio switch
+                                    {
+                                        1 => "Restaurantes",
+                                        2 => "Supermercados",
+                                        3 => "Ferreterías",
+                                        4 => "Otros",
+                                        _ => "Desconocido"
+                                    };
+                                }
+                                <span class="badge bg-secondary">@tipoComercio</span>
+                            </td>
+                            <td>@item.Telefono</td>
+                            <td>@item.CorreoElectronico</td>
+                            <td>
+                                @if (item.Estado)
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inactivo</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1 flex-wrap">
+                                    @Html.ActionLink("Editar", "EditarComercio", "Comercios", new { id = item.IdComercio }, new { @class = "btn btn-sm btn-outline-primary" })
+                                    @Html.ActionLink("Detalles", "DetallesDelComercio", "Comercios", new { id = item.IdComercio }, new { @class = "btn btn-sm btn-outline-info" })
+                                    @Html.ActionLink("Ver Cajas", "ObtenerCajasPorComercio", "Cajas", new { idComercio = item.IdComercio }, new { @class = "btn btn-sm btn-outline-secondary" })
+                                    @Html.ActionLink("Configuración", "ObtenerConfiguracionPorComercio", "ConfiguracionComercio", new { idComercio = item.IdComercio }, new { @class = "btn btn-sm btn-outline-success" })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

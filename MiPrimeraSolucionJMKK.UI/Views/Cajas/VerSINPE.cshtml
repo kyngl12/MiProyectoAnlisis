@@ -1,0 +1,107 @@
+﻿@model IEnumerable<MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPES.SINPESDto>
+
+@{
+    ViewBag.Title = "SINPE de la Caja";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">SINPE de la Caja</h2>
+            <p class="mb-0"><strong>Caja:</strong> @ViewBag.NombreCaja | <strong>Teléfono:</strong> @ViewBag.TelefonoSINPE</p>
+        </div>
+    </div>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Exito"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Teléfono Origen</th>
+                        <th>Nombre Origen</th>
+                        <th>Teléfono Destinatario</th>
+                        <th>Nombre Destinatario</th>
+                        <th>Monto</th>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.TelefonoOrigen</td>
+                                <td>@item.NombreOrigen</td>
+                                <td>@item.TelefonoDestinatario</td>
+                                <td>@item.NombreDestinatario</td>
+                                <td class="fw-bold text-success">₡@item.Monto.ToString("N2")</td>
+                                <td>@(string.IsNullOrEmpty(item.Descripcion) ? "N/A" : item.Descripcion)</td>
+                                <td>@item.FechaDeRegistro.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    @if (item.Estado)
+                                    {
+                                        <span class="badge bg-success">Sincronizado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">No Sincronizado</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!item.Estado)
+                                    {
+                                        using (Html.BeginForm("SincronizarSINPE", "Cajas", FormMethod.Post, new { style = "display:inline;" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="idSinpe" value="@item.IdSinpe" />
+                                            <input type="hidden" name="idCaja" value="@ViewBag.IdCaja" />
+                                            <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('¿Está seguro de sincronizar este SINPE?')">
+                                                <i class="bi bi-check-circle"></i> Sincronizar
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9" class="text-center py-4">
+                                <p class="mb-0">No hay SINPE registrados para esta caja.</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        @Html.ActionLink("Volver a Cajas", "ObtenerCajasPorComercio", new { idComercio = ViewBag.IdComercio }, new { @class = "btn btn-secondary" })
+    </div>
+</div>

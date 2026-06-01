@@ -1,0 +1,72 @@
+@model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios.UsuarioDto
+
+@{
+    ViewBag.Title = "Agregar Usuario";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h4 class="mb-0">Agregar Nuevo Usuario</h4>
+                </div>
+                <div class="card-body p-4">
+                    @if (TempData["Mensaje"] != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            @TempData["Mensaje"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("AgregarUsuario", "Usuarios", FormMethod.Post, new { @class = "needs-validation" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.IdComercio, new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(model => model.IdComercio, new { @class = "form-control", @placeholder = "ID del Comercio", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.IdComercio, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Nombres, new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(model => model.Nombres, new { @class = "form-control", @placeholder = "Ej: Juan", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.PrimerApellido, new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(model => model.PrimerApellido, new { @class = "form-control", @placeholder = "Ej: Pérez", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.PrimerApellido, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.SegundoApellido, new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(model => model.SegundoApellido, new { @class = "form-control", @placeholder = "Ej: García", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.SegundoApellido, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Identificacion, new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(model => model.Identificacion, new { @class = "form-control", @placeholder = "Ej: 1234567", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.Identificacion, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.CorreoElectronico, new { @class = "form-label fw-bold" })
+                            @Html.TextBoxFor(model => model.CorreoElectronico, new { @class = "form-control", @type = "email", @placeholder = "Ej: usuario@ejemplo.com", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.CorreoElectronico, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-end">
+                            @Html.ActionLink("Cancelar", "ObtenerTodosLosUsuarios", null, new { @class = "btn btn-secondary" })
+                            <button type="submit" class="btn btn-success">Guardar Usuario</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+﻿@model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas.CajaDto
+
+@{
+    ViewBag.Title = "EditarCaja";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4 text-center"><i class="bi bi-pencil-square"></i> Editar Caja</h2>
+
+    @if (ViewBag.MensajeError != null)
+    {
+        <div class="alert alert-danger text-center">
+            @ViewBag.MensajeError
+        </div>
+    }
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.IdCaja)
+        @Html.HiddenFor(model => model.IdComercio)
+        @Html.HiddenFor(model => model.FechaDeRegistro)
+
+        <div class="row g-3">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "form-label" })
+                @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = 3 })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.TelefonoSINPE, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.TelefonoSINPE, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TelefonoSINPE, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="form-check mt-4">
+                    @Html.CheckBoxFor(model => model.Estado, new { @class = "form-check-input" })
+                    @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "form-check-label ms-2" })
+                </div>
+            </div>
+
+            <div class="col-12 text-center mt-3">
+                <input type="submit" value="Guardar cambios" class="btn btn-primary btn-lg rounded-pill" />
+            </div>
+        </div>
+    }
+
+    <div class="mt-4 text-center">
+        @Html.ActionLink("Volver a cajas", "ObtenerCajasPorComercio", new { idComercio = Model.IdComercio },
+            new { @class = "btn btn-secondary btn-lg rounded-pill" })
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

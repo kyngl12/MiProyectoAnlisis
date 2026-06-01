@@ -1,0 +1,64 @@
+﻿@model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios.ComercioDto
+
+@{
+    ViewBag.Title = "DetallesDelComercio";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4 text-center"><i class="bi bi-info-circle"></i> Detalles del Comercio</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+
+                <dt class="col-sm-4">Identificación</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Identificacion)</dd>
+
+                <dt class="col-sm-4">Tipo de Identificación</dt>
+                <dd class="col-sm-8">
+                    @(Model.TipoIdentificacion == 1 ? "Física" : "Jurídica")
+                </dd>
+
+                <dt class="col-sm-4">Nombre</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Nombre)</dd>
+
+                <dt class="col-sm-4">Tipo de Comercio</dt>
+                <dd class="col-sm-8">
+                    @(Model.TipoDeComercio switch
+                    {
+                        1 => "Restaurantes",
+                        2 => "Supermercados",
+                        3 => "Ferreterías",
+                        4 => "Otros",
+                        _ => "Desconocido"
+                    })
+                </dd>
+
+                <dt class="col-sm-4">Teléfono</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Telefono)</dd>
+
+                <dt class="col-sm-4">Correo Electrónico</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.CorreoElectronico)</dd>
+
+                <dt class="col-sm-4">Dirección</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Direccion)</dd>
+
+                <dt class="col-sm-4">Fecha de Registro</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaDeRegistro)</dd>
+
+                <dt class="col-sm-4">Fecha de Modificación</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.FechaDeModificacion)</dd>
+
+                <dt class="col-sm-4">Estado</dt>
+                <dd class="col-sm-8">
+                    @(Model.Estado ? "Activo" : "Inactivo")
+                </dd>
+
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        @Html.ActionLink("Volver al listado", "Index", null, new { @class = "btn btn-secondary btn-lg rounded-pill" })
+    </div>
+</div>

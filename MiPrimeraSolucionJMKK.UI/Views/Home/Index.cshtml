@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "SINPE Empresarial - Banco Los Patitos";
+}
+
+<div class="container py-5">
+    <section class="text-center mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold text-primary mb-3">
+                    <i class="bi bi-cash-coin"></i> SINPE Empresarial
+                </h1>
+                <p class="lead text-muted mb-4">
+                    Plataforma de gestión de pagos electrónicos para comercios del Banco Los Patitos
+                </p>
+                <div class="d-flex gap-3 justify-content-center">
+                    @if (Request.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Administrador"))
+                        {
+                            @Html.ActionLink("Gestionar Comercios", "ObtenerTodosLosComercios", "Comercios", null, new { @class = "btn btn-primary btn-lg rounded-pill shadow" })
+                            @Html.ActionLink("Ver Reportes", "ObtenerTodosLosReportesMensuales", "ReportesMensuales", null, new { @class = "btn btn-outline-primary btn-lg rounded-pill" })
+                        }
+                        else if (User.IsInRole("Cajero"))
+                        {
+                            @Html.ActionLink("Mis Cajas", "ObtenerTodasLasCajas", "Cajas", null, new { @class = "btn btn-primary btn-lg rounded-pill shadow" })
+                        }
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Iniciar Sesión", "Login", "Account", null, new { @class = "btn btn-primary btn-lg rounded-pill shadow" })
+                        @Html.ActionLink("Registrarse", "Register", "Account", null, new { @class = "btn btn-outline-primary btn-lg rounded-pill" })
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 text-center p-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-shop text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h3 class="h5 fw-bold">Gestión de Comercios</h3>
+                    <p class="text-muted">
+                        Administre los comercios afiliados a la plataforma y configure sus parámetros de operación.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 text-center p-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-credit-card-2-front text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h3 class="h5 fw-bold">Pagos SINPE</h3>
+                    <p class="text-muted">
+                        Reciba y sincronice pagos electrónicos de forma segura y rápida a través de SINPE.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 text-center p-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-graph-up text-warning" style="font-size: 3rem;"></i>
+                    </div>
+                    <h3 class="h5 fw-bold">Reportes Mensuales</h3>
+                    <p class="text-muted">
+                        Genere y consulte reportes detallados de las transacciones y comisiones generadas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Request.IsAuthenticated)
+    {
+        <section class="card border-0 shadow-sm p-4 bg-light">
+            <div class="card-body">
+                <h3 class="h4 fw-bold mb-3">
+                    <i class="bi bi-info-circle"></i> Características de la Plataforma
+                </h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Gestión de múltiples comercios</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Configuración flexible de comisiones</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Sincronización automática de pagos</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> API para integración externa</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Reportes detallados de transacciones</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Bitácora de eventos del sistema</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+</div>

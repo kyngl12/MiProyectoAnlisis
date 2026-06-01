@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MiPrimeraSolucionJMKK.Abstracciones/GestionPubRock.Abstracciones.csproj" Id="a60567e3-dad2-4783-be87-b96f5dc3cfce" />
+  <Project Path="MiPrimeraSolucionJMKK.AccesoADatos/GestionPubRock.AccesoADatos.csproj" Id="473b9cc6-22c3-4654-bbce-95ddfab2707d" />
+  <Project Path="MiPrimeraSolucionJMKK.LogicaDeNegocio/GestionPubRock.LogicaDeNegocio.csproj" Id="6d2206f8-b7c2-4f0e-97e4-ff6db112241c" />
+  <Project Path="MiPrimeraSolucionJMKK.UI/GestionPubRock.UI.csproj" Id="8b45ee51-250a-48a4-8f48-d5e00937c2d0" />
+</Solution>
