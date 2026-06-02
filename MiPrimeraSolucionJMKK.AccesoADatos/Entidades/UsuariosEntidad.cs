@@ -4,41 +4,32 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MiPrimeraSolucionJMKK.AccesoADatos.Entidades
 {
-    [Table("USUARIOS")]
+    [Table("PUBROCK_USUARIO_TB")]
     public class UsuariosEntidad
     {
         [Key]
-        [Column("ID_USUARIO")]
-        public int IdUsuario { get; set; }
+        [Column("CEDULA")]
+        public string Cedula { get; set; }
 
-        [Column("ID_COMERCIO")]
-        public int IdComercio { get; set; }
+        [Column("NOMBRE")]
+        public string Nombre { get; set; }
 
-        [Column("ID_NET_USER")]
-        public Guid? IdNetUser { get; set; }
+        [Column("APELLIDO_PATERNO")]
+        public string ApellidoPaterno { get; set; }
 
-        [Column("NOMBRES")]
-        public string Nombres { get; set; }
+        [Column("APELLIDO_MATERNO")]
+        public string ApellidoMaterno { get; set; }
 
-        [Column("PRIMER_APELLIDO")]
-        public string PrimerApellido { get; set; }
+        [Column("FECHA_REGISTRO")]
+        public DateTime FechaRegistro { get; set; }
 
-        [Column("SEGUNDO_APELLIDO")]
-        public string SegundoApellido { get; set; }
+        [Column("ID_TIPO_USUARIO")]
+        public int IdTipoUsuario { get; set; }
 
-        [Column("IDENTIFICACION")]
-        public string Identificacion { get; set; }
+        [Column("ID_ESTADO")]
+        public int IdEstado { get; set; }
 
-        [Column("CORREO_ELECTRONICO")]
-        public string CorreoElectronico { get; set; }
-
-        [Column("FECHA_DE_REGISTRO")]
-        public DateTime FechaDeRegistro { get; set; }
-
-        [Column("FECHA_DE_MODIFICACION")]
-        public DateTime? FechaDeModificacion { get; set; }
-
-        [Column("ESTADO")]
-        public bool Estado { get; set; }
+        [ForeignKey("IdTipoUsuario")]
+        public TipoUsuarioEntidad TipoUsuario { get; set; }
     }
 }

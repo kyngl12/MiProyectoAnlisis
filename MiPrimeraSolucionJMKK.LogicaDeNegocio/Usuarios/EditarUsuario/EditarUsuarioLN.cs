@@ -16,13 +16,11 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.EditarUsuario
     public class EditarUsuarioLN : IEditarUsuarioLN
     {
         private IEditarUsuarioAD _editarUsuarioAD;
-        private ValidarIdentificacionUsuarioAD _validarIdentificacionUsuarioAD;
         private readonly IRegistrarBitacoraLN _bitacora;
 
         public EditarUsuarioLN()
         {
             _editarUsuarioAD = new EditarUsuarioAD();
-            _validarIdentificacionUsuarioAD = new ValidarIdentificacionUsuarioAD();
 
             string connectionString = ConfigurationManager
                 .ConnectionStrings["Contexto"].ConnectionString;
@@ -34,37 +32,45 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.EditarUsuario
         {
             try
             {
-                // Validar campos obligatorios
-                if (string.IsNullOrWhiteSpace(usuario.Nombres)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.PrimerApellido)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.SegundoApellido)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.Identificacion)) return false;
+
+                if (string.IsNullOrWhiteSpace(usuario.Cedula)) return false;
+                if (string.IsNullOrWhiteSpace(usuario.Nombre)) return false;
+                if (string.IsNullOrWhiteSpace(usuario.ApellidoPaterno)) return false;
+                if (string.IsNullOrWhiteSpace(usuario.ApellidoMaterno)) return false;
                 if (string.IsNullOrWhiteSpace(usuario.CorreoElectronico)) return false;
+                if (string.IsNullOrWhiteSpace(usuario.Telefono)) return false;
+                if (usuario.IdTipoUsuario <= 0) return false;
 
-                // Validar que la identificación no exista para otro usuario
-                bool existeIdentificacion = _validarIdentificacionUsuarioAD.ExisteIdentificacionExceptoUsuario(usuario.Identificacion, usuario.IdUsuario);
-                if (existeIdentificacion)
-                {
-                    return false;
-                }
-
-                // Actualizar automáticamente la fecha de modificación
-                usuario.FechaDeModificacion = DateTime.Now;
+                if (!EsFormatoEmailValido(usuario.CorreoElectronico)) return false;
+                if (!EsFormatoTelefonoValido(usuario.Telefono)) return false;
 
                 int cantidad = _editarUsuarioAD.Editar(usuario);
 
                 if (cantidad > 0)
-                {
-                    _bitacora.Registrar("USUARIOS", "UPDATE", null, usuario);
-                }
+                    _bitacora.Registrar("PUBROCK_USUARIO_TB", "UPDATE", null, usuario);
 
                 return cantidad > 0;
             }
             catch (Exception ex)
             {
-                _bitacora.RegistrarError("USUARIOS", ex);
+                _bitacora.RegistrarError("PUBROCK_USUARIO_TB", ex);
                 throw;
             }
+        }
+
+        private bool EsFormatoEmailValido(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch { return false; }
+        }
+
+        private bool EsFormatoTelefonoValido(string telefono)
+        {
+            return System.Text.RegularExpressions.Regex.IsMatch(telefono, @"^\d{8,15}$");
         }
     }
 }

@@ -74,10 +74,11 @@
     <Compile Include="AccesoADatos\SINPES\RegistrarSINPES\IRegistrarSINPESAD.cs" />
     <Compile Include="AccesoADatos\SINPES\ValidacionCajaTelefonoSINPES\IValidacionCajaTelefonoSINPESAD.cs" />
     <Compile Include="AccesoADatos\Usuarios\EditarUsuario\IEditarUsuarioAD.cs" />
+    <Compile Include="AccesoADatos\Usuarios\InactivarUsuario\IInactivarUsuarioAD.cs" />
+    <Compile Include="AccesoADatos\Usuarios\ObtenerTodosLosTipoUsuarios\IObtenerTodosLosTiposDeUsuarioAD.cs" />
     <Compile Include="AccesoADatos\Usuarios\ObtenerTodosLosUsuarios\IObtenerTodosLosUsuariosAD.cs" />
     <Compile Include="AccesoADatos\Usuarios\ObtenerUsuarioPorId\IObtenerUsuarioPorIdAD.cs" />
     <Compile Include="AccesoADatos\Usuarios\RegistrarUsuario\IRegistrarUsuarioAD.cs" />
-    <Compile Include="AccesoADatos\Usuarios\ValidarIdentificacion\IValidarIdentificacionUsuarioAD.cs" />
     <Compile Include="LogicaDeNegocio\Bitacora\RegistrarBitacora\IRegistrarBitacoraLN.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\EditarCaja\IEditarCajaLN.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\ObtenerCajaPorId\IObtenerCajaPorIdLN.cs" />
@@ -96,6 +97,8 @@
     <Compile Include="LogicaDeNegocio\SINPESApi\ISINPESApiLN.cs" />
     <Compile Include="LogicaDeNegocio\SINPES\RegistrarSINPES\IRegistrarSINPESLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\EditarUsuario\IEditarUsuarioLN.cs" />
+    <Compile Include="LogicaDeNegocio\Usuarios\InactivarUsuario\IInactivarUsuarioLN.cs" />
+    <Compile Include="LogicaDeNegocio\Usuarios\ObtenerTodosLosTipoUsuarios\IObtenerTodosLosTiposDeUsuarioLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\ObtenerTodosLosUsuarios\IObtenerTodosLosUsuariosLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\ObtenerUsuarioPorId\IObtenerUsuarioPorIdLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\RegistrarUsuario\IRegistrarUsuarioLN.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="Modelos\SINPESApi\RespuestaAPIDto.cs" />
     <Compile Include="Modelos\SINPESApi\SincronizarSINPEDto.cs" />
     <Compile Include="Modelos\SINPES\SINPESDto.cs" />
+    <Compile Include="Modelos\Usuarios\TipoUsuarioDto.cs" />
     <Compile Include="Modelos\Usuarios\UsuarioDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

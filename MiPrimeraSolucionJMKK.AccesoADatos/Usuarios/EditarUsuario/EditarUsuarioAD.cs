@@ -20,22 +20,24 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.EditarUsuario
         {
             try
             {
-                var usuarioExistente = _elContexto.Usuarios.FirstOrDefault(u => u.IdUsuario == usuario.IdUsuario);
-                
+                var usuarioExistente = _elContexto.Usuarios
+                    .FirstOrDefault(u => u.Cedula == usuario.Cedula);
+
                 if (usuarioExistente == null)
                     return 0;
 
-                usuarioExistente.Nombres = usuario.Nombres;
-                usuarioExistente.PrimerApellido = usuario.PrimerApellido;
-                usuarioExistente.SegundoApellido = usuario.SegundoApellido;
-                usuarioExistente.Identificacion = usuario.Identificacion;
-                usuarioExistente.CorreoElectronico = usuario.CorreoElectronico;
-                usuarioExistente.Estado = usuario.Estado;
-                usuarioExistente.FechaDeModificacion = usuario.FechaDeModificacion;
+                bool cedulaDuplicada = _elContexto.Usuarios
+                    .Any(u => u.Cedula == usuario.Cedula && u.Cedula != usuarioExistente.Cedula);
+                if (cedulaDuplicada) return 0;
 
-                int cantidadDeRegistrosActualizados = _elContexto.SaveChanges();
+ 
+                usuarioExistente.Nombre = usuario.Nombre;
+                usuarioExistente.ApellidoPaterno = usuario.ApellidoPaterno;
+                usuarioExistente.ApellidoMaterno = usuario.ApellidoMaterno;
+                usuarioExistente.IdTipoUsuario = usuario.IdTipoUsuario;
+                usuarioExistente.IdEstado = usuario.IdEstado;
 
-                return cantidadDeRegistrosActualizados;
+                return _elContexto.SaveChanges();
             }
             catch
             {

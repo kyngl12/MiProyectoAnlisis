@@ -76,6 +76,8 @@
     <Compile Include="SINPESApi\SINPESApiLN.cs" />
     <Compile Include="SINPES\RegistrarSINPES\RegistrarSINPESLN.cs" />
     <Compile Include="Usuarios\EditarUsuario\EditarUsuarioLN.cs" />
+    <Compile Include="Usuarios\InactivarUsuario\InactivarUsuarioLN.cs" />
+    <Compile Include="Usuarios\ObtenerTodosLosTipoUsuarios\ObtenerTodosLosTiposDeUsuarioLN.cs" />
     <Compile Include="Usuarios\ObtenerTodosLosUsuarios\ObtenerTodosLosUsuariosLN.cs" />
     <Compile Include="Usuarios\ObtenerUsuarioPorId\ObtenerUsuarioPorIdLN.cs" />
     <Compile Include="Usuarios\RegistrarUsuario\RegistrarUsuarioLN.cs" />

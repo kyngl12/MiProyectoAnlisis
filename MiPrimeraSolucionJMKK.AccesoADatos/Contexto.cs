@@ -21,6 +21,7 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos
         public DbSet<SINPESEntidad> SINPES { get; set; }
         public DbSet<CajasEntidad> Cajas { get; set; }
         public DbSet<UsuariosEntidad> Usuarios { get; set; }
+        public DbSet<TipoUsuarioEntidad> TiposDeUsuario { get; set; }
         public DbSet<ReportesMensualesEntidad> ReportesMensuales { get; set; }
         public DbSet<ConfiguracionComercioEntidad> ConfiguracionComercio { get; set; }
         public DbSet<BitacoraEntidad> Bitacora { get; set; }

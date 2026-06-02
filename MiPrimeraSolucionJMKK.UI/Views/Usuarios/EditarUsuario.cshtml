@@ -7,82 +7,118 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm border-0 rounded-4">
-                <div class="card-header bg-warning text-dark rounded-top-4">
-                    <h4 class="mb-0">Editar Usuario</h4>
-                </div>
+            <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    @if (TempData["Mensaje"] != null)
+
+                    <h2 class="mb-4"><i class="bi bi-person-gear me-2"></i>Editar Usuario</h2>
+
+                    @if (TempData["MensajeExito"] != null)
                     {
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            @TempData["Mensaje"]
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>@TempData["MensajeExito"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     }
 
-                    @using (Html.BeginForm("EditarUsuario", "Usuarios", FormMethod.Post, new { @class = "needs-validation" }))
+                    @if (TempData["MensajeError"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["MensajeError"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("EditarUsuario", "Usuarios", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
 
-                        @Html.HiddenFor(model => model.IdUsuario)
-                        @Html.HiddenFor(model => model.IdComercio)
-                        @Html.HiddenFor(model => model.FechaDeRegistro)
-                        @Html.HiddenFor(model => model.IdNetUser)
+                        @* Campos que no se editan pero se necesitan en el POST *@
+                        @Html.HiddenFor(m => m.Cedula)
+                        @Html.HiddenFor(m => m.FechaRegistro)
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Nombres</label>
-                            @Html.TextBoxFor(model => model.Nombres, new { @class = "form-control", @placeholder = "Ej: Juan", @required = "required" })
-                            @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
+                            @Html.LabelFor(m => m.Cedula, new { @class = "form-label" })
+                            <input type="text" class="form-control" value="@Model.Cedula" disabled />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Primer Apellido</label>
-                            @Html.TextBoxFor(model => model.PrimerApellido, new { @class = "form-control", @placeholder = "Ej: Pérez", @required = "required" })
-                            @Html.ValidationMessageFor(model => model.PrimerApellido, "", new { @class = "text-danger" })
+                            @Html.LabelFor(m => m.Nombre, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", placeholder = "Ej: Juan" })
+                            @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger small" })
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Segundo Apellido</label>
-                            @Html.TextBoxFor(model => model.SegundoApellido, new { @class = "form-control", @placeholder = "Ej: García", @required = "required" })
-                            @Html.ValidationMessageFor(model => model.SegundoApellido, "", new { @class = "text-danger" })
-                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.ApellidoPaterno, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.ApellidoPaterno, new { @class = "form-control", placeholder = "Ej: Pérez" })
+                                @Html.ValidationMessageFor(m => m.ApellidoPaterno, "", new { @class = "text-danger small" })
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Identificación</label>
-                            @Html.TextBoxFor(model => model.Identificacion, new { @class = "form-control", @placeholder = "Ej: 1234567", @required = "required" })
-                            @Html.ValidationMessageFor(model => model.Identificacion, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Correo Electrónico</label>
-                            @Html.TextBoxFor(model => model.CorreoElectronico, new { @class = "form-control", @type = "email", @placeholder = "Ej: usuario@ejemplo.com", @required = "required" })
-                            @Html.ValidationMessageFor(model => model.CorreoElectronico, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Estado</label>
-                            <div>
-                                <div class="form-check form-check-inline">
-                                    @Html.RadioButtonFor(model => model.Estado, true, new { @class = "form-check-input" })
-                                    <label class="form-check-label">Activo</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    @Html.RadioButtonFor(model => model.Estado, false, new { @class = "form-check-input" })
-                                    <label class="form-check-label">Inactivo</label>
-                                </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.ApellidoMaterno, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.ApellidoMaterno, new { @class = "form-control", placeholder = "Ej: García" })
+                                @Html.ValidationMessageFor(m => m.ApellidoMaterno, "", new { @class = "text-danger small" })
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Fecha de Registro</label>
-                            <input type="text" class="form-control" value="@Model.FechaDeRegistro.ToString("dd/MM/yyyy HH:mm")" disabled />
+                            @Html.LabelFor(m => m.CorreoElectronico, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.CorreoElectronico, new { @class = "form-control", placeholder = "Ej: usuario@ejemplo.com", type = "email" })
+                            @Html.ValidationMessageFor(m => m.CorreoElectronico, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Telefono, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", placeholder = "Ej: 88887777" })
+                            @Html.ValidationMessageFor(m => m.Telefono, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.IdTipoUsuario, new { @class = "form-label" })
+                                @Html.DropDownListFor(
+                                    m => m.IdTipoUsuario,
+                                    ViewBag.TiposDeUsuario as SelectList,
+                                    "-- Seleccione un rol --",
+                                    new { @class = "form-select" }
+                                )
+                                @Html.ValidationMessageFor(m => m.IdTipoUsuario, "", new { @class = "text-danger small" })
+                            </div>
+
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.IdEstado, new { @class = "form-label" })
+                                @Html.DropDownListFor(
+                                    m => m.IdEstado,
+                                    new SelectList(
+                                        new[]
+                                        {
+                                            new { Value = 1, Text = "Activo" },
+                                            new { Value = 2, Text = "Inactivo" }
+                                        },
+                                        "Value",
+                                        "Text"
+                                    ),
+                                    "-- Seleccione --",
+                                    new { @class = "form-select" }
+                                )
+                                @Html.ValidationMessageFor(m => m.IdEstado, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Fecha de Registro</label>
+                            <input type="text" class="form-control" value="@Model.FechaRegistro.ToString("dd/MM/yyyy")" disabled />
                         </div>
 
                         <div class="d-flex gap-2 justify-content-end">
                             @Html.ActionLink("Cancelar", "ObtenerTodosLosUsuarios", null, new { @class = "btn btn-secondary" })
-                            <button type="submit" class="btn btn-success">Actualizar Usuario</button>
+
+                            <button type="submit" class="btn btn-pubrock">
+                                <i class="bi bi-person-check-fill me-1"></i>Actualizar Usuario
+                            </button>
                         </div>
                     }
+
                 </div>
             </div>
         </div>

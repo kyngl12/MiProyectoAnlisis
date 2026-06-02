@@ -20,6 +20,10 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.RegistrarUsuario
         {
             try
             {
+
+                bool yaExiste = _elContexto.Usuarios.Any(u => u.Cedula == usuario.Cedula);
+                if (yaExiste) return 0;
+
                 UsuariosEntidad usuarioAGuardar = ConvertirAEntidad(usuario);
                 _elContexto.Usuarios.Add(usuarioAGuardar);
                 int cantidadDeRegistrosAlmacenados = _elContexto.SaveChanges();
@@ -36,16 +40,13 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.RegistrarUsuario
         {
             return new UsuariosEntidad
             {
-                IdComercio = usuario.IdComercio,
-                IdNetUser = usuario.IdNetUser,
-                Nombres = usuario.Nombres,
-                PrimerApellido = usuario.PrimerApellido,
-                SegundoApellido = usuario.SegundoApellido,
-                Identificacion = usuario.Identificacion,
-                CorreoElectronico = usuario.CorreoElectronico,
-                FechaDeRegistro = usuario.FechaDeRegistro,
-                FechaDeModificacion = usuario.FechaDeModificacion,
-                Estado = usuario.Estado
+                Cedula = usuario.Cedula,
+                Nombre = usuario.Nombre,
+                ApellidoPaterno = usuario.ApellidoPaterno,
+                ApellidoMaterno = usuario.ApellidoMaterno,
+                FechaRegistro = DateTime.Now, 
+                IdTipoUsuario = usuario.IdTipoUsuario,
+                IdEstado = usuario.IdEstado
             };
         }
     }
