@@ -1,12 +1,9 @@
 ﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ReportesMensuales.ObtenerTodosLosReportesMensuales;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.ReportesMensuales;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.ReportesMensuales.ObtenerTodosLosReportesMensuales
+namespace GestionPubRock.AccesoADatos.ReportesMensuales.ObtenerTodosLosReportesMensuales
 {
     public class ObtenerTodosLosReportesMensualesAD : IObtenerTodosLosReportesMensualesAD
     {

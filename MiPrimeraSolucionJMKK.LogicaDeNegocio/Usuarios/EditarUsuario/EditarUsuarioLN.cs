@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
+using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
+using GestionPubRock.AccesoADatos.Usuarios.EditarUsuario;
 using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.EditarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.EditarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.EditarUsuario;
-using MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ValidarIdentificacion;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.EditarUsuario

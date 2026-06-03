@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Cajas.ObtenerCajasPorComercio;
+using GestionPubRock.Abstracciones.AccesoADatos.Cajas.ObtenerCajasPorComercio;
+using GestionPubRock.AccesoADatos.Cajas.ObtenerCajasPorComercio;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Cajas.ObtenerCajasPorComercio;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas;
-using MiPrimeraSolucionJMKK.AccesoADatos.Cajas.ObtenerCajasPorComercio;
 
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Cajas.ObtenerCajasPorComercio

@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using GestionPubRock.AccesoADatos;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MiPrimeraSolucion.UI.Models;
-using MiPrimeraSolucionJMKK.AccesoADatos;
 using System;
-using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -160,8 +158,8 @@ namespace MiPrimeraSolucion.UI.Controllers
                 {
                     var usuario = db.Usuarios
                         .FirstOrDefault(x =>
-                            x.CorreoElectronico == model.Email &&
-                            x.Estado == true);
+                            x.Correo== model.Email &&
+                            x.IdEstado == 1);
 
                     if (usuario == null)
                     {
@@ -201,28 +199,10 @@ namespace MiPrimeraSolucion.UI.Controllers
                     );
                 }
 
-                await UserManager.AddToRoleAsync(
-                    user.Id,
-                    model.Rol
-                );
-
-                if (model.Rol == "Cajero")
-                {
-                    using (var db = new Contexto())
-                    {
-                        var usuario = db.Usuarios
-                            .FirstOrDefault(x =>
-                                x.CorreoElectronico == model.Email);
-
-                        if (usuario != null)
-                        {
-                            usuario.IdNetUser =
-                                Guid.Parse(user.Id);
-
-                            db.SaveChanges();
-                        }
-                    }
-                }
+                    await UserManager.AddToRoleAsync(
+                        user.Id,
+                        model.Rol
+                    );
 
                 await SignInManager.SignInAsync(
                     user,

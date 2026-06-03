@@ -1,12 +1,9 @@
 ﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.ObtenerTodosLosTipoUsuarios;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerTodosLosTipoUsuarios
+namespace GestionPubRock.AccesoADatos.Usuarios.ObtenerTodosLosTipoUsuarios
 {
     public class ObtenerTodosLosTiposDeUsuarioAD : IObtenerTodosLosTiposDeUsuarioAD
     {

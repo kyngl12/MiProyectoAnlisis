@@ -1,12 +1,7 @@
-﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.ObtenerComercioPorId;
+﻿using GestionPubRock.AccesoADatos.Comercios.ObtenerComercioPorId;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.ObtenerComercioPorId;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Comercios.ObtenerComercioPorId;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Comercios.ObtenerComercioPorId;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Comercios.ObtenerComercioPorId
 {

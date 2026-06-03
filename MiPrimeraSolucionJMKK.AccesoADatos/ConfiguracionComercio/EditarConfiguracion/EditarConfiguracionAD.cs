@@ -3,7 +3,7 @@ using MiPrimeraSolucionJMKK.Abstracciones.Modelos.ConfiguracionComercio;
 using System;
 using System.Linq;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.ConfiguracionComercio.EditarConfiguracion
+namespace GestionPubRock.AccesoADatos.ConfiguracionComercio.EditarConfiguracion
 {
     public class EditarConfiguracionAD : IEditarConfiguracionAD
     {

@@ -1,10 +1,10 @@
+using GestionPubRock.AccesoADatos.Entidades;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ConfiguracionComercio.RegistrarConfiguracion;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.ConfiguracionComercio;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
 using System;
 using System.Linq;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.ConfiguracionComercio.RegistrarConfiguracion
+namespace GestionPubRock.AccesoADatos.ConfiguracionComercio.RegistrarConfiguracion
 {
     public class RegistrarConfiguracionAD : IRegistrarConfiguracionAD
     {

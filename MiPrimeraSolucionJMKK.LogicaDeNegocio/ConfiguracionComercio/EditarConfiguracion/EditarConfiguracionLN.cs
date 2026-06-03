@@ -1,7 +1,7 @@
+using GestionPubRock.AccesoADatos.ConfiguracionComercio.EditarConfiguracion;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ConfiguracionComercio.EditarConfiguracion;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.ConfiguracionComercio.EditarConfiguracion;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.ConfiguracionComercio;
-using MiPrimeraSolucionJMKK.AccesoADatos.ConfiguracionComercio.EditarConfiguracion;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.ConfiguracionComercio.EditarConfiguracion
 {

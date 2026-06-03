@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Cajas.EditarCaja;
+﻿using System.Linq;
+using GestionPubRock.Abstracciones.AccesoADatos.Cajas.EditarCaja;
+using GestionPubRock.AccesoADatos.Entidades;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
 
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Cajas.EditarCaja
+namespace GestionPubRock.AccesoADatos.Cajas.EditarCaja
 {
     public class EditarCajaAD : IEditarCajaAD
     {

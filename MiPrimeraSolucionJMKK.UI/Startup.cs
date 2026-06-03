@@ -11,9 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Configuration;
 
-[assembly: OwinStartup(typeof(MiPrimeraSolucionJMKK.UI.Startup))]
+[assembly: OwinStartup(typeof(GestionPubRock.UI.Startup))]
 
-namespace MiPrimeraSolucionJMKK.UI
+namespace GestionPubRock.UI
 {
     public partial class Startup
     {

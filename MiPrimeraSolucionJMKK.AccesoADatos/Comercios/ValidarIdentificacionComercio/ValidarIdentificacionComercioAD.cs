@@ -1,11 +1,11 @@
-﻿using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
+﻿using GestionPubRock.AccesoADatos.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Comercios.ValidarIdentificacionComercio
+namespace GestionPubRock.AccesoADatos.Comercios.ValidarIdentificacionComercio
 {
     public class ValidarCajaTelefonoSINPESAD
     {

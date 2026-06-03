@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Configuration;
-using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Cajas.RegistrarCaja;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Cajas.RegistrarCaja;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas;
-using MiPrimeraSolucionJMKK.AccesoADatos;
-using MiPrimeraSolucionJMKK.AccesoADatos.Cajas.RegistrarCaja;
 
 using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora;
+using GestionPubRock.AccesoADatos;
+using GestionPubRock.Abstracciones.AccesoADatos.Cajas.RegistrarCaja;
+using GestionPubRock.AccesoADatos.Cajas.RegistrarCaja;
+using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Cajas.RegistrarCaja
 {

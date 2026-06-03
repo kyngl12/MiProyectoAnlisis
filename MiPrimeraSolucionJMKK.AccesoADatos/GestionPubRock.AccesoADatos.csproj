@@ -8,8 +8,8 @@
     <ProjectGuid>{473B9CC6-22C3-4654-BBCE-95DDFAB2707D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MiPrimeraSolucionJMKK.AccesoADatos</RootNamespace>
-    <AssemblyName>MiPrimeraSolucionJMKK.AccesoADatos</AssemblyName>
+    <RootNamespace>GestionPubRock.AccesoADatos</RootNamespace>
+    <AssemblyName>GestionPubRock.AccesoADatos</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -94,7 +94,6 @@
     <Compile Include="Usuarios\ObtenerTodosLosUsuarios\ObtenerTodosLosUsuariosAD.cs" />
     <Compile Include="Usuarios\ObtenerUsuarioPorCedula\ObtenerUsuarioPorCedulaAD.cs" />
     <Compile Include="Usuarios\RegistrarUsuario\RegistrarUsuarioAD.cs" />
-    <Compile Include="Usuarios\ValidarIdentificacion\ValidarIdentificacionUsuarioAD.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

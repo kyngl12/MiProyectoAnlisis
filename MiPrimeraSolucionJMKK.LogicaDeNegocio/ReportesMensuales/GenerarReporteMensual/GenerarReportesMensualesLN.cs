@@ -1,21 +1,16 @@
-﻿using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
+﻿using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
+using GestionPubRock.AccesoADatos.ReportesMensuales.ConsultarReporteMensual;
+using GestionPubRock.AccesoADatos.ReportesMensuales.GenerarReporteMensual;
+using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ReportesMensuales.ConsultaReporteMensual;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ReportesMensuales.GenerarReporteMensual;
-using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ReportesMensuales.ObtenerTodosLosReportesMensuales;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.ReportesMensuales;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPES;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.ReportesMensuales.ConsultarReporteMensual;
-using MiPrimeraSolucionJMKK.AccesoADatos.ReportesMensuales.GenerarReporteMensual;
-using MiPrimeraSolucionJMKK.AccesoADatos.ReportesMensuales.ObtenerTodosLosReportesMensuales;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.ReportesMensuales.ObtenerTodosLosReportesMensuales
 {

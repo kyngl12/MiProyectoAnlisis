@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Entidades
+namespace GestionPubRock.AccesoADatos.Entidades
 {
     [Table("PUBROCK_TIPO_USUARIO_TB")]
     public class TipoUsuarioEntidad

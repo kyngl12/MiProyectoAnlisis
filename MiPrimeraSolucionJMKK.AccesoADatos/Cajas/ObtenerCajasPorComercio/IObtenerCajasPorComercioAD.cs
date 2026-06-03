@@ -1,11 +1,7 @@
-﻿using System;
+﻿using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas;
 
-namespace MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Cajas.ObtenerCajasPorComercio
+namespace GestionPubRock.Abstracciones.AccesoADatos.Cajas.ObtenerCajasPorComercio
 {
     public interface IObtenerCajasPorComercioAD
     {

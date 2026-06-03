@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.EditarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
+using System.Linq;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.EditarUsuario
+namespace GestionPubRock.AccesoADatos.Usuarios.EditarUsuario
 {
     public class EditarUsuarioAD : IEditarUsuarioAD
     {
@@ -36,6 +33,8 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.EditarUsuario
                 usuarioExistente.ApellidoMaterno = usuario.ApellidoMaterno;
                 usuarioExistente.IdTipoUsuario = usuario.IdTipoUsuario;
                 usuarioExistente.IdEstado = usuario.IdEstado;
+                    usuarioExistente.Correo = usuario.CorreoElectronico; 
+                usuarioExistente.Telefono = usuario.Telefono;
 
                 return _elContexto.SaveChanges();
             }

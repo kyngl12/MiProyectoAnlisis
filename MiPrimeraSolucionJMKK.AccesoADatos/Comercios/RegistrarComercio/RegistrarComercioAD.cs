@@ -1,13 +1,8 @@
-﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.RegstrarComercio;
+﻿using GestionPubRock.AccesoADatos.Entidades;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.RegstrarComercio;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-    namespace MiPrimeraSolucionJMKK.AccesoADatos.Comercios.RegistrarComercio
+namespace GestionPubRock.AccesoADatos.Comercios.RegistrarComercio
     {
     public class RegistrarComercioAD : IRegistrarComercioAD
     {

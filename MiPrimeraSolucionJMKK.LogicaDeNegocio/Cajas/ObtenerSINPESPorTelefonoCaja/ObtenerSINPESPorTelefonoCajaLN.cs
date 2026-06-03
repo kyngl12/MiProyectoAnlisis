@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Cajas.ObtenerSINPESPorTelefonoCaja;
+﻿using System.Collections.Generic;
+using GestionPubRock.Abstracciones.AccesoADatos.Cajas.ObtenerSINPESPorTelefonoCaja;
+using GestionPubRock.AccesoADatos.Cajas.ObtenerSINPESPorTelefonoCaja;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Cajas.ObtenerSINPESPorTelefonoCaja;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPES;
-using MiPrimeraSolucionJMKK.AccesoADatos.Cajas.ObtenerSINPESPorTelefonoCaja;
 
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Cajas.ObtenerSINPESPorTelefonoCaja

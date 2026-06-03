@@ -1,13 +1,10 @@
 ﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ReportesMensuales.ConsultaReporteMensual;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPES;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.ReportesMensuales.ConsultarReporteMensual
+namespace GestionPubRock.AccesoADatos.ReportesMensuales.ConsultarReporteMensual
 {
     public class ConsultarReporteMensualAD : IConsultarReporteMensualAD
     {

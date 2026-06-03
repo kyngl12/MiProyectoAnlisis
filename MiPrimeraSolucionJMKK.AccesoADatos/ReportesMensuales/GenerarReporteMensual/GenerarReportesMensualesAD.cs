@@ -1,13 +1,9 @@
-﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ReportesMensuales.GenerarReporteMensual;
+﻿using GestionPubRock.AccesoADatos.Entidades;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ReportesMensuales.GenerarReporteMensual;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.ReportesMensuales;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.ReportesMensuales.GenerarReporteMensual
+namespace GestionPubRock.AccesoADatos.ReportesMensuales.GenerarReporteMensual
 {
     public class GenerarReportesMensualesAD : IGenerarReportesMensualesAD
     {

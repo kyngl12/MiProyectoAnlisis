@@ -1,11 +1,8 @@
-﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ReportesMensuales.ObtenerTodosLosReportesMensuales;
+﻿using GestionPubRock.AccesoADatos.ReportesMensuales.ObtenerTodosLosReportesMensuales;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ReportesMensuales.ObtenerTodosLosReportesMensuales;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.ReportesMensuales;
-using MiPrimeraSolucionJMKK.AccesoADatos.ReportesMensuales.ObtenerTodosLosReportesMensuales;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.ReportesMensuales.GenerarReporteMensual
 {

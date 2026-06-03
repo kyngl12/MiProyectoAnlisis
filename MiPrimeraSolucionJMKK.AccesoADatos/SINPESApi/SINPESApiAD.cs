@@ -1,15 +1,12 @@
-﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.SINPESApi;
+﻿using GestionPubRock.AccesoADatos.Entidades;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.SINPESApi;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPES;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPESApi;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.SINPESApi
+namespace GestionPubRock.AccesoADatos.SINPESApi
 {
     public class SinpeApiAD : ISINPESApiAD
     {

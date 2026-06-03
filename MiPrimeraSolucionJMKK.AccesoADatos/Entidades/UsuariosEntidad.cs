@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Entidades
+namespace GestionPubRock.AccesoADatos.Entidades
 {
     [Table("PUBROCK_USUARIO_TB")]
     public class UsuariosEntidad
@@ -28,6 +28,15 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Entidades
 
         [Column("ID_ESTADO")]
         public int IdEstado { get; set; }
+
+        [Column("CORREO")]
+        public string Correo { get; set; }
+
+        [Column("TELEFONO")]
+        public string Telefono { get; set; }
+
+        [Column("CONTRASENIA")]
+        public string Contrasenia { get; set; }
 
         [ForeignKey("IdTipoUsuario")]
         public TipoUsuarioEntidad TipoUsuario { get; set; }

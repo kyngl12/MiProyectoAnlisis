@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using GestionPubRock.AccesoADatos.Entidades;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.ObtenerTodosLosUsuarios;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerTodosLosUsuarios
+namespace GestionPubRock.AccesoADatos.Usuarios.ObtenerTodosLosUsuarios
 {
     public class ObtenerTodosLosUsuariosAD : IObtenerTodosLosUsuariosAD
     {
@@ -51,7 +50,9 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerTodosLosUsuarios
                 IdTipoUsuario = usuario.IdTipoUsuario,
                 IdEstado = usuario.IdEstado,
                 DescripcionTipoUsuario = usuario.TipoUsuario != null
-                    ? usuario.TipoUsuario.Descripcion : "Sin rol"
+                    ? usuario.TipoUsuario.Descripcion : "Sin rol",
+                CorreoElectronico = usuario.Correo,  
+                Telefono = usuario.Telefono
             };
         }
     }

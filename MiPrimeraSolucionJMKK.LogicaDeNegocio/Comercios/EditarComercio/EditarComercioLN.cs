@@ -2,12 +2,12 @@
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.EditarComercio;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.ObtenerComercioPorId;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Comercios.ObtenerComercioPorId;
 using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora;
 using System;
 using System.Configuration;
+using GestionPubRock.AccesoADatos.Comercios.ObtenerComercioPorId;
+using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Comercios.EditarComercio
 {

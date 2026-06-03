@@ -1,13 +1,9 @@
 ﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.ObtenerTodosLosComercios;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios;
-using MiPrimeraSolucionJMKK.AccesoADatos;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Comercios.ObtenerTodosLosComercios
+namespace GestionPubRock.AccesoADatos.Comercios.ObtenerTodosLosComercios
 {
     public class ObtenerTodosLosComerciosAD : IObtenerTodosLosComerciosAD
     {

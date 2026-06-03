@@ -1,10 +1,10 @@
-﻿using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
+﻿using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
+using GestionPubRock.AccesoADatos.Comercios.RegistrarComercio;
+using GestionPubRock.AccesoADatos.Comercios.ValidarIdentificacionComercio;
+using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.RegstrarComercio;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Comercios.RegistrarComercio;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.Comercios.RegistrarComercio;
-using MiPrimeraSolucionJMKK.AccesoADatos.Comercios.ValidarIdentificacionComercio;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using System;
 using System.Configuration;

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Cajas.RegistrarCaja;
+﻿using GestionPubRock.Abstracciones.AccesoADatos.Cajas.RegistrarCaja;
+using GestionPubRock.AccesoADatos.Entidades;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Cajas.RegistrarCaja
+namespace GestionPubRock.AccesoADatos.Cajas.RegistrarCaja
 {
     public class RegistrarCajaAD : IRegistrarCajaAD
     {

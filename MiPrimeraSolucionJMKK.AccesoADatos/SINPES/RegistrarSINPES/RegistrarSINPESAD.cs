@@ -1,9 +1,8 @@
-﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.SINPES.RegistrarSINPES;
+﻿using GestionPubRock.AccesoADatos.Entidades;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.SINPES.RegistrarSINPES;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPES;
-using MiPrimeraSolucionJMKK.AccesoADatos;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.SINPES.RegistrarSINPES
+namespace GestionPubRock.AccesoADatos.SINPES.RegistrarSINPES
 {
     public class RegistrarSINPESAD : IRegistrarSINPESAD
     {

@@ -1,12 +1,8 @@
-﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.SINPES.ValidacionCajaTelefonoAD;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
-using System;
-using System.Collections.Generic;
+﻿using GestionPubRock.AccesoADatos.Entidades;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.SINPES.ValidacionCajaTelefonoAD;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.SINPES.ValidacionCajaTelefonoAD
+namespace GestionPubRock.AccesoADatos.SINPES.ValidacionCajaTelefonoAD
 {
     public class ValidarCajaTelefonoSINPESAD : IValidacionCajaTelefonoSINPESAD
     {

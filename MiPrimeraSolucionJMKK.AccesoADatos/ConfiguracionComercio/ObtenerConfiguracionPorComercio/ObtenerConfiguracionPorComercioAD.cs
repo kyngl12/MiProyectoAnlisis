@@ -3,7 +3,7 @@ using MiPrimeraSolucionJMKK.Abstracciones.Modelos.ConfiguracionComercio;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.ConfiguracionComercio.ObtenerConfiguracionPorComercio
+namespace GestionPubRock.AccesoADatos.ConfiguracionComercio.ObtenerConfiguracionPorComercio
 {
     public class ObtenerConfiguracionPorComercioAD : IObtenerConfiguracionPorComercioAD
     {

@@ -1,13 +1,12 @@
-﻿using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
+﻿using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
+using GestionPubRock.AccesoADatos.Comercios.ValidarIdentificacionComercio;
+using GestionPubRock.AccesoADatos.SINPES.RegistrarSINPES;
+using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.SINPES.RegistrarSINPES;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.SINPES.ValidacionCajaTelefonoAD;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.SINPES.RegistrarSINPES;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPES;
-using MiPrimeraSolucionJMKK.AccesoADatos;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.SINPES.RegistrarSINPES;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.SINPES.ValidacionCajaTelefonoAD;
 using System;
 using System.Configuration;
 
@@ -22,7 +21,6 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.SINPES.RegistrarSINPES
         {
 
             _registrarSINPESAD = new RegistrarSINPESAD();
-            _validacionCaja = new ValidarCajaTelefonoSINPESAD();
 
             string connectionString = ConfigurationManager
                 .ConnectionStrings["Contexto"].ConnectionString;

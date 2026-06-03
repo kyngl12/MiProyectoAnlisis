@@ -1,12 +1,8 @@
-﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.ObtenerTodosLosTipoUsuarios;
+﻿using GestionPubRock.AccesoADatos.Usuarios.ObtenerTodosLosTipoUsuarios;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.ObtenerTodosLosTipoUsuarios;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.ObtenerTodosLosTipoUsuarios;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerTodosLosTipoUsuarios;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.ObtenerTodosLosTipoUsuarios
 {

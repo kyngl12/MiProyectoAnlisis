@@ -8,8 +8,8 @@
     <ProjectGuid>{6D2206F8-B7C2-4F0E-97E4-FF6DB112241C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MiPrimeraSolucionJMKK.LogicaDeNegocio</RootNamespace>
-    <AssemblyName>MiPrimeraSolucionJMKK.LogicaDeNegocio</AssemblyName>
+    <RootNamespace>GestionPubRock.LogicaDeNegocio</RootNamespace>
+    <AssemblyName>GestionPubRock.LogicaDeNegocio</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

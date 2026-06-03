@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Cajas.ObtenerSINPESPorTelefonoCaja;
+using GestionPubRock.Abstracciones.AccesoADatos.Cajas.ObtenerSINPESPorTelefonoCaja;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPES;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Cajas.ObtenerSINPESPorTelefonoCaja
+namespace GestionPubRock.AccesoADatos.Cajas.ObtenerSINPESPorTelefonoCaja
 {
     public class ObtenerSINPESPorTelefonoCajaAD : IObtenerSINPESPorTelefonoCajaAD
     {

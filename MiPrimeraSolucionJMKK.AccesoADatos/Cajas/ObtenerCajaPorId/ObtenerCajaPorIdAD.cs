@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Cajas.ObtenerCajaPorId;
+using GestionPubRock.Abstracciones.AccesoADatos.Cajas.ObtenerCajaPorId;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas;
 
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Cajas.ObtenerCajaPorId
+namespace GestionPubRock.AccesoADatos.Cajas.ObtenerCajaPorId
 {
     public class ObtenerCajaPorIdAD : IObtenerCajaPorIdAD
     {

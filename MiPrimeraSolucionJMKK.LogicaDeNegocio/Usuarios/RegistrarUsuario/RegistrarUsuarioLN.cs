@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
+using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
+using GestionPubRock.AccesoADatos.Usuarios.RegistrarUsuario;
 using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.RegistrarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.RegistrarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.RegistrarUsuario;
-using MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ValidarIdentificacion;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.RegistrarUsuario
@@ -38,13 +35,13 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.RegistrarUsuario
                 if (string.IsNullOrWhiteSpace(usuario.ApellidoPaterno)) return false;
                 if (string.IsNullOrWhiteSpace(usuario.ApellidoMaterno)) return false;
                 if (string.IsNullOrWhiteSpace(usuario.CorreoElectronico)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.Contrasenna)) return false;
+                if (string.IsNullOrWhiteSpace(usuario.Contrasenia)) return false;
                 if (string.IsNullOrWhiteSpace(usuario.Telefono)) return false;
                 if (usuario.IdTipoUsuario <= 0) return false;
 
                 if (!EsFormatoEmailValido(usuario.CorreoElectronico)) return false;
                 if (!EsFormatoTelefonoValido(usuario.Telefono)) return false;
-                if (usuario.Contrasenna.Length < 6) return false;
+                if (usuario.Contrasenia.Length < 6) return false;
 
                 usuario.FechaRegistro = DateTime.Now;
                 usuario.IdEstado = 1; 

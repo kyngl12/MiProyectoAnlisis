@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using GestionPubRock.AccesoADatos;
+using Microsoft.AspNet.Identity;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Cajas.EditarCaja;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Cajas.ObtenerCajaPorId;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Cajas.ObtenerCajasPorComercio;
@@ -8,7 +9,6 @@ using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.SINPESApi;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPES;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.SINPESApi;
-using MiPrimeraSolucionJMKK.AccesoADatos;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Cajas.EditarCaja;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Cajas.ObtenerCajaPorId;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Cajas.ObtenerCajasPorComercio;
@@ -50,8 +50,6 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
                 string userId = User.Identity.GetUserId();
                 using (var contexto = new Contexto())
                 {
-                    var usuario = contexto.Usuarios.FirstOrDefault(u => u.IdNetUser.ToString() == userId);
-                    return usuario?.IdComercio;
                 }
             }
             return null;

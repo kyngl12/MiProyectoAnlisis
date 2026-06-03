@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Cajas.ObtenerCajasPorComercio;
+using GestionPubRock.Abstracciones.AccesoADatos.Cajas.ObtenerCajasPorComercio;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Cajas;
 
 
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Cajas.ObtenerCajasPorComercio
+namespace GestionPubRock.AccesoADatos.Cajas.ObtenerCajasPorComercio
 {
     public class ObtenerCajasPorComercioAD : IObtenerCajasPorComercioAD
     {

@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using GestionPubRock.AccesoADatos.Entidades;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.RegistrarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.RegistrarUsuario
+namespace GestionPubRock.AccesoADatos.Usuarios.RegistrarUsuario
 {
     public class RegistrarUsuarioAD : IRegistrarUsuarioAD
     {
@@ -46,7 +45,11 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.RegistrarUsuario
                 ApellidoMaterno = usuario.ApellidoMaterno,
                 FechaRegistro = DateTime.Now, 
                 IdTipoUsuario = usuario.IdTipoUsuario,
-                IdEstado = usuario.IdEstado
+                IdEstado = usuario.IdEstado,
+                Correo = usuario.CorreoElectronico,  
+                Telefono = usuario.Telefono,          
+                Contrasenia = usuario.Contrasenia
+
             };
         }
     }

@@ -34,7 +34,7 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios
         [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres.")]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
-        public string Contrasenna { get; set; }
+        public string Contrasenia { get; set; }
 
         [Required(ErrorMessage = "El teléfono es obligatorio.")]
         [Phone(ErrorMessage = "El formato del teléfono no es válido.")]

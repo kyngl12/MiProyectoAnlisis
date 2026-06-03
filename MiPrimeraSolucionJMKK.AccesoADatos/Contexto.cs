@@ -1,4 +1,4 @@
-﻿using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
+﻿using GestionPubRock.AccesoADatos.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos
+namespace GestionPubRock.AccesoADatos
 {
     public class Contexto : DbContext
     {

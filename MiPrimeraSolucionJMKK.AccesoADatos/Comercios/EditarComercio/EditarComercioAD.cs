@@ -1,12 +1,8 @@
-﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.EditarComercio;
+﻿using GestionPubRock.AccesoADatos;
+using GestionPubRock.AccesoADatos.Entidades;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Comercios.EditarComercio;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Comercios;
-using MiPrimeraSolucionJMKK.AccesoADatos;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiPrimeraSolucion.AccesoADatos.Comercios.EditarComercio
 {

@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using MiPrimeraSolucionJMKK.Abstacciones.AccesoADatos.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.Abstacciones.Modelos.Bitacora;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora
+namespace GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora
 {
     public class RegistrarBitacoraAD : IRegistrarBitacoraAD
     {

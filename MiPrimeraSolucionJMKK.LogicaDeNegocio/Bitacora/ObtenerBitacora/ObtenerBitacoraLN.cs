@@ -1,10 +1,6 @@
-﻿using MiPrimeraSolucionJMKK.Abstacciones.Modelos.Bitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.ObtenerBitacora;
-using System;
+﻿using GestionPubRock.AccesoADatos.Bitacora.ObtenerBitacora;
+using MiPrimeraSolucionJMKK.Abstacciones.Modelos.Bitacora;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.ObtenerBitacora
 {

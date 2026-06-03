@@ -1,11 +1,9 @@
+using GestionPubRock.AccesoADatos.Entidades;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.ObtenerUsuarioPorCedula;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Entidades;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerUsuarioPorId
+namespace GestionPubRock.AccesoADatos.Usuarios.ObtenerUsuarioPorId
 {
     public class ObtenerUsuarioPorCedulaAD : IObtenerUsuarioPorCedulaAD
     {
@@ -43,7 +41,9 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerUsuarioPorId
                 IdTipoUsuario = usuario.IdTipoUsuario,
                 IdEstado = usuario.IdEstado,
                 DescripcionTipoUsuario = usuario.TipoUsuario != null
-                    ? usuario.TipoUsuario.Descripcion : "Sin rol"
+                    ? usuario.TipoUsuario.Descripcion : "Sin rol",
+                            CorreoElectronico = usuario.Correo, 
+                Telefono = usuario.Telefono
             };
         }
     }

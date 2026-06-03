@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using GestionPubRock.AccesoADatos.Bitacora.ObtenerBitacora;
 using MiPrimeraSolucionJMKK.Abstacciones.Modelos.Bitacora;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.ObtenerBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.ObtenerBitacora;
 
 namespace MiPrimeraSolucionJMKK.UI.Controllers
 {

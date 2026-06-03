@@ -1,13 +1,11 @@
+using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
+using GestionPubRock.AccesoADatos.Usuarios.ObtenerUsuarioPorId;
 using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.ObtenerUsuarioPorCedula;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerUsuarioPorId;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.ObtenerUsuarioPorId
 {

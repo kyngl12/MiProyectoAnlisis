@@ -2,7 +2,7 @@ using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.ConfiguracionComercio.Obt
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.ConfiguracionComercio;
 using System.Linq;
 
-namespace MiPrimeraSolucionJMKK.AccesoADatos.ConfiguracionComercio.ObtenerConfiguracionPorId
+namespace GestionPubRock.AccesoADatos.ConfiguracionComercio.ObtenerConfiguracionPorId
 {
     public class ObtenerConfiguracionPorIdAD : IObtenerConfiguracionPorIdAD
     {
