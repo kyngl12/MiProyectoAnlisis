@@ -20,7 +20,9 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerTodosLosUsuarios
         {
             try
             {
-                var usuarios = _elContexto.Usuarios.ToList();
+                var usuarios = _elContexto.Usuarios
+                    .Include("TipoUsuario") 
+                    .ToList();
                 return ConvertirAListaDto(usuarios);
             }
             catch
@@ -32,12 +34,8 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerTodosLosUsuarios
         private List<UsuarioDto> ConvertirAListaDto(List<UsuariosEntidad> usuariosEntidad)
         {
             List<UsuarioDto> usuariosDto = new List<UsuarioDto>();
-
             foreach (var usuario in usuariosEntidad)
-            {
                 usuariosDto.Add(ConvertirADto(usuario));
-            }
-
             return usuariosDto;
         }
 
@@ -45,17 +43,15 @@ namespace MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerTodosLosUsuarios
         {
             return new UsuarioDto
             {
-                IdUsuario = usuario.IdUsuario,
-                IdComercio = usuario.IdComercio,
-                IdNetUser = usuario.IdNetUser,
-                Nombres = usuario.Nombres,
-                PrimerApellido = usuario.PrimerApellido,
-                SegundoApellido = usuario.SegundoApellido,
-                Identificacion = usuario.Identificacion,
-                CorreoElectronico = usuario.CorreoElectronico,
-                FechaDeRegistro = usuario.FechaDeRegistro,
-                FechaDeModificacion = usuario.FechaDeModificacion,
-                Estado = usuario.Estado
+                Cedula = usuario.Cedula,
+                Nombre = usuario.Nombre,
+                ApellidoPaterno = usuario.ApellidoPaterno,
+                ApellidoMaterno = usuario.ApellidoMaterno,
+                FechaRegistro = usuario.FechaRegistro,
+                IdTipoUsuario = usuario.IdTipoUsuario,
+                IdEstado = usuario.IdEstado,
+                DescripcionTipoUsuario = usuario.TipoUsuario != null
+                    ? usuario.TipoUsuario.Descripcion : "Sin rol"
             };
         }
     }

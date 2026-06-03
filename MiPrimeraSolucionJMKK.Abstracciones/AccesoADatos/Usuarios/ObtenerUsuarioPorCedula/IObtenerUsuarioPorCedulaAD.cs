@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.ObtenerUsuarioPorId
+namespace MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.ObtenerUsuarioPorCedula
 {
-    public interface IObtenerUsuarioPorIdAD
+    public interface IObtenerUsuarioPorCedulaAD
     {
-        UsuarioDto ObtenerPorId(int idUsuario);
+        UsuarioDto ObtenerPorCedula(string cedula);
     }
 }

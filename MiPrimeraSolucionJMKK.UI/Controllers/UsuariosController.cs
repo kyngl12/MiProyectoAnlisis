@@ -2,7 +2,7 @@ using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.EditarUsuario
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.InactivarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.ObtenerTodosLosTipoUsuarios;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.ObtenerTodosLosUsuarios;
-using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.ObtenerUsuarioPorId;
+using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.ObtenerUsuarioPorCedula;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.RegistrarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.EditarUsuario;
@@ -25,6 +25,7 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
         private IEditarUsuarioLN _editarUsuarioLN;
         private IObtenerTodosLosTiposDeUsuarioLN _obtenerTiposDeUsuarioLN;
         private IInactivarUsuarioLN _inactivarUsuarioLN;
+        private IObtenerUsuarioPorCedulaLN _obtenerUsuarioPorCedulaLN;
 
         public UsuariosController()
         {
@@ -33,6 +34,7 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             _editarUsuarioLN = new EditarUsuarioLN();
             _obtenerTiposDeUsuarioLN = new ObtenerTodosLosTiposDeUsuarioLN();
             _inactivarUsuarioLN = new InactivarUsuarioLN();
+            _obtenerUsuarioPorCedulaLN = new ObtenerUsuarioPorCedulaLN();
         }
 
         public ActionResult Index() => RedirectToAction("ObtenerTodosLosUsuarios");

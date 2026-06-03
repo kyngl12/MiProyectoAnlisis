@@ -92,7 +92,7 @@
     <Compile Include="Usuarios\InactivarUsuario\InactivarUsuarioAD.cs" />
     <Compile Include="Usuarios\ObtenerTodosLosTipoUsuarios\ObtenerTodosLosTiposDeUsuarioAD.cs" />
     <Compile Include="Usuarios\ObtenerTodosLosUsuarios\ObtenerTodosLosUsuariosAD.cs" />
-    <Compile Include="Usuarios\ObtenerUsuarioPorId\ObtenerUsuarioPorIdAD.cs" />
+    <Compile Include="Usuarios\ObtenerUsuarioPorCedula\ObtenerUsuarioPorCedulaAD.cs" />
     <Compile Include="Usuarios\RegistrarUsuario\RegistrarUsuarioAD.cs" />
     <Compile Include="Usuarios\ValidarIdentificacion\ValidarIdentificacionUsuarioAD.cs" />
   </ItemGroup>

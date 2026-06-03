@@ -1,84 +1,137 @@
 @model IEnumerable<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios.UsuarioDto>
 
 @{
-    ViewBag.Title = "Todos los Usuarios";
+    ViewBag.Title = "Usuarios";
 }
 
-<div class="container py-5">
+<div class="container-fluid py-4">
+
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">Todos los Usuarios</h2>
-        @Html.ActionLink(
-            "Agregar Usuario",
-            "AgregarUsuario",
-            null,
-            new { @class = "btn btn-primary btn-lg rounded-pill shadow-sm" }
-        )
+        <h2><i class="bi bi-people-fill me-2"></i>Usuarios Registrados</h2>
+
+        @Html.ActionLink("Agregar Usuario", "AgregarUsuario", null, new { @class = "btn btn-pubrock" })
     </div>
 
-    @if (TempData["Mensaje"] != null)
+    @if (TempData["MensajeExito"] != null)
     {
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            @TempData["Mensaje"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@TempData["MensajeExito"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     }
 
-    <div class="card shadow-sm border-0 rounded-4">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>Nombres</th>
-                        <th>Primer Apellido</th>
-                        <th>Segundo Apellido</th>
-                        <th>Identificacion</th>
-                        <th>Correo Electronico</th>
-                        <th>Fecha de Registro</th>
-                        <th>Fecha de Modificacion</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+    @if (TempData["MensajeError"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["MensajeError"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0" style="color: var(--terciario);">
+
+                    <thead style="background-color: rgba(234,153,153,0.15); color: var(--acento);">
                         <tr>
-                            <td>@item.Nombres</td>
-                            <td>@item.PrimerApellido</td>
-                            <td>@item.SegundoApellido</td>
-                            <td>@item.Identificacion</td>
-                            <td>@item.CorreoElectronico</td>
-                            <td>@item.FechaDeRegistro.ToString("dd/MM/yyyy HH:mm")</td>
-                            <td>
-                                @if (item.FechaDeModificacion.HasValue)
-                                {
-                                    @item.FechaDeModificacion.Value.ToString("dd/MM/yyyy HH:mm")
-                                }
-                                else
-                                {
-                                    <span class="text-muted">-</span>
-                                }
-                            </td>
-                            <td>
-                                @if (item.Estado)
-                                {
-                                    <span class="badge bg-success">Activo</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger">Inactivo</span>
-                                }
-                            </td>
-                            <td>
-                                <div class="d-flex gap-1">
-                                    @Html.ActionLink("Editar", "EditarUsuario", "Usuarios", new { id = item.IdUsuario }, new { @class = "btn btn-sm btn-outline-primary" })
-                                    @Html.ActionLink("Detalles", "DetallesDelUsuario", "Usuarios", new { id = item.IdUsuario }, new { @class = "btn btn-sm btn-outline-info" })
-                                </div>
-                            </td>
+                            <th>Cédula</th>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>Rol</th>
+                            <th>Fecha Registro</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr style="border-color: rgba(245,224,195,0.1);">
+                                <td>@item.Cedula</td>
+                                <td>@item.Nombre</td>
+                                <td>@item.ApellidoPaterno</td>
+                                <td>@item.ApellidoMaterno</td>
+
+                                <td>
+                                    <span style="color: var(--acento);">@item.DescripcionTipoUsuario</span>
+                                </td>
+
+                                <td>@item.FechaRegistro.ToString("dd/MM/yyyy")</td>
+
+                                <td>
+                                    @if (item.IdEstado == 1)
+                                    {
+                                        <span class="badge" style="background-color: var(--exito); color: #121212;">
+                                            Activo
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge" style="background-color: var(--acento); color: #121212;">
+                                            Inactivo
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <div class="d-flex gap-1">
+
+                                        @Html.ActionLink(
+                                            "Editar",
+                                            "EditarUsuario",
+                                            "Usuarios",
+                                            new { cedula = item.Cedula },
+                                            new { @class = "btn btn-sm btn-pubrock" }
+                                        )
+
+                                        @Html.ActionLink(
+                                            "Detalles",
+                                            "DetallesDelUsuario",
+                                            "Usuarios",
+                                            new { cedula = item.Cedula },
+                                            new { @class = "btn btn-sm btn-outline-secondary" }
+                                        )
+
+                                        @if (item.IdEstado == 1)
+                                        {
+                                            using (Html.BeginForm(
+                                                "InactivarUsuario",
+                                                "Usuarios",
+                                                new { cedula = item.Cedula },
+                                                FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="btn btn-sm"
+                                                        style="background-color: transparent; border: 1px solid var(--acento); color: var(--acento);"
+                                                        onclick="return confirm('¿Está seguro que desea inactivar este usuario?')">
+                                                    <i class="bi bi-person-slash"></i> Inactivar
+                                                </button>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="btn btn-sm disabled"
+                                                  style="border: 1px solid rgba(245,224,195,0.2); color: rgba(245,224,195,0.3);">
+                                                <i class="bi bi-person-slash"></i> Inactivo
+                                            </span>
+                                        }
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
         </div>
     </div>
+
 </div>

@@ -30,12 +30,11 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.ObtenerTodosLosUsuarios
         {
             try
             {
-                List<UsuarioDto> usuarios = _obtenerTodosLosUsuariosAD.ObtenerTodos();
-                return usuarios;
+                return _obtenerTodosLosUsuariosAD.ObtenerTodos();
             }
             catch (Exception ex)
             {
-                _bitacora.RegistrarError("USUARIOS", ex);
+                _bitacora.RegistrarError("PUBROCK_USUARIO_TB", ex);
                 throw;
             }
         }

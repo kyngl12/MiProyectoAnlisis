@@ -77,7 +77,7 @@
     <Compile Include="AccesoADatos\Usuarios\InactivarUsuario\IInactivarUsuarioAD.cs" />
     <Compile Include="AccesoADatos\Usuarios\ObtenerTodosLosTipoUsuarios\IObtenerTodosLosTiposDeUsuarioAD.cs" />
     <Compile Include="AccesoADatos\Usuarios\ObtenerTodosLosUsuarios\IObtenerTodosLosUsuariosAD.cs" />
-    <Compile Include="AccesoADatos\Usuarios\ObtenerUsuarioPorId\IObtenerUsuarioPorIdAD.cs" />
+    <Compile Include="AccesoADatos\Usuarios\ObtenerUsuarioPorCedula\IObtenerUsuarioPorCedulaAD.cs" />
     <Compile Include="AccesoADatos\Usuarios\RegistrarUsuario\IRegistrarUsuarioAD.cs" />
     <Compile Include="LogicaDeNegocio\Bitacora\RegistrarBitacora\IRegistrarBitacoraLN.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\EditarCaja\IEditarCajaLN.cs" />
@@ -100,7 +100,7 @@
     <Compile Include="LogicaDeNegocio\Usuarios\InactivarUsuario\IInactivarUsuarioLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\ObtenerTodosLosTipoUsuarios\IObtenerTodosLosTiposDeUsuarioLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\ObtenerTodosLosUsuarios\IObtenerTodosLosUsuariosLN.cs" />
-    <Compile Include="LogicaDeNegocio\Usuarios\ObtenerUsuarioPorId\IObtenerUsuarioPorIdLN.cs" />
+    <Compile Include="LogicaDeNegocio\Usuarios\ObtenerUsuarioPorCedula\IObtenerUsuarioPorCedulaLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\RegistrarUsuario\IRegistrarUsuarioLN.cs" />
     <Compile Include="Modelos\Bitacora\BitacoraEventoDto.cs" />
     <Compile Include="Modelos\Cajas\CajaDto.cs" />

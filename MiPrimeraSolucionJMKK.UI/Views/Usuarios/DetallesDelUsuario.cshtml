@@ -7,66 +7,96 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm border-0 rounded-4">
-                <div class="card-header bg-info text-white rounded-top-4">
-                    <h4 class="mb-0">Detalles del Usuario</h4>
-                </div>
+            <div class="card shadow-sm">
                 <div class="card-body p-4">
+
+                    <h2 class="mb-4"><i class="bi bi-person-badge me-2"></i>Detalles del Usuario</h2>
+
                     <div class="row mb-3">
+
                         <div class="col-md-6">
-                            <h6 class="text-muted">Nombre Completo</h6>
-                            <p class="fw-bold">@Model.NombreCompleto</p>
+                            <p class="text-muted mb-1">Cédula</p>
+                            <p class="fw-bold">@Model.Cedula</p>
                         </div>
+
                         <div class="col-md-6">
-                            <h6 class="text-muted">Identificación</h6>
-                            <p class="fw-bold">@Model.Identificacion</p>
+                            <p class="text-muted mb-1">Nombre</p>
+                            <p class="fw-bold">@Model.Nombre</p>
                         </div>
+
                     </div>
 
                     <div class="row mb-3">
+
                         <div class="col-md-6">
-                            <h6 class="text-muted">Correo Electrónico</h6>
-                            <p class="fw-bold">@Model.CorreoElectronico</p>
+                            <p class="text-muted mb-1">Apellido Paterno</p>
+                            <p class="fw-bold">@Model.ApellidoPaterno</p>
                         </div>
+
                         <div class="col-md-6">
-                            <h6 class="text-muted">Estado</h6>
-                            <p>
-                                @if (Model.Estado)
-                                {
-                                    <span class="badge bg-success">Activo</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger">Inactivo</span>
-                                }
-                            </p>
+                            <p class="text-muted mb-1">Apellido Materno</p>
+                            <p class="fw-bold">@Model.ApellidoMaterno</p>
                         </div>
+
                     </div>
 
                     <div class="row mb-3">
+
                         <div class="col-md-6">
-                            <h6 class="text-muted">Fecha de Registro</h6>
-                            <p class="fw-bold">@Model.FechaDeRegistro.ToString("dd/MM/yyyy HH:mm")</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Fecha de Modificación</h6>
-                            <p class="fw-bold">
-                                @if (Model.FechaDeModificacion.HasValue)
-                                {
-                                    @Model.FechaDeModificacion.Value.ToString("dd/MM/yyyy HH:mm")
-                                }
-                                else
-                                {
-                                    <span class="text-muted">-</span>
-                                }
+                            <p class="text-muted mb-1">Rol</p>
+
+                            <p class="fw-bold" style="color: var(--acento);">
+                                @Model.DescripcionTipoUsuario
                             </p>
                         </div>
+
+                        <div class="col-md-6">
+                            <p class="text-muted mb-1">Estado</p>
+
+                            @if (Model.IdEstado == 1)
+                            {
+                                <span class="badge" style="background-color: var(--exito); color: #121212;">
+                                    Activo
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge" style="background-color: var(--acento); color: #121212;">
+                                    Inactivo
+                                </span>
+                            }
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-4">
+
+                        <div class="col-md-6">
+                            <p class="text-muted mb-1">Fecha de Registro</p>
+                            <p class="fw-bold">@Model.FechaRegistro.ToString("dd/MM/yyyy")</p>
+                        </div>
+
                     </div>
 
                     <div class="d-flex gap-2 justify-content-end">
-                        @Html.ActionLink("Volver", "ObtenerTodosLosUsuarios", null, new { @class = "btn btn-secondary" })
-                        @Html.ActionLink("Editar", "EditarUsuario", "Usuarios", new { id = Model.IdUsuario }, new { @class = "btn btn-warning" })
+
+                        @Html.ActionLink(
+                            "Volver",
+                            "ObtenerTodosLosUsuarios",
+                            null,
+                            new { @class = "btn btn-secondary" }
+                        )
+
+                        @Html.ActionLink(
+                            "Editar",
+                            "EditarUsuario",
+                            "Usuarios",
+                            new { cedula = Model.Cedula },
+                            new { @class = "btn btn-pubrock" }
+                        )
+
                     </div>
+
                 </div>
             </div>
         </div>

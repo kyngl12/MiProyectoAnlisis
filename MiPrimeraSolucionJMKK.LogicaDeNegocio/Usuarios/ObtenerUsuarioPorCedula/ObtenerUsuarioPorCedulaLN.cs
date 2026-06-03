@@ -1,24 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.ObtenerUsuarioPorId;
+using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.ObtenerUsuarioPorCedula;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
 using MiPrimeraSolucionJMKK.AccesoADatos.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.AccesoADatos.Usuarios.ObtenerUsuarioPorId;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.ObtenerUsuarioPorId
 {
-    public class ObtenerUsuarioPorIdLN : IObtenerUsuarioPorIdLN
+    public class ObtenerUsuarioPorCedulaLN : IObtenerUsuarioPorCedulaLN
     {
-        private ObtenerUsuarioPorIdAD _obtenerUsuarioPorIdAD;
+        private ObtenerUsuarioPorCedulaAD _obtenerUsuarioPorCedulaAD;
         private readonly IRegistrarBitacoraLN _bitacora;
 
-        public ObtenerUsuarioPorIdLN()
+        public ObtenerUsuarioPorCedulaLN()
         {
-            _obtenerUsuarioPorIdAD = new ObtenerUsuarioPorIdAD();
+            _obtenerUsuarioPorCedulaAD = new ObtenerUsuarioPorCedulaAD();
 
             string connectionString = ConfigurationManager
                 .ConnectionStrings["Contexto"].ConnectionString;
@@ -26,16 +26,15 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.ObtenerUsuarioPorId
             _bitacora = new RegistrarBitacoraLN(new RegistrarBitacoraAD(connectionString));
         }
 
-        public UsuarioDto Obtener(int id)
+        public UsuarioDto Obtener(string cedula)
         {
             try
             {
-                UsuarioDto usuario = _obtenerUsuarioPorIdAD.ObtenerPorId(id);
-                return usuario;
+                return _obtenerUsuarioPorCedulaAD.ObtenerPorCedula(cedula);
             }
             catch (Exception ex)
             {
-                _bitacora.RegistrarError("USUARIOS", ex);
+                _bitacora.RegistrarError("PUBROCK_USUARIO_TB", ex);
                 throw;
             }
         }
