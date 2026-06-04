@@ -17,22 +17,25 @@
                     Plataforma de gestión operativa y administrativa para el Bar-Restaurante PubRock
                 </p>
                 <div class="d-flex gap-3 justify-content-center">
-                    @if (Request.IsAuthenticated)
+                    @if (!Request.IsAuthenticated)
                     {
-                        if (User.IsInRole("Administrador"))
-                        {
-                            @Html.ActionLink("Gestionar Comercios", "ObtenerTodosLosComercios", "Comercios", null, new { @class = "btn btn-primary btn-lg rounded-pill shadow" })
-                            @Html.ActionLink("Ver Reportes", "ObtenerTodosLosReportesMensuales", "ReportesMensuales", null, new { @class = "btn btn-outline-primary btn-lg rounded-pill" })
-                        }
-                        else if (User.IsInRole("Cajero"))
-                        {
-                            @Html.ActionLink("Mis Cajas", "ObtenerTodasLasCajas", "Cajas", null, new { @class = "btn btn-primary btn-lg rounded-pill shadow" })
-                        }
+                        @Html.ActionLink(
+                            "Iniciar Sesión",
+                            "Login",
+                            "Account",
+                            null,
+                            new { @class = "btn btn-primary btn-lg rounded-pill shadow" }
+                        )
                     }
-                    else
+                    else if (User.IsInRole("Administrador"))
                     {
-                        @Html.ActionLink("Iniciar Sesión", "Login", "Account", null, new { @class = "btn btn-primary btn-lg rounded-pill shadow" })
-                        @Html.ActionLink("Registrarse", "Register", "Account", null, new { @class = "btn btn-outline-primary btn-lg rounded-pill" })
+                        @Html.ActionLink(
+                            "Registrar Usuario",
+                            "AgregarUsuario",
+                            "Usuarios",
+                            null,
+                            new { @class = "btn btn-primary btn-lg rounded-pill shadow" }
+                        )
                     }
                 </div>
             </div>

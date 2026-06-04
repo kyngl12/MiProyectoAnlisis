@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -10,6 +11,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Configuration;
+using Microsoft.Owin.Security;
 
 [assembly: OwinStartup(typeof(GestionPubRock.UI.Startup))]
 
@@ -20,6 +22,8 @@ namespace GestionPubRock.UI
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+
+            CrearRolesYAdministrador();
 
             var issuer = "miAplicacion";
             var audience = "miAplicacion";
@@ -39,6 +43,43 @@ namespace GestionPubRock.UI
                     ValidateLifetime = true
                 }
             });
+        }
+
+        private void CrearRolesYAdministrador()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var roleManager = new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(context));
+
+                var userManager = new UserManager<ApplicationUser>(
+                    new UserStore<ApplicationUser>(context));
+
+                if (!roleManager.RoleExists("Administrador"))
+                {
+                    roleManager.Create(new IdentityRole("Administrador"));
+                }
+
+                if (!roleManager.RoleExists("Empleado"))
+                {
+                    roleManager.Create(new IdentityRole("Empleado"));
+                }
+
+                var admin = userManager.FindByEmail("admin@pubrock.com");
+
+                if (admin == null)
+                {
+                    admin = new ApplicationUser
+                    {
+                        UserName = "admin@pubrock.com",
+                        Email = "admin@pubrock.com"
+                    };
+
+                    userManager.Create(admin, "Admin123");
+
+                    userManager.AddToRole(admin.Id, "Administrador");
+                }
+            }
         }
 
         public void ConfigureAuth(IAppBuilder app)
