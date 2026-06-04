@@ -7,7 +7,7 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos
         [Display(Name = "Codigo")]
         public string Codigo { get; set; }
 
-        [Required(ErrorMessage = "El nombre es obligatorio")]
+        [(ErrorMessage = "El nombre es obligatorio")]
         [Display(Name = "Nombre")]
         public string Nombre { get; set; }
 
@@ -24,3 +24,18 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos
         public decimal PrecioUnitario { get; set; }
     }
 }
+
+/*
+
+{
+
+        public string Codigo { get; set; }
+
+    [Required(ErrorMessage = "El nombre es obligatorio.")]
+    public string Nombre { get; set; }
+    public string Categoria { get; set; }
+    public decimal Cantidad { get; set; }
+    public decimal PrecioUnitario { get; set; }
+    }
+}
+*/

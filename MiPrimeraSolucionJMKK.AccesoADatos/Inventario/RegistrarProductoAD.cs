@@ -18,7 +18,7 @@ namespace GestionPubRock.AccesoADatos.Inventario
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(producto.Codigo) || string.IsNullOrWhiteSpace(producto.Nombre))
+                if (string.IsNullOrWhiteSpace(producto.Nombre))
                     return -2; // campos obligatorios
 
                 if (producto.Cantidad < 0 || producto.PrecioUnitario < 0)
