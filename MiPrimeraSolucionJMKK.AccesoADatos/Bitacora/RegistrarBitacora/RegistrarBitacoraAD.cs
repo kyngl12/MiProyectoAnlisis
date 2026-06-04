@@ -34,8 +34,15 @@ namespace GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora
                 cmd.Parameters.AddWithValue("@Antes", (object)evento.DatosAnteriores ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@Despues", (object)evento.DatosPosteriores ?? DBNull.Value);
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
+                // Bitacora deshabilitada: no ejecutar insert en BD
+                //try
+                //{
+                //    conn.Open();
+                //    cmd.ExecuteNonQuery();
+                //}
+                //catch (SqlException)
+                //{
+                //}
             }
         }
     }

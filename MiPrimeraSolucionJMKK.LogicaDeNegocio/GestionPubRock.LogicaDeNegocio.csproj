@@ -70,9 +70,14 @@
     <Compile Include="ConfiguracionComercio\ObtenerConfiguracionPorComercio\ObtenerConfiguracionPorComercioLN.cs" />
     <Compile Include="ConfiguracionComercio\ObtenerConfiguracionPorId\ObtenerConfiguracionPorIdLN.cs" />
     <Compile Include="ConfiguracionComercio\RegistrarConfiguracion\RegistrarConfiguracionLN.cs" />
+    <Compile Include="Inventario\ObtenerProductosLN.cs" />
+    <Compile Include="Inventario\RegistrarProducto\RegistrarProductoLN.cs" />
+    <Compile Include="Ordenes\ObtenerOrdenesLN.cs" />
+    <Compile Include="Ordenes\RegistrarOrden\RegistrarOrdenLN.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportesMensuales\ObtenerTodosLosReportesMensuales\ObtenerTodosLosReportesMensualesLN.cs" />
     <Compile Include="ReportesMensuales\GenerarReporteMensual\GenerarReportesMensualesLN.cs" />
+    <Compile Include="Reservaciones\ObtenerReservacionesLN.cs" />
     <Compile Include="SINPESApi\SINPESApiLN.cs" />
     <Compile Include="SINPES\RegistrarSINPES\RegistrarSINPESLN.cs" />
     <Compile Include="Usuarios\EditarUsuario\EditarUsuarioLN.cs" />

@@ -25,6 +25,8 @@ namespace GestionPubRock.AccesoADatos
         public DbSet<ReportesMensualesEntidad> ReportesMensuales { get; set; }
         public DbSet<ConfiguracionComercioEntidad> ConfiguracionComercio { get; set; }
         public DbSet<BitacoraEntidad> Bitacora { get; set; }
+        public DbSet<ReservacionEntidad> Reservaciones { get; set; }
+        public DbSet<ProductosEntidad> Productos { get; set; }
 
     }
 }

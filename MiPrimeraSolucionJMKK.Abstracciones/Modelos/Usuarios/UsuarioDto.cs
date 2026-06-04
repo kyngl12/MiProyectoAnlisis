@@ -15,14 +15,14 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios
         [Display(Name = "Nombre")]
         public string Nombre { get; set; }
 
-        [Required(ErrorMessage = "El apellido paterno es obligatorio.")]
+        [Required(ErrorMessage = "El primer apellido es obligatorio.")]
         [StringLength(100)]
-        [Display(Name = "Apellido Paterno")]
+        [Display(Name = "Primer Apellido")]
         public string ApellidoPaterno { get; set; }
 
-        [Required(ErrorMessage = "El apellido materno es obligatorio.")]
+        [Required(ErrorMessage = "El segundo apellido es obligatorio.")]
         [StringLength(100)]
-        [Display(Name = "Apellido Materno")]
+        [Display(Name = "Segundo Apellido")]
         public string ApellidoMaterno { get; set; }
 
         [Required(ErrorMessage = "El correo es obligatorio.")]

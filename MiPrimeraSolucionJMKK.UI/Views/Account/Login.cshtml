@@ -20,6 +20,16 @@
                 PubRock
             </h2>
 
+            @if (TempData["MensajeError"] != null)
+            {
+                <div class="alert alert-danger mt-3">@TempData["MensajeError"]</div>
+            }
+
+            @if (TempData["MensajeExito"] != null)
+            {
+                <div class="alert alert-success mt-3">@TempData["MensajeExito"]</div>
+            }
+
             <p class="text-muted">
                 Sistema de Gestión Administrativa y Operativa
             </p>

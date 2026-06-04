@@ -29,24 +29,39 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.EditarUsuario
         {
             try
             {
+                var camposFaltantes = new System.Collections.Generic.List<string>();
 
-                if (string.IsNullOrWhiteSpace(usuario.Cedula)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.Nombre)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.ApellidoPaterno)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.ApellidoMaterno)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.CorreoElectronico)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.Telefono)) return false;
-                if (usuario.IdTipoUsuario <= 0) return false;
+                if (string.IsNullOrWhiteSpace(usuario.Cedula)) camposFaltantes.Add("Cédula");
+                if (string.IsNullOrWhiteSpace(usuario.Nombre)) camposFaltantes.Add("Nombre");
+                if (string.IsNullOrWhiteSpace(usuario.ApellidoPaterno)) camposFaltantes.Add("Apellido Paterno");
+                if (string.IsNullOrWhiteSpace(usuario.ApellidoMaterno)) camposFaltantes.Add("Apellido Materno");
+                if (string.IsNullOrWhiteSpace(usuario.CorreoElectronico)) camposFaltantes.Add("Correo");
+                if (string.IsNullOrWhiteSpace(usuario.Telefono)) camposFaltantes.Add("Teléfono");
+                if (usuario.IdTipoUsuario <= 0) camposFaltantes.Add("Rol");
 
-                if (!EsFormatoEmailValido(usuario.CorreoElectronico)) return false;
-                if (!EsFormatoTelefonoValido(usuario.Telefono)) return false;
+                if (camposFaltantes.Count > 0)
+                    throw new System.ArgumentException("Campos obligatorios en blanco: " + string.Join(", ", camposFaltantes));
+
+                if (!EsFormatoEmailValido(usuario.CorreoElectronico))
+                    throw new System.ArgumentException("El formato del correo no es válido.");
+
+                if (!EsFormatoTelefonoValido(usuario.Telefono))
+                    throw new System.ArgumentException("El formato del teléfono no es válido.");
 
                 int cantidad = _editarUsuarioAD.Editar(usuario);
 
                 if (cantidad > 0)
-                    _bitacora.Registrar("PUBROCK_USUARIO_TB", "UPDATE", null, usuario);
+                {
+                    try { _bitacora.Registrar("PUBROCK_USUARIO_TB", "UPDATE", null, usuario); } catch { }
+                    return true;
+                }
 
-                return cantidad > 0;
+                // AD devuelve códigos especiales para indicar la razón
+                if (cantidad == -1) throw new System.ArgumentException("Error al editar. El usuario no se encuentra registrado en el sistema");
+                if (cantidad == -2) throw new System.ArgumentException("El correo o cédula ya están registrados");
+                if (cantidad == -3) throw new System.ArgumentException("El teléfono ya se encuentra registrado");
+
+                throw new System.ArgumentException("Error al editar. Verifique los datos ingresados.");
             }
             catch (Exception ex)
             {

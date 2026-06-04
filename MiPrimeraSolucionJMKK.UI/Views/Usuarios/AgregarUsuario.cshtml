@@ -38,13 +38,13 @@
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                @Html.LabelFor(m => m.ApellidoPaterno, new { @class = "form-label" })
+                                @Html.LabelFor(m => m.ApellidoPaterno, "Primer Apellido", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.ApellidoPaterno, new { @class = "form-control", placeholder = "Ej: Pérez" })
                                 @Html.ValidationMessageFor(m => m.ApellidoPaterno, "", new { @class = "text-danger small" })
                             </div>
 
                             <div class="col-md-6">
-                                @Html.LabelFor(m => m.ApellidoMaterno, new { @class = "form-label" })
+                                @Html.LabelFor(m => m.ApellidoMaterno, "Segundo Apellido", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.ApellidoMaterno, new { @class = "form-control", placeholder = "Ej: García" })
                                 @Html.ValidationMessageFor(m => m.ApellidoMaterno, "", new { @class = "text-danger small" })
                             </div>

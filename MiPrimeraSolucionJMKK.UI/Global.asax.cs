@@ -1,7 +1,4 @@
-using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.Abstacciones.AccesoADatos.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
-using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
+// Bitacora removida: no registrar en BD central desde Global.asax
 using System;
 using System.Configuration;
 using System.Web.Mvc;
@@ -25,22 +22,16 @@ namespace MiPrimeraSolucionJMKK.UI
 
         protected void Application_Error()
         {
+            // Bitacora deshabilitada: registrar excepcion en archivo errors.log
             try
             {
                 Exception exception = Server.GetLastError();
-
                 if (exception != null)
                 {
-                    string connectionString = ConfigurationManager.ConnectionStrings["Contexto"].ConnectionString;
-                    IRegistrarBitacoraAD bitacoraAD = new RegistrarBitacoraAD(connectionString);
-                    IRegistrarBitacoraLN bitacoraLN = new RegistrarBitacoraLN(bitacoraAD);
-
-                    bitacoraLN.RegistrarError("Sistema", exception);
+                    try { System.IO.File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "App_Data\\errors.log", DateTime.Now.ToString("s") + " - " + exception.ToString() + Environment.NewLine); } catch { }
                 }
             }
-            catch
-            {
-            }
+            catch { }
         }
     }
 }

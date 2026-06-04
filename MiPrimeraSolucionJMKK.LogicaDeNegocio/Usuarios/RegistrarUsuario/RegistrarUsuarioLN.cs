@@ -1,61 +1,76 @@
 using System;
 using System.Configuration;
-using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
+using System.Diagnostics;
 using GestionPubRock.AccesoADatos.Usuarios.RegistrarUsuario;
-using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Usuarios.RegistrarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Usuarios.RegistrarUsuario;
 using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios;
-using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
 
 namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.RegistrarUsuario
 {
     public class RegistrarUsuarioLN : IRegistrarUsuarioLN
     {
         private IRegistrarUsuarioAD _registrarUsuarioAD;
-        private readonly IRegistrarBitacoraLN _bitacora;
 
         public RegistrarUsuarioLN()
         {
             _registrarUsuarioAD = new RegistrarUsuarioAD();
-
-            string connectionString = ConfigurationManager
-                .ConnectionStrings["Contexto"].ConnectionString;
-
-            _bitacora = new RegistrarBitacoraLN(new RegistrarBitacoraAD(connectionString));
         }
 
         public bool Registrar(UsuarioDto usuario)
         {
             try
             {
+                var camposFaltantes = new System.Collections.Generic.List<string>();
 
-                if (string.IsNullOrWhiteSpace(usuario.Cedula)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.Nombre)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.ApellidoPaterno)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.ApellidoMaterno)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.CorreoElectronico)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.Contrasenia)) return false;
-                if (string.IsNullOrWhiteSpace(usuario.Telefono)) return false;
-                if (usuario.IdTipoUsuario <= 0) return false;
+                if (string.IsNullOrWhiteSpace(usuario.Cedula)) camposFaltantes.Add("Cédula");
+                if (string.IsNullOrWhiteSpace(usuario.Nombre)) camposFaltantes.Add("Nombre");
+                if (string.IsNullOrWhiteSpace(usuario.ApellidoPaterno)) camposFaltantes.Add("Apellido Paterno");
+                if (string.IsNullOrWhiteSpace(usuario.ApellidoMaterno)) camposFaltantes.Add("Apellido Materno");
+                if (string.IsNullOrWhiteSpace(usuario.CorreoElectronico)) camposFaltantes.Add("Correo");
+                if (string.IsNullOrWhiteSpace(usuario.Contrasenia)) camposFaltantes.Add("Contraseña");
+                if (string.IsNullOrWhiteSpace(usuario.Telefono)) camposFaltantes.Add("Teléfono");
+                if (usuario.IdTipoUsuario <= 0) camposFaltantes.Add("Rol");
 
-                if (!EsFormatoEmailValido(usuario.CorreoElectronico)) return false;
-                if (!EsFormatoTelefonoValido(usuario.Telefono)) return false;
-                if (usuario.Contrasenia.Length < 6) return false;
+                if (camposFaltantes.Count > 0)
+                    throw new System.ArgumentException("Los siguientes campos obligatorios están vacíos: " + string.Join(", ", camposFaltantes));
+
+                if (!EsFormatoEmailValido(usuario.CorreoElectronico))
+                    throw new System.ArgumentException("El formato del correo no es válido.");
+
+                if (!EsFormatoTelefonoValido(usuario.Telefono))
+                    throw new System.ArgumentException("El formato del teléfono no es válido.");
+
+                if (usuario.Contrasenia.Length < 6)
+                    throw new System.ArgumentException("La contraseña debe tener al menos 6 caracteres.");
 
                 usuario.FechaRegistro = DateTime.Now;
-                usuario.IdEstado = 1; 
+                usuario.IdEstado = 1;
 
                 int cantidad = _registrarUsuarioAD.Registrar(usuario);
-
                 if (cantidad > 0)
-                    _bitacora.Registrar("PUBROCK_USUARIO_TB", "INSERT", null, usuario);
+                {
+                    return true;
+                }
 
-                return cantidad > 0;
+                if (cantidad == -1)
+                    throw new System.ArgumentException("El usuario ya se encuentra registrado (cedula)");
+
+                if (cantidad == -2)
+                    throw new System.ArgumentException("El correo ya se encuentra registrado");
+
+                if (cantidad == -3)
+                    throw new System.ArgumentException("El teléfono ya se encuentra registrado");
+
+                if (cantidad == -99)
+                    throw new System.ArgumentException("Error en la base de datos al intentar registrar el usuario");
+
+                return false;
             }
             catch (Exception ex)
             {
-                _bitacora.RegistrarError("PUBROCK_USUARIO_TB", ex);
+                // Registrar en archivo de log y propagar
+                try { System.IO.File.AppendAllText(System.AppDomain.CurrentDomain.BaseDirectory + "App_Data\\errors.log", DateTime.Now.ToString("s") + " - " + ex.ToString() + Environment.NewLine); } catch { }
                 throw;
             }
         }

@@ -19,15 +19,26 @@ namespace GestionPubRock.AccesoADatos.Usuarios.RegistrarUsuario
         {
             try
             {
+                // Validar duplicados por cedula, correo o telefono de forma individual
+                var existeCedula = _elContexto.Database.SqlQuery<int?>("SELECT 1 FROM PUBROCK_USUARIO_TB WHERE CEDULA = @p0", usuario.Cedula).FirstOrDefault();
+                if (existeCedula != null) return -1; // cedula duplicada
 
-                bool yaExiste = _elContexto.Usuarios.Any(u => u.Cedula == usuario.Cedula);
-                if (yaExiste) return 0;
+                var existeCorreo = _elContexto.Database.SqlQuery<int?>("SELECT 1 FROM PUBROCK_USUARIO_TB WHERE CORREO = @p0", usuario.CorreoElectronico).FirstOrDefault();
+                if (existeCorreo != null) return -2; // correo duplicado
+
+                var existeTelefono = _elContexto.Database.SqlQuery<int?>("SELECT 1 FROM PUBROCK_USUARIO_TB WHERE TELEFONO = @p0", usuario.Telefono).FirstOrDefault();
+                if (existeTelefono != null) return -3; // telefono duplicado
 
                 UsuariosEntidad usuarioAGuardar = ConvertirAEntidad(usuario);
                 _elContexto.Usuarios.Add(usuarioAGuardar);
                 int cantidadDeRegistrosAlmacenados = _elContexto.SaveChanges();
 
                 return cantidadDeRegistrosAlmacenados;
+            }
+            catch (System.Data.SqlClient.SqlException)
+            {
+                // Error de base de datos inesperado
+                return -99;
             }
             catch
             {

@@ -72,20 +72,24 @@ namespace MiPrimeraSolucion.UI.Controllers
 
             using (var db = new Contexto())
             {
+                // Buscar usuario sin filtrar por estado para distinguir inactivo de credenciales
                 var usuario = db.Usuarios
-    .Include("TipoUsuario")
-    .FirstOrDefault(x =>
-        x.Correo == model.Email &&
-        x.Contrasenia == model.Password &&
-        x.IdEstado == 1);
+                    .Include("TipoUsuario")
+                    .FirstOrDefault(x => x.Correo == model.Email && x.Contrasenia == model.Password);
 
                 if (usuario == null)
                 {
-                    ModelState.AddModelError("", "Correo o contraseña incorrectos.");
+                    TempData["MensajeError"] = "Error en las credenciales ingresadas";
                     return View(model);
                 }
 
-                string rol = usuario.TipoUsuario.Descripcion;
+                if (usuario.IdEstado != 1)
+                {
+                    TempData["MensajeError"] = "El usuario se encuentra inactivo";
+                    return View(model);
+                }
+
+                string rol = usuario.TipoUsuario != null ? usuario.TipoUsuario.Descripcion : "Sin rol";
 
                 Session["Cedula"] = usuario.Cedula;
                 Session["Nombre"] = usuario.Nombre;
@@ -106,6 +110,7 @@ namespace MiPrimeraSolucion.UI.Controllers
                     identity
                 );
 
+                TempData["MensajeExito"] = "El inicio de sesión fue exitoso";
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -274,22 +279,23 @@ namespace MiPrimeraSolucion.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                // Flujo simulado: verificar si el correo está registrado en la tabla USUARIOS
+                using (var db = new Contexto())
                 {
-                    // No revelar que el usuario no existe o que no está confirmado
-                    return View("ForgotPasswordConfirmation");
-                }
+                    var usuario = db.Usuarios.FirstOrDefault(u => u.Correo == model.Email);
+                    if (usuario == null)
+                    {
+                        TempData["MensajeError"] = "El correo ingresado no se encuentra registrado";
+                        return View(model);
+                    }
 
-                // Para obtener más información sobre cómo habilitar la confirmación de cuentas y el restablecimiento de contraseña, visite https://go.microsoft.com/fwlink/?LinkID=320771
-                // Enviar un correo electrónico con este vínculo
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Restablecer contraseña", "Para restablecer la contraseña, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                    // Simulación: generar token y mostrar mensaje (en entorno real se enviaría correo)
+                    // string token = await UserManager.GeneratePasswordResetTokenAsync(usuario.Cedula);
+                    TempData["MensajeExito"] = "Se enviaron las indicaciones al correo para recuperar la contraseña";
+                    return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                }
             }
 
-            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             return View(model);
         }
 
@@ -464,7 +470,9 @@ namespace MiPrimeraSolucion.UI.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            Session.Clear();
+            TempData["MensajeExito"] = "El cierre de sesión fue exitoso";
+            return RedirectToAction("Login", "Account");
         }
 
         //

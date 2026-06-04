@@ -1,0 +1,40 @@
+@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Ordenes.OrdenListDto>
+
+@{
+    ViewBag.Title = "Ordenes";
+}
+
+<h2>Ordenes de Compra</h2>
+
+@if (TempData["MensajeExitoOrden"] != null)
+{
+    <div class="alert alert-success">@TempData["MensajeExitoOrden"]</div>
+}
+
+<div class="mb-3">
+    @Html.ActionLink("Crear Orden", "Crear", "Ordenes", null, new { @class = "btn btn-pubrock" })
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Observaciones</th>
+            <th>Items</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var o in Model)
+        {
+            <tr>
+                <td>@o.IdOrden</td>
+                <td>@o.FechaOrden.ToString("dd/MM/yyyy")</td>
+                <td>@o.Observaciones</td>
+                <td>@o.CantidadItems</td>
+                <td>@o.EstadoOrdenDescripcion</td>
+            </tr>
+        }
+    </tbody>
+</table>

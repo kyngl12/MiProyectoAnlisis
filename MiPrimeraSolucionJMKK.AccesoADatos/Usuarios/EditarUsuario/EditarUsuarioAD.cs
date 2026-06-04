@@ -21,11 +21,16 @@ namespace GestionPubRock.AccesoADatos.Usuarios.EditarUsuario
                     .FirstOrDefault(u => u.Cedula == usuario.Cedula);
 
                 if (usuarioExistente == null)
-                    return 0;
+                    return -1;
 
-                bool cedulaDuplicada = _elContexto.Usuarios
-                    .Any(u => u.Cedula == usuario.Cedula && u.Cedula != usuarioExistente.Cedula);
-                if (cedulaDuplicada) return 0;
+                // Verificar que el correo o teléfono no estén en uso por otro usuario
+                bool correoDuplicado = _elContexto.Usuarios
+                    .Any(u => u.Correo == usuario.CorreoElectronico && u.Cedula != usuarioExistente.Cedula);
+                if (correoDuplicado) return -2;
+
+                bool telefonoDuplicado = _elContexto.Usuarios
+                    .Any(u => u.Telefono == usuario.Telefono && u.Cedula != usuarioExistente.Cedula);
+                if (telefonoDuplicado) return -3;
 
  
                 usuarioExistente.Nombre = usuario.Nombre;

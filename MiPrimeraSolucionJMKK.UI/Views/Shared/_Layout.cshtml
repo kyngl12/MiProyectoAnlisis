@@ -203,23 +203,22 @@
                         </li>
 
                         <li class="nav-section-title">Gestión</li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Comercios", "ObtenerTodosLosComercios", "Comercios", null, new { @class = "nav-link" })
-                        </li>
+                        <!-- Solo mostrar módulos del sprint -->
                         <li class="nav-item">
                             @Html.ActionLink("Usuarios", "ObtenerTodosLosUsuarios", "Usuarios", null, new { @class = "nav-link" })
                         </li>
-
-
-                        <li class="nav-section-title">Operaciones</li>
                         <li class="nav-item">
-                            @Html.ActionLink("Registrar SINPE", "RegistrarSINPES", "SINPES", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Inventario", "Index", "Inventario", null, new { @class = "nav-link" })
                         </li>
                         <li class="nav-item">
-                            @Html.ActionLink("Reportes Mensuales", "ObtenerTodosLosReportesMensuales", "ReportesMensuales", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Ordenes", "Index", "OrdenesListado", null, new { @class = "nav-link" })
                         </li>
                         <li class="nav-item">
-                            @Html.ActionLink("Bitácora", "Index", "Bitacora", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Marketing", "Index", "Marketing", null, new { @class = "nav-link" })
+                        </li>
+                        <!-- Eliminado enlace duplicado a Crear; acceso desde módulo Ordenes -->
+                        <li class="nav-item">
+                            @Html.ActionLink("Reservaciones", "Index", "Reservaciones", null, new { @class = "nav-link" })
                         </li>
                     }
 
@@ -229,8 +228,9 @@
                         <li class="nav-item">
                             @Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })
                         </li>
+                        <!-- Empleado puede acceder a Reservaciones -->
                         <li class="nav-item">
-                            @Html.ActionLink("Mis Cajas", "ObtenerTodasLasCajas", "Cajas", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Reservaciones", "Index", "Reservaciones", null, new { @class = "nav-link" })
                         </li>
                     }
                 }

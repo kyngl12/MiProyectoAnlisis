@@ -1,0 +1,50 @@
+@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos.ProductoDto>
+
+@{
+    ViewBag.Title = "Inventario";
+}
+
+<h2>Inventario de Productos</h2>
+
+@if (TempData["MensajeInfo"] != null)
+{
+    <div class="alert alert-info">@TempData["MensajeInfo"]</div>
+}
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
+{
+    <p>
+        <a class="btn btn-primary" href="@Url.Action("AgregarProducto","Inventario")">Agregar Producto</a>
+    </p>
+}
+
+<form method="post" action="@Url.Action("Buscar", "Inventario")" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="termino" class="form-control" placeholder="Buscar por nombre o código" />
+        <button class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Codigo</td>
+                <td>@p.Nombre</td>
+                <td>@p.Categoria</td>
+                <td>@p.Cantidad</td>
+                <td>@p.PrecioUnitario</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,41 @@
+@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reservacion.ReservacionDto>
+
+@{
+    ViewBag.Title = "Reservaciones";
+}
+
+<h2>Reservaciones</h2>
+
+@if (TempData["MensajeInfo"] != null)
+{
+    <div class="alert alert-info">@TempData["MensajeInfo"]</div>
+}
+
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger">@TempData["MensajeError"]</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Cliente</th>
+            <th>Observaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Id</td>
+                <td>@r.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(r.Estado ? "Activa" : "Inactiva")</td>
+                <td>@r.Cliente</td>
+                <td>@r.Observaciones</td>
+            </tr>
+        }
+    </tbody>
+</table>

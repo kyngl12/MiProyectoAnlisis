@@ -28,7 +28,8 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora
                 DatosPosteriores = datosDespues != null ? JsonConvert.SerializeObject(datosDespues) : null
             };
 
-            _bitacoraAD.RegistrarEvento(evento);
+            // Bitacora deshabilitada: no escribir en BD desde aqui
+            // _bitacoraAD.RegistrarEvento(evento);
         }
 
         public void RegistrarError(string tabla, Exception ex)
@@ -44,7 +45,8 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora
                 DatosPosteriores = null
             };
 
-            _bitacoraAD.RegistrarEvento(evento);
+            // Bitacora de errores deshabilitada en esta versión; escribir sólo en archivo si es necesario
+            try { System.IO.File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "App_Data\\errors.log", DateTime.Now.ToString("s") + " - " + evento.DescripcionDeEvento + Environment.NewLine); } catch { }
         }
     }
 }

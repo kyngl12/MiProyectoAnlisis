@@ -33,7 +33,16 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Usuarios.InactivarUsuario
                 int resultado = _inactivarUsuarioAD.Inactivar(cedula);
 
                 if (resultado > 0)
-                    _bitacora.Registrar("PUBROCK_USUARIO_TB", "UPDATE-INACTIVAR", null, cedula);
+                {
+                    try
+                    {
+                        _bitacora.Registrar("PUBROCK_USUARIO_TB", "UPDATE-INACTIVAR", null, cedula);
+                    }
+                    catch
+                    {
+                        // No propagar errores de bitacora para no afectar la operacion principal
+                    }
+                }
 
                 return resultado;
             }

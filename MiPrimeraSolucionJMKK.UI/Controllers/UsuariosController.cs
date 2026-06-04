@@ -75,18 +75,25 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
 
                 if (seAgrego)
                 {
-   
                     TempData["MensajeExito"] = "El usuario se registró de manera exitosa.";
                     return RedirectToAction("ObtenerTodosLosUsuarios");
                 }
 
-                TempData["MensajeError"] = "El usuario ya se encuentra registrado.";
+                // No debería alcanzarse porque la LN lanza excepciones para errores controlados
+                TempData["MensajeError"] = "El usuario ya se encuentra registrado";
                 CargarTiposDeUsuario();
                 return View(elUsuarioAGuardar);
             }
-            catch
+            catch (ArgumentException aex)
             {
-                TempData["MensajeError"] = "Ocurrió un error inesperado al registrar el usuario.";
+                TempData["MensajeError"] = aex.Message;
+                CargarTiposDeUsuario();
+                return View(elUsuarioAGuardar);
+            }
+            catch (System.Exception ex)
+            {
+                MiPrimeraSolucionJMKK.UI.Helpers.LogHelper.Log(ex);
+                TempData["MensajeError"] = "Error en el sistema. Revise logs.";
                 CargarTiposDeUsuario();
                 return View(elUsuarioAGuardar);
             }
@@ -105,6 +112,10 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditarUsuario(string cedula, UsuarioDto elUsuarioParaActualizar)
         {
+            // En edición la contraseña no es obligatoria; quitar validación si existe
+            if (ModelState.ContainsKey("Contrasenia"))
+                ModelState.Remove("Contrasenia");
+
             if (!ModelState.IsValid)
             {
                 CargarTiposDeUsuario();
@@ -117,17 +128,24 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
 
                 if (seActualizo)
                 {
-                    TempData["MensajeExito"] = "El usuario se actualizó de manera exitosa.";
+                    TempData["MensajeExito"] = "El usuario fue editado de manera exitosa";
                     return RedirectToAction("ObtenerTodosLosUsuarios");
                 }
 
-                TempData["MensajeError"] = "Error al actualizar. Verifique los datos ingresados.";
+                TempData["MensajeError"] = "Error al editar debido a campos vacíos";
                 CargarTiposDeUsuario();
                 return View(elUsuarioParaActualizar);
             }
-            catch
+            catch (ArgumentException aex)
             {
-                TempData["MensajeError"] = "Ocurrió un error inesperado al actualizar el usuario.";
+                TempData["MensajeError"] = aex.Message;
+                CargarTiposDeUsuario();
+                return View(elUsuarioParaActualizar);
+            }
+            catch (System.Exception ex)
+            {
+                MiPrimeraSolucionJMKK.UI.Helpers.LogHelper.Log(ex);
+                TempData["MensajeError"] = "Error en el sistema. Revise logs.";
                 CargarTiposDeUsuario();
                 return View(elUsuarioParaActualizar);
             }
@@ -156,9 +174,10 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
                 TempData["MensajeError"] = "Error al inactivar. El usuario no se encuentra registrado en el sistema.";
                 return RedirectToAction("ObtenerTodosLosUsuarios");
             }
-            catch
+            catch (System.Exception ex)
             {
-                TempData["MensajeError"] = "Ocurrió un error inesperado al inactivar el usuario.";
+                MiPrimeraSolucionJMKK.UI.Helpers.LogHelper.Log(ex);
+                TempData["MensajeError"] = "Error en el sistema. Revise logs.";
                 return RedirectToAction("ObtenerTodosLosUsuarios");
             }
         }

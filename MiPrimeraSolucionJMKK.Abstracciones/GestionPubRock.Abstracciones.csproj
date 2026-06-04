@@ -107,7 +107,11 @@
     <Compile Include="LogicaDeNegocio\Cajas\ObtenerCajasPorComercio\IObtenerCajasPorComercioLN.cs" />
     <Compile Include="Modelos\Comercios\ComercioDto.cs" />
     <Compile Include="Modelos\ConfiguracionComercio\ConfiguracionComercioDto.cs" />
+    <Compile Include="Modelos\Ordenes\OrdenDto.cs" />
+    <Compile Include="Modelos\Ordenes\OrdenListDto.cs" />
+    <Compile Include="Modelos\Productos\ProductoDto.cs" />
     <Compile Include="Modelos\ReportesMensuales\ReportesMensualesDto.cs" />
+    <Compile Include="Modelos\Reservacion\ReservacionDto.cs" />
     <Compile Include="Modelos\SINPESApi\RespuestaAPIDto.cs" />
     <Compile Include="Modelos\SINPESApi\SincronizarSINPEDto.cs" />
     <Compile Include="Modelos\SINPES\SINPESDto.cs" />
