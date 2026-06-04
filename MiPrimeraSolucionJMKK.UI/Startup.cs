@@ -23,8 +23,6 @@ namespace GestionPubRock.UI
         {
             ConfigureAuth(app);
 
-            CrearRolesYAdministrador();
-
             var issuer = "miAplicacion";
             var audience = "miAplicacion";
             var secret = Encoding.UTF8.GetBytes("clave_super_secreta_123");
@@ -43,43 +41,6 @@ namespace GestionPubRock.UI
                     ValidateLifetime = true
                 }
             });
-        }
-
-        private void CrearRolesYAdministrador()
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var roleManager = new RoleManager<IdentityRole>(
-                    new RoleStore<IdentityRole>(context));
-
-                var userManager = new UserManager<ApplicationUser>(
-                    new UserStore<ApplicationUser>(context));
-
-                if (!roleManager.RoleExists("Administrador"))
-                {
-                    roleManager.Create(new IdentityRole("Administrador"));
-                }
-
-                if (!roleManager.RoleExists("Empleado"))
-                {
-                    roleManager.Create(new IdentityRole("Empleado"));
-                }
-
-                var admin = userManager.FindByEmail("admin@pubrock.com");
-
-                if (admin == null)
-                {
-                    admin = new ApplicationUser
-                    {
-                        UserName = "admin@pubrock.com",
-                        Email = "admin@pubrock.com"
-                    };
-
-                    userManager.Create(admin, "Admin123");
-
-                    userManager.AddToRole(admin.Id, "Administrador");
-                }
-            }
         }
 
         public void ConfigureAuth(IAppBuilder app)

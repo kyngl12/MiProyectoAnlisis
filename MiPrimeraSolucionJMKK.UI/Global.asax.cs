@@ -7,6 +7,8 @@ using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.Helpers;
+using System.Security.Claims;
 
 namespace MiPrimeraSolucionJMKK.UI
 {
@@ -18,6 +20,7 @@ namespace MiPrimeraSolucionJMKK.UI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
         }
 
         protected void Application_Error()

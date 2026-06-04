@@ -6,6 +6,7 @@ using Microsoft.Owin.Security;
 using MiPrimeraSolucion.UI.Models;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -61,35 +62,57 @@ namespace MiPrimeraSolucion.UI.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
-            // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
-            // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            using (var db = new Contexto())
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Intento de inicio de sesión no válido.");
+                var usuario = db.Usuarios
+    .Include("TipoUsuario")
+    .FirstOrDefault(x =>
+        x.Correo == model.Email &&
+        x.Contrasenia == model.Password &&
+        x.IdEstado == 1);
+
+                if (usuario == null)
+                {
+                    ModelState.AddModelError("", "Correo o contraseña incorrectos.");
                     return View(model);
+                }
+
+                string rol = usuario.TipoUsuario.Descripcion;
+
+                Session["Cedula"] = usuario.Cedula;
+                Session["Nombre"] = usuario.Nombre;
+                Session["Correo"] = usuario.Correo;
+                Session["Rol"] = rol;
+
+                var identity = new ClaimsIdentity(DefaultAuthenticationTypes.ApplicationCookie);
+
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, usuario.Cedula));
+                identity.AddClaim(new Claim(ClaimTypes.Name, usuario.Nombre));
+                identity.AddClaim(new Claim(ClaimTypes.Email, usuario.Correo));
+                identity.AddClaim(new Claim(ClaimTypes.Role, rol));
+
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+                AuthenticationManager.SignIn(
+                    new AuthenticationProperties { IsPersistent = false },
+                    identity
+                );
+
+                return RedirectToAction("Index", "Home");
             }
         }
+
+
+
+
 
         //
         // GET: /Account/VerifyCode
