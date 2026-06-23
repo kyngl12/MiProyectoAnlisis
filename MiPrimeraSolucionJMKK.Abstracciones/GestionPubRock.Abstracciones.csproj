@@ -67,6 +67,9 @@
     <Compile Include="AccesoADatos\ConfiguracionComercio\ObtenerConfiguracionPorComercio\IObtenerConfiguracionPorComercioAD.cs" />
     <Compile Include="AccesoADatos\ConfiguracionComercio\ObtenerConfiguracionPorId\IObtenerConfiguracionPorIdAD.cs" />
     <Compile Include="AccesoADatos\ConfiguracionComercio\RegistrarConfiguracion\IRegistrarConfiguracionAD.cs" />
+    <Compile Include="AccesoADatos\Marketing\EditarPublicacion\IEditarPublicacionAD.cs" />
+    <Compile Include="AccesoADatos\Marketing\ObtenerTodasLasPublicaciones\IObtenerTodasLasPublicacionesAD.cs" />
+    <Compile Include="AccesoADatos\Marketing\RegistrarPublicacion\IRegistrarPublicacionAD.cs" />
     <Compile Include="AccesoADatos\ReportesMensuales\ConsultaReporteMensual\IConsultarReporteMensualAD.cs" />
     <Compile Include="AccesoADatos\ReportesMensuales\GenerarReporteMensual\IGenerarReportesMensualesAD.cs" />
     <Compile Include="AccesoADatos\ReportesMensuales\ObtenerTodosLosReportesMensuales\IObtenerTodosLosReportesMensualesAD.cs" />
@@ -92,6 +95,9 @@
     <Compile Include="LogicaDeNegocio\ConfiguracionComercio\ObtenerConfiguracionPorComercio\IObtenerConfiguracionPorComercioLN.cs" />
     <Compile Include="LogicaDeNegocio\ConfiguracionComercio\ObtenerConfiguracionPorId\IObtenerConfiguracionPorIdLN.cs" />
     <Compile Include="LogicaDeNegocio\ConfiguracionComercio\RegistrarConfiguracion\IRegistrarConfiguracionLN.cs" />
+    <Compile Include="LogicaDeNegocio\Marketing\EditarPublicacion\IEditarPublicacionLN.cs" />
+    <Compile Include="LogicaDeNegocio\Marketing\ObtenerTodasLasPublicaciones\IObtenerTodasLasPublicacionesLN.cs" />
+    <Compile Include="LogicaDeNegocio\Marketing\RegistrarPublicacion\IRegistrarPublicacionLN.cs" />
     <Compile Include="LogicaDeNegocio\ReportesMensuales\GenerarReporteMensual\IGenerarReportesMensualesLN.cs" />
     <Compile Include="LogicaDeNegocio\ReportesMensuales\ObtenerTodosLosReportesMensuales\IObtenerTodosLosReportesMensualesLN.cs" />
     <Compile Include="LogicaDeNegocio\SINPESApi\ISINPESApiLN.cs" />
@@ -107,6 +113,7 @@
     <Compile Include="LogicaDeNegocio\Cajas\ObtenerCajasPorComercio\IObtenerCajasPorComercioLN.cs" />
     <Compile Include="Modelos\Comercios\ComercioDto.cs" />
     <Compile Include="Modelos\ConfiguracionComercio\ConfiguracionComercioDto.cs" />
+    <Compile Include="Modelos\Marketing\MarketingDto.cs" />
     <Compile Include="Modelos\Ordenes\OrdenDto.cs" />
     <Compile Include="Modelos\Ordenes\OrdenListDto.cs" />
     <Compile Include="Modelos\Productos\ProductoDto.cs" />

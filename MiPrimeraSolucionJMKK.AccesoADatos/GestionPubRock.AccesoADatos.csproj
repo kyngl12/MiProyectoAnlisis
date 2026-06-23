@@ -77,6 +77,7 @@
     <Compile Include="Entidades\CajasEntidad.cs" />
     <Compile Include="Entidades\ComerciosEntidad.cs" />
     <Compile Include="Entidades\ConfiguracionComercioEntidad.cs" />
+    <Compile Include="Entidades\MarketingEntidad.cs" />
     <Compile Include="Entidades\ProductosEntidad.cs" />
     <Compile Include="Entidades\ReportesMensualesEntidad.cs" />
     <Compile Include="Entidades\ReservacionEntidad.cs" />
@@ -85,6 +86,9 @@
     <Compile Include="Entidades\UsuariosEntidad.cs" />
     <Compile Include="Inventario\ObtenerProductosAD.cs" />
     <Compile Include="Inventario\RegistrarProductoAD.cs" />
+    <Compile Include="Marketing\EditarPublicacion\EditarPublicacionAD.cs" />
+    <Compile Include="Marketing\ObtenerTodasLasPublicaciones\ObtenerTodasLasPublicacionesAD.cs" />
+    <Compile Include="Marketing\RegistrarPublicacion\RegistrarPublicacionAD.cs" />
     <Compile Include="Ordenes\ObtenerOrdenesAD.cs" />
     <Compile Include="Ordenes\RegistrarOrdenAD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

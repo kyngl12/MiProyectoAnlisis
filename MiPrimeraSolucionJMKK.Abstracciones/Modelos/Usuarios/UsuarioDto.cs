@@ -31,7 +31,8 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios
         public string CorreoElectronico { get; set; }
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres.")]
+        [StringLength(100, MinimumLength = 6,
+            ErrorMessage = "La contraseña debe tener al menos 6 caracteres.")]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Contrasenia { get; set; }

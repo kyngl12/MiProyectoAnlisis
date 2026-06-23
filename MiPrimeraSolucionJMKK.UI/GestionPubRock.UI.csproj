@@ -337,10 +337,12 @@
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Reservaciones\Index.cshtml" />
     <Content Include="Views\Inventario\Index.cshtml" />
-    <Content Include="Views\Marketing\Index.cshtml" />
     <Content Include="Views\Inventario\AgregarProducto.cshtml" />
     <Content Include="Views\Ordenes\Crear.cshtml" />
     <Content Include="Views\OrdenesListado\Index.cshtml" />
+    <Content Include="Views\Marketing\AgregarPublicacion.cshtml" />
+    <Content Include="Views\Marketing\EditarPublicacion.cshtml" />
+    <Content Include="Views\Marketing\ObtenerTodasLasPublicaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
