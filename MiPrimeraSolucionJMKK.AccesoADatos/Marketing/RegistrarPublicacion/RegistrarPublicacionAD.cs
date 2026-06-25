@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GestionPubRock.AccesoADatos.Entidades;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Marketing.RegistrarPublicacion;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,9 +29,9 @@ namespace GestionPubRock.AccesoADatos.Marketing.RegistrarPublicacion
 
                 if (existeTitulo != null) return -1;
 
-                PublicacionEntidad publicacionAGuardar = ConvertirAEntidad(publicacion);
+                MarketingEntidad publicacionAGuardar = ConvertirAEntidad(publicacion);
 
-                _elContexto.Publicaciones.Add(publicacionAGuardar);
+                _elContexto.Marketing.Add(publicacionAGuardar);
                 int cantidadDeRegistrosAlmacenados = _elContexto.SaveChanges();
 
                 return cantidadDeRegistrosAlmacenados;
@@ -43,18 +46,18 @@ namespace GestionPubRock.AccesoADatos.Marketing.RegistrarPublicacion
             }
         }
 
-        private PublicacionEntidad ConvertirAEntidad(MarketingDto publicacion)
+        private MarketingEntidad ConvertirAEntidad(MarketingDto publicacion)
         {
-            return new PublicacionEntidad
+            return new MarketingEntidad
             {
                 Titulo = publicacion.Titulo,
-                IdTipoContenido = publicacion.IdTipoContenido,
+                TipoContenido = publicacion.TipoContenido, 
                 Descripcion = publicacion.Descripcion,
                 FechaInicio = publicacion.FechaInicio,
                 FechaFinalizacion = publicacion.FechaFinalizacion,
                 IdEstado = publicacion.IdEstado,
                 Precio = publicacion.Precio,
-                FechaCreacion = DateTime.Now
+                FechaRegistro = DateTime.Now 
             };
         }
     }

@@ -1,3 +1,4 @@
+using GestionPubRock.LogicaDeNegocio.Inventario;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario;
 using System;
 using System.Web.Mvc;
@@ -9,13 +10,13 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
     {
         private readonly ObtenerProductosLN _ln;
         private readonly MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario.RegistrarProducto.RegistrarProductoLN _registrarLN;
-        private readonly MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario.EditarProducto.EditarProductoLN _editarLN;
+        private readonly EditarProductoLN _editarLN;
 
         public InventarioController()
         {
             _ln = new ObtenerProductosLN();
             _registrarLN = new MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario.RegistrarProducto.RegistrarProductoLN();
-            _editarLN = new MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario.EditarProducto.EditarProductoLN();
+            _editarLN = new EditarProductoLN();
         }
 
         private void CargarCategorias()
@@ -187,7 +188,6 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
                 return View(producto);
             }
         }
-    }
 
     //Eliminar
     [HttpPost]

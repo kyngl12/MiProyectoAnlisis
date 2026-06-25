@@ -4,6 +4,8 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos
 {
     public class ProductoDto
     {
+
+        public int IdProducto { get; set; }
         public string Codigo { get; set; }
 
         [Required(ErrorMessage = "El nombre es obligatorio.")]

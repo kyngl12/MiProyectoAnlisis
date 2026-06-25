@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace GestionPubRock.AccesoADatos.Inventario
 {
@@ -21,15 +23,16 @@ namespace GestionPubRock.AccesoADatos.Inventario
             {
 
                 if (producto.IdProducto <= 0)
-                    return -4; 
+                    return -4;
 
                 if (string.IsNullOrWhiteSpace(producto.Nombre))
                     return -2; 
 
                 if (producto.Cantidad < 0 || producto.PrecioUnitario < 0)
-                    return -3; 
+                    return -3;
 
-                var entidad = _ctx.Productos.FirstOrDefault(p => p.IdProducto == producto.IdProducto);
+                var entidad = _ctx.Productos
+    .FirstOrDefault(p => p.IdProducto == producto.IdProducto);
 
                 if (entidad == null)
                     return -5; 
@@ -39,7 +42,7 @@ namespace GestionPubRock.AccesoADatos.Inventario
                     var existeCodigo = _ctx.Database.SqlQuery<int>(
                         "SELECT COUNT(1) FROM PUBROCK_PRODUCTO_TB WHERE CODIGO_BARRAS = @p0 AND ID_PRODUCTO <> @p1",
                         producto.Codigo,
-                        producto.IdProducto
+                        producto.Codigo
                     ).FirstOrDefault() > 0;
 
                     if (existeCodigo)
@@ -77,7 +80,7 @@ namespace GestionPubRock.AccesoADatos.Inventario
 
                     int cantidadInt = Convert.ToInt32(Math.Floor(producto.Cantidad));
 
-                    _ctx.Database.ExecuteSqlCommand(sqlInv, cantidadInt, producto.IdProducto);
+                    _ctx.Database.ExecuteSqlCommand(sqlInv, cantidadInt, producto.Codigo);
                 }
                 catch { }
 

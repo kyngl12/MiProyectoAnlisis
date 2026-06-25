@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GestionPubRock.AccesoADatos.Inventario;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

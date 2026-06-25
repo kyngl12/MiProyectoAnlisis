@@ -1,5 +1,13 @@
-﻿using System;
+﻿using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
+using GestionPubRock.AccesoADatos.Marketing.EditarPublicacion;
+using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Marketing.EditarPublicacion;
+using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Marketing.EditarPublicacion;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing;
+using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +37,8 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.EditarPublicacion
 
                 if (publicacion.IdPublicacion <= 0) camposFaltantes.Add("Id Publicación");
                 if (string.IsNullOrWhiteSpace(publicacion.Titulo)) camposFaltantes.Add("Título");
-                if (publicacion.IdTipoContenido <= 0) camposFaltantes.Add("Tipo de Contenido");
+                if (string.IsNullOrWhiteSpace(publicacion.TipoContenido))
+                    camposFaltantes.Add("Tipo de Contenido");
                 if (string.IsNullOrWhiteSpace(publicacion.Descripcion)) camposFaltantes.Add("Descripción");
                 if (publicacion.FechaInicio == default(DateTime)) camposFaltantes.Add("Fecha de Inicio");
                 if (publicacion.FechaFinalizacion == default(DateTime)) camposFaltantes.Add("Fecha de Finalización");
@@ -41,7 +50,8 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.EditarPublicacion
                 if (publicacion.FechaInicio > publicacion.FechaFinalizacion)
                     throw new System.ArgumentException("La fecha de inicio no puede ser mayor a la fecha de finalización");
 
-                if (publicacion.IdTipoContenido == 1 && (!publicacion.Precio.HasValue || publicacion.Precio < 0))
+                if (publicacion.TipoContenido == "Menu" &&
+    (!publicacion.Precio.HasValue || publicacion.Precio < 0))
                     throw new System.ArgumentException("El precio es obligatorio y debe ser mayor o igual a cero para menús");
 
                 int cantidad = _editarPublicacionAD.Editar(publicacion);

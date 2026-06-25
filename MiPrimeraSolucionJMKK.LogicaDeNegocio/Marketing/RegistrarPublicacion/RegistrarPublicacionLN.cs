@@ -1,4 +1,8 @@
-﻿using System;
+﻿using GestionPubRock.AccesoADatos.Marketing.RegistrarPublicacion;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Marketing.RegistrarPublicacion;
+using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Marketing.RegistrarPublicacion;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +26,8 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.RegistrarPublicacion
                 var camposFaltantes = new System.Collections.Generic.List<string>();
 
                 if (string.IsNullOrWhiteSpace(publicacion.Titulo)) camposFaltantes.Add("Título");
-                if (publicacion.IdTipoContenido <= 0) camposFaltantes.Add("Tipo de Contenido");
+                if (string.IsNullOrWhiteSpace(publicacion.TipoContenido))
+    camposFaltantes.Add("Tipo de Contenido");
                 if (string.IsNullOrWhiteSpace(publicacion.Descripcion)) camposFaltantes.Add("Descripción");
                 if (publicacion.FechaInicio == default(DateTime)) camposFaltantes.Add("Fecha de Inicio");
                 if (publicacion.FechaFinalizacion == default(DateTime)) camposFaltantes.Add("Fecha de Finalización");
@@ -34,10 +39,11 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.RegistrarPublicacion
                 if (publicacion.FechaInicio > publicacion.FechaFinalizacion)
                     throw new System.ArgumentException("La fecha de inicio no puede ser mayor a la fecha de finalización");
 
-                if (publicacion.IdTipoContenido == 1 && (!publicacion.Precio.HasValue || publicacion.Precio < 0))
+                if (publicacion.TipoContenido == "Menu" &&
+    (!publicacion.Precio.HasValue || publicacion.Precio < 0))
                     throw new System.ArgumentException("El precio es obligatorio y debe ser mayor o igual a cero para menús");
 
-                publicacion.FechaCreacion = DateTime.Now;
+                publicacion.FechaRegistro = DateTime.Now;
 
                 int cantidad = _registrarPublicacionAD.Registrar(publicacion);
 

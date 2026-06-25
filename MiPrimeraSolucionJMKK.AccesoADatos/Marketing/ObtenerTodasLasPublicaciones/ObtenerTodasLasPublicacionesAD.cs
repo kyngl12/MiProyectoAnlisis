@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GestionPubRock.AccesoADatos.Entidades;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Marketing.ObtenerTodasLasPublicaciones;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,10 +22,7 @@ namespace GestionPubRock.AccesoADatos.Marketing.ObtenerTodasLasPublicaciones
         {
             try
             {
-                var publicaciones = _elContexto.Publicaciones
-                    .Include("TipoContenido")
-                    .Include("Estado")
-                    .ToList();
+                var publicaciones = _elContexto.Marketing.ToList();
 
                 return ConvertirAListaDto(publicaciones);
             }
@@ -32,37 +32,33 @@ namespace GestionPubRock.AccesoADatos.Marketing.ObtenerTodasLasPublicaciones
             }
         }
 
-        private List<MarketingDto> ConvertirAListaDto(List<PublicacionEntidad> publicacionesEntidad)
+        private List<MarketingDto> ConvertirAListaDto(List<MarketingEntidad> publicacionesEntidad)
         {
             List<MarketingDto> publicacionesDto = new List<MarketingDto>();
 
             foreach (var publicacion in publicacionesEntidad)
+            {
                 publicacionesDto.Add(ConvertirADto(publicacion));
+            }
 
             return publicacionesDto;
         }
 
-        private MarketingDto ConvertirADto(PublicacionEntidad publicacion)
+        private MarketingDto ConvertirADto(MarketingEntidad publicacion)
         {
             return new MarketingDto
             {
                 IdPublicacion = publicacion.IdPublicacion,
                 Titulo = publicacion.Titulo,
-                IdTipoContenido = publicacion.IdTipoContenido,
+                TipoContenido = publicacion.TipoContenido,
                 Descripcion = publicacion.Descripcion,
                 FechaInicio = publicacion.FechaInicio,
                 FechaFinalizacion = publicacion.FechaFinalizacion,
                 IdEstado = publicacion.IdEstado,
                 Precio = publicacion.Precio,
-                FechaCreacion = publicacion.FechaCreacion,
-
-                DescripcionTipoContenido = publicacion.TipoContenido != null
-                    ? publicacion.TipoContenido.Descripcion
-                    : "Sin tipo",
-
-                DescripcionEstado = publicacion.Estado != null
-                    ? publicacion.Estado.Descripcion
-                    : "Sin estado"
+                FechaRegistro = publicacion.FechaRegistro,
+                DescripcionTipoContenido = publicacion.TipoContenido ?? "Sin tipo",
+                DescripcionEstado = publicacion.IdEstado.ToString() 
             };
         }
     }

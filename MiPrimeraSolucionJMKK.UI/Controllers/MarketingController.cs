@@ -1,3 +1,12 @@
+using GestionPubRock.LogicaDeNegocio.Marketing.EditarPublicacion;
+using GestionPubRock.LogicaDeNegocio.Marketing.ObtenerTodasLasPublicaciones;
+using GestionPubRock.LogicaDeNegocio.Marketing.RegistrarPublicacion;
+using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Marketing.EditarPublicacion;
+using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Marketing.ObtenerTodasLasPublicaciones;
+using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Marketing.RegistrarPublicacion;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing;
+using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace MiPrimeraSolucionJMKK.UI.Controllers
@@ -5,21 +14,18 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
     [Authorize(Roles = "Administrador")]
     public class MarketingController : Controller
     {
-        [Authorize(Roles = "Administrador")]
-        public class MarketingController : Controller
+        private IObtenerTodasLasPublicacionesLN _obtenerTodasLasPublicacionesLN;
+        private IRegistrarPublicacionLN _registrarPublicacionLN;
+        private IEditarPublicacionLN _editarPublicacionLN;
+
+        public MarketingController()
         {
-            private IObtenerTodasLasPublicacionesLN _obtenerTodasLasPublicacionesLN;
-            private IRegistrarPublicacionLN _registrarPublicacionLN;
-            private IEditarPublicacionLN _editarPublicacionLN;
+            _obtenerTodasLasPublicacionesLN = new ObtenerTodasLasPublicacionesLN();
+            _registrarPublicacionLN = new RegistrarPublicacionLN();
+            _editarPublicacionLN = new EditarPublicacionLN();
+        }
 
-            public MarketingController()
-            {
-                _obtenerTodasLasPublicacionesLN = new ObtenerTodasLasPublicacionesLN();
-                _registrarPublicacionLN = new RegistrarPublicacionLN();
-                _editarPublicacionLN = new EditarPublicacionLN();
-            }
-
-            public ActionResult Index() => RedirectToAction("ObtenerTodasLasPublicaciones");
+        public ActionResult Index() => RedirectToAction("ObtenerTodasLasPublicaciones");
 
             public ActionResult ObtenerTodasLasPublicaciones()
             {
@@ -141,5 +147,4 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             }
         }
     }
-}
     
