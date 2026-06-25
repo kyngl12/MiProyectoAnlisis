@@ -343,6 +343,7 @@
     <Content Include="Views\Marketing\AgregarPublicacion.cshtml" />
     <Content Include="Views\Marketing\EditarPublicacion.cshtml" />
     <Content Include="Views\Marketing\ObtenerTodasLasPublicaciones.cshtml" />
+    <Content Include="Views\Inventario\EditarProducto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

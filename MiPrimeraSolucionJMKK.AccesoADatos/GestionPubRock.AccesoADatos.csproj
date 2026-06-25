@@ -84,6 +84,9 @@
     <Compile Include="Entidades\SINPESEntidad.cs" />
     <Compile Include="Entidades\TipoUsuarioEntidad.cs" />
     <Compile Include="Entidades\UsuariosEntidad.cs" />
+    <Compile Include="Inventario\EditarProductoAD.cs" />
+    <Compile Include="Inventario\EliminarProducto.cs" />
+    <Compile Include="Inventario\MovimientoInventarioAD.cs" />
     <Compile Include="Inventario\ObtenerProductosAD.cs" />
     <Compile Include="Inventario\RegistrarProductoAD.cs" />
     <Compile Include="Marketing\EditarPublicacion\EditarPublicacionAD.cs" />

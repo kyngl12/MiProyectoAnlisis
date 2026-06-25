@@ -53,23 +53,23 @@
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.IdTipoContenido, new { @class = "form-label" })
+                            @Html.LabelFor(m => m.TipoContenido, new { @class = "form-label" })
+
                             @Html.DropDownListFor(
-                                m => m.IdTipoContenido,
+                                m => m.TipoContenido,
                                 new SelectList(
                                     new[]
                                     {
-                                        new { Value = 1, Text = "Menú" },
-                                        new { Value = 2, Text = "Evento" },
-                                        new { Value = 3, Text = "Promoción" }
-                                    },
-                                    "Value",
-                                    "Text"
+                                        "Menú",
+                                        "Evento",
+                                        "Promoción"
+                                    }
                                 ),
                                 "-- Seleccione tipo --",
                                 new { @class = "form-select" }
                             )
-                            @Html.ValidationMessageFor(m => m.IdTipoContenido, "", new { @class = "text-danger small" })
+
+                            @Html.ValidationMessageFor(m => m.TipoContenido, "", new { @class = "text-danger small" })
                         </div>
 
                         <div class="mb-3">

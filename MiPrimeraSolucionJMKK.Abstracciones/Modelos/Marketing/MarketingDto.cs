@@ -17,12 +17,7 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing
 
         [Required(ErrorMessage = "El tipo de contenido es obligatorio.")]
         [Display(Name = "Tipo de Contenido")]
-        public int IdTipoContenido { get; set; }
-
-        [Required(ErrorMessage = "La descripción es obligatoria.")]
-        [StringLength(500, ErrorMessage = "La descripción no puede superar 500 caracteres.")]
-        [Display(Name = "Descripción")]
-        public string Descripcion { get; set; }
+        public string TipoContenido { get; set; }
 
         [Required(ErrorMessage = "La fecha de inicio es obligatoria.")]
         [DataType(DataType.Date)]

@@ -19,6 +19,7 @@ namespace GestionPubRock.AccesoADatos.Inventario
         {
             string sql = @"
                 SELECT
+                    p.ID_PRODUCTO AS IdProducto,
                     p.CODIGO_BARRAS AS Codigo,
                     p.NOMBRE_PRODUCTO AS Nombre,
                     ISNULL(c.NOMBRE_CATEGORIA, '') AS Categoria,
@@ -32,10 +33,34 @@ namespace GestionPubRock.AccesoADatos.Inventario
             return _ctx.Database.SqlQuery<ProductoDto>(sql).ToList();
         }
 
+        public List<ProductoDto> Buscar(string termino)
+        {
+            if (string.IsNullOrWhiteSpace(termino)) return ObtenerTodos();
+
+            string sql = @"
+                SELECT
+                    p.ID_PRODUCTO AS IdProducto,
+                    p.CODIGO_BARRAS AS Codigo,
+                    p.NOMBRE_PRODUCTO AS Nombre,
+                    ISNULL(c.NOMBRE_CATEGORIA, '') AS Categoria,
+                    CAST(ISNULL(i.STOCK_ACTUAL, 0) AS DECIMAL(18,2)) AS Cantidad,
+                    CAST(p.PRECIO_VENTA AS DECIMAL(18,2)) AS PrecioUnitario
+                FROM PUBROCK_PRODUCTO_TB p
+                LEFT JOIN PUBROCK_CATEGORIA_PRODUCTO_TB c ON p.ID_CATEGORIA_PRODUCTO = c.ID_CATEGORIA_PRODUCTO
+                LEFT JOIN PUBROCK_INVENTARIO_TB i ON p.ID_PRODUCTO = i.ID_PRODUCTO
+                WHERE LOWER(p.NOMBRE_PRODUCTO) LIKE @p0 
+                   OR LOWER(p.CODIGO_BARRAS) LIKE @p0
+            ";
+
+            string param = "%" + termino.ToLower() + "%";
+            return _ctx.Database.SqlQuery<ProductoDto>(sql, param).ToList();
+        }
+
         public List<ProductoDto> ObtenerPorFiltro(string categoria, decimal? minCantidad, decimal? maxCantidad)
         {
             string sql = @"
                 SELECT
+                    p.ID_PRODUCTO AS IdProducto,
                     p.CODIGO_BARRAS AS Codigo,
                     p.NOMBRE_PRODUCTO AS Nombre,
                     ISNULL(c.NOMBRE_CATEGORIA, '') AS Categoria,
@@ -47,7 +72,7 @@ namespace GestionPubRock.AccesoADatos.Inventario
                 WHERE 1 = 1
             ";
 
-            var parametros = new System.Collections.Generic.List<object>();
+            var parametros = new List<object>();
 
             if (!string.IsNullOrWhiteSpace(categoria))
             {
@@ -70,12 +95,17 @@ namespace GestionPubRock.AccesoADatos.Inventario
                 : _ctx.Database.SqlQuery<ProductoDto>(sql).ToList();
         }
 
-        public List<ProductoDto> Buscar(string termino)
+        public List<string> ObtenerCategorias()
         {
-            if (string.IsNullOrWhiteSpace(termino)) return ObtenerTodos();
+            string sql = "SELECT NOMBRE_CATEGORIA FROM PUBROCK_CATEGORIA_PRODUCTO_TB WHERE NOMBRE_CATEGORIA IS NOT NULL";
+            return _ctx.Database.SqlQuery<string>(sql).ToList();
+        }
 
+        public ProductoDto ObtenerPorId(int id)
+        {
             string sql = @"
                 SELECT
+                    p.ID_PRODUCTO AS IdProducto,
                     p.CODIGO_BARRAS AS Codigo,
                     p.NOMBRE_PRODUCTO AS Nombre,
                     ISNULL(c.NOMBRE_CATEGORIA, '') AS Categoria,
@@ -84,17 +114,10 @@ namespace GestionPubRock.AccesoADatos.Inventario
                 FROM PUBROCK_PRODUCTO_TB p
                 LEFT JOIN PUBROCK_CATEGORIA_PRODUCTO_TB c ON p.ID_CATEGORIA_PRODUCTO = c.ID_CATEGORIA_PRODUCTO
                 LEFT JOIN PUBROCK_INVENTARIO_TB i ON p.ID_PRODUCTO = i.ID_PRODUCTO
-                WHERE LOWER(p.NOMBRE_PRODUCTO) LIKE @p0 OR LOWER(p.CODIGO_BARRAS) LIKE @p0
+                WHERE p.ID_PRODUCTO = @p0
             ";
 
-            string param = "%" + termino.ToLower() + "%";
-            return _ctx.Database.SqlQuery<ProductoDto>(sql, param).ToList();
-        }
-
-        public System.Collections.Generic.List<string> ObtenerCategorias()
-        {
-            string sql = "SELECT NOMBRE_CATEGORIA FROM PUBROCK_CATEGORIA_PRODUCTO_TB WHERE NOMBRE_CATEGORIA IS NOT NULL";
-            return _ctx.Database.SqlQuery<string>(sql).ToList();
+            return _ctx.Database.SqlQuery<ProductoDto>(sql, id).FirstOrDefault();
         }
     }
 }

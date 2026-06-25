@@ -28,9 +28,14 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario
             return _ad.ObtenerPorFiltro(categoria, minCantidad, maxCantidad);
         }
 
-        public System.Collections.Generic.List<string> ObtenerCategorias()
+        public List<string> ObtenerCategorias()
         {
             return _ad.ObtenerCategorias();
+        }
+
+        public ProductoDto ObtenerPorId(int id)
+        {
+            return _ad.ObtenerPorId(id);
         }
     }
 }

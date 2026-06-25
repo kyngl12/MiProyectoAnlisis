@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GestionPubRock.AccesoADatos.Entidades
 {
-    [Table("PUBROCK_PUBLICACION_TB")]
+    [Table("PUBROCK_MARKETING_TB")]
     public class MarketingEntidad
     {
         [Key]
@@ -15,6 +15,9 @@ namespace GestionPubRock.AccesoADatos.Entidades
 
         [Column("TITULO")]
         public string Titulo { get; set; }
+
+        [Column("TIPO_CONTENIDO")]
+        public string TipoContenido { get; set; }
 
         [Column("DESCRIPCION")]
         public string Descripcion { get; set; }
@@ -28,17 +31,10 @@ namespace GestionPubRock.AccesoADatos.Entidades
         [Column("PRECIO")]
         public decimal? Precio { get; set; }
 
-        [Column("ID_TIPO_CONTENIDO")]
-        public int IdTipoContenido { get; set; }
-
         [Column("ID_ESTADO")]
         public int IdEstado { get; set; }
 
         [Column("FECHA_REGISTRO")]
         public DateTime FechaRegistro { get; set; }
-
-  
-        [ForeignKey("IdTipoContenido")]
-        public TipoContenidoEntidad TipoContenido { get; set; }
     }
 }

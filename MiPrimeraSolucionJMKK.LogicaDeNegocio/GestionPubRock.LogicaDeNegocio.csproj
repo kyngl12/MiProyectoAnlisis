@@ -70,8 +70,11 @@
     <Compile Include="ConfiguracionComercio\ObtenerConfiguracionPorComercio\ObtenerConfiguracionPorComercioLN.cs" />
     <Compile Include="ConfiguracionComercio\ObtenerConfiguracionPorId\ObtenerConfiguracionPorIdLN.cs" />
     <Compile Include="ConfiguracionComercio\RegistrarConfiguracion\RegistrarConfiguracionLN.cs" />
+    <Compile Include="Inventario\EditarProductoLN.cs" />
+    <Compile Include="Inventario\EliminarProducto.cs" />
+    <Compile Include="Inventario\MovimientoInventarioLN.cs" />
     <Compile Include="Inventario\ObtenerProductosLN.cs" />
-    <Compile Include="Inventario\RegistrarProducto\RegistrarProductoLN.cs" />
+    <Compile Include="Inventario\RegistrarProductoLN.cs" />
     <Compile Include="Marketing\EditarPublicacion\EditarPublicacionLN.cs" />
     <Compile Include="Marketing\ObtenerTodasLasPublicaciones\ObtenerTodasLasPublicacionesLN.cs" />
     <Compile Include="Marketing\RegistrarPublicacion\RegistrarPublicacionLN.cs" />

@@ -9,11 +9,13 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
     {
         private readonly ObtenerProductosLN _ln;
         private readonly MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario.RegistrarProducto.RegistrarProductoLN _registrarLN;
+        private readonly MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario.EditarProducto.EditarProductoLN _editarLN;
 
         public InventarioController()
         {
             _ln = new ObtenerProductosLN();
             _registrarLN = new MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario.RegistrarProducto.RegistrarProductoLN();
+            _editarLN = new MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario.EditarProducto.EditarProductoLN();
         }
 
         private void CargarCategorias()
@@ -121,5 +123,114 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
                 return View(producto);
             }
         }
+
+        //Editar
+        public ActionResult EditarProducto(int id)
+        {
+            try
+            {
+                var producto = _ln.ObtenerPorId(id);
+
+                if (producto == null)
+                {
+                    TempData["MensajeError"] = "El producto no existe";
+                    return RedirectToAction("Index");
+                }
+
+                CargarCategorias();
+                return View(producto);
+            }
+            catch
+            {
+                TempData["MensajeError"] = "Error al cargar el producto";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditarProducto(MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos.ProductoDto producto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    CargarCategorias();
+                    return View(producto);
+                }
+
+                bool ok = _editarLN.Editar(producto);
+
+                if (ok)
+                {
+                    TempData["MensajeExito"] = "El producto fue actualizado correctamente";
+                    return RedirectToAction("Index");
+                }
+
+                TempData["MensajeInfo"] = "No se pudo actualizar el producto";
+
+                CargarCategorias();
+                return View(producto);
+            }
+            catch (ArgumentException aex)
+            {
+                TempData["MensajeError"] = aex.Message;
+
+                CargarCategorias();
+                return View(producto);
+            }
+            catch
+            {
+                TempData["MensajeError"] = "Error en el sistema. Por favor intente nuevamente";
+
+                CargarCategorias();
+                return View(producto);
+            }
+        }
     }
-}
+
+    //Eliminar
+    [HttpPost]
+        public ActionResult EliminarProducto(int id)
+        {
+            var ln = new EliminarProductoLN();
+            var resultado = ln.Eliminar(id);
+
+            if (resultado.Contains("correctamente"))
+            {
+                TempData["MensajeExito"] = resultado;
+            }
+            else
+            {
+                TempData["MensajeError"] = resultado;
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        //Movimiento bitacora
+
+        [HttpPost]
+        public ActionResult RegistrarMovimiento(int idProducto, int cantidad, string tipo, string motivo)
+        {
+            var ln = new MovimientoInventarioLN();
+            var resultado = ln.RegistrarMovimiento(idProducto, cantidad, tipo, motivo);
+
+            if (resultado.Contains("correctamente"))
+            {
+                TempData["MensajeExito"] = resultado;
+            }
+            else if (resultado.Contains("Stock bajo"))
+            {
+                TempData["MensajeInfo"] = resultado; 
+            }
+            else
+            {
+                TempData["MensajeError"] = resultado;
+            }
+
+            return RedirectToAction("Index");
+        }
+    }
+
+    }

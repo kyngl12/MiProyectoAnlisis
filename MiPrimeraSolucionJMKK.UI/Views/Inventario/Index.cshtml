@@ -1,50 +1,111 @@
-@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos.ProductoDto>
+@@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos.ProductoDto>
 
-@{
-    ViewBag.Title = "Inventario";
-}
+    @{
+        ViewBag.Title = "Inventario";
+    }
 
-<h2>Inventario de Productos</h2>
+    <h2>Inventario de Productos</h2>
 
-@if (TempData["MensajeInfo"] != null)
-{
-    <div class="alert alert-info">@TempData["MensajeInfo"]</div>
-}
+    @if (TempData["MensajeInfo"] != null)
+    {
+        <div class="alert alert-info">@TempData["MensajeInfo"]</div>
+    }
 
-@if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
-{
-    <p>
-        <a class="btn btn-primary" href="@Url.Action("AgregarProducto","Inventario")">Agregar Producto</a>
-    </p>
-}
+    @if (TempData["MensajeExito"] != null)
+    {
+        <div class="alert alert-success">@TempData["MensajeExito"]</div>
+    }
 
-<form method="post" action="@Url.Action("Buscar", "Inventario")" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="termino" class="form-control" placeholder="Buscar por nombre o código" />
-        <button class="btn btn-primary" type="submit">Buscar</button>
-    </div>
-</form>
+    @if (TempData["MensajeError"] != null)
+    {
+        <div class="alert alert-danger">@TempData["MensajeError"]</div>
+    }
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var p in Model)
-        {
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
+    {
+        <p>
+            <a class="btn btn-primary" href="@Url.Action("AgregarProducto","Inventario")">
+                Agregar Producto
+            </a>
+        </p>
+    }
+
+    <form method="post" action="@Url.Action("Buscar", "Inventario")" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="termino" class="form-control" placeholder="Buscar por nombre o código" />
+            <button class="btn btn-primary" type="submit">Buscar</button>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>@p.Codigo</td>
-                <td>@p.Nombre</td>
-                <td>@p.Categoria</td>
-                <td>@p.Cantidad</td>
-                <td>@p.PrecioUnitario</td>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Acciones</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.Codigo</td>
+                    <td>@p.Nombre</td>
+                    <td>@p.Categoria</td>
+
+                    <td>
+                        @p.Cantidad
+
+                        @if (p.Cantidad <= 5)
+                        {
+                            <span class="badge bg-danger ms-2">Stock Bajo</span>
+                        }
+                    </td>
+
+                    <td>@p.PrecioUnitario</td>
+
+                    <td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
+                        {
+                            @Html.ActionLink(
+                                "Editar",
+                                "EditarProducto",
+                                new { id = p.IdProducto },
+                                new { @class = "btn btn-warning btn-sm me-1" }
+                            )
+
+                            @using (Html.BeginForm("EliminarProducto", "Inventario", FormMethod.Post))
+                            {
+                                @Html.Hidden("id", p.IdProducto)
+                                <button type="submit" class="btn btn-danger btn-sm me-1"
+                                        onclick="return confirm('¿Está seguro que desea eliminar este producto?');">
+                                    Eliminar
+                                </button>
+                            }
+
+                            @using (Html.BeginForm("RegistrarMovimiento", "Inventario", FormMethod.Post))
+                            {
+                                @Html.Hidden("idProducto", p.IdProducto)
+
+                                <input type="number" name="cantidad" class="form-control mb-1" placeholder="Cantidad" required />
+
+                                <select name="tipo" class="form-control mb-1">
+                                    <option value="ENTRADA">Entrada</option>
+                                    <option value="SALIDA">Salida</option>
+                                </select>
+
+                                <input type="text" name="motivo" class="form-control mb-1" placeholder="Motivo" />
+
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    Movimiento
+                                </button>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
