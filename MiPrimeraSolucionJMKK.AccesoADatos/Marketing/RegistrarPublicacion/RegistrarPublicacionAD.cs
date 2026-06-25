@@ -52,7 +52,7 @@ namespace GestionPubRock.AccesoADatos.Marketing.RegistrarPublicacion
             {
                 Titulo = publicacion.Titulo,
                 TipoContenido = publicacion.TipoContenido, 
-                Descripcion = publicacion.Descripcion,
+                Descripcion = publicacion.Contenido,
                 FechaInicio = publicacion.FechaInicio,
                 FechaFinalizacion = publicacion.FechaFinalizacion,
                 IdEstado = publicacion.IdEstado,

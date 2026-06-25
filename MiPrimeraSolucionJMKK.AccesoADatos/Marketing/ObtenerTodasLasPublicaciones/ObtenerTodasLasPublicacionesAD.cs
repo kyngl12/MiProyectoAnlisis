@@ -51,12 +51,12 @@ namespace GestionPubRock.AccesoADatos.Marketing.ObtenerTodasLasPublicaciones
                 IdPublicacion = publicacion.IdPublicacion,
                 Titulo = publicacion.Titulo,
                 TipoContenido = publicacion.TipoContenido,
-                Descripcion = publicacion.Descripcion,
+                Contenido = publicacion.Descripcion,
                 FechaInicio = publicacion.FechaInicio,
                 FechaFinalizacion = publicacion.FechaFinalizacion,
                 IdEstado = publicacion.IdEstado,
                 Precio = publicacion.Precio,
-                FechaRegistro = publicacion.FechaRegistro,
+                FechaPublicacion = publicacion.FechaRegistro,
                 DescripcionTipoContenido = publicacion.TipoContenido ?? "Sin tipo",
                 DescripcionEstado = publicacion.IdEstado.ToString() 
             };

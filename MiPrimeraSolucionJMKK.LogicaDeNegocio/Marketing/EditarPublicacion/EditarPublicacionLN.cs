@@ -39,7 +39,7 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.EditarPublicacion
                 if (string.IsNullOrWhiteSpace(publicacion.Titulo)) camposFaltantes.Add("Título");
                 if (string.IsNullOrWhiteSpace(publicacion.TipoContenido))
                     camposFaltantes.Add("Tipo de Contenido");
-                if (string.IsNullOrWhiteSpace(publicacion.Descripcion)) camposFaltantes.Add("Descripción");
+                if (string.IsNullOrWhiteSpace(publicacion.Contenido)) camposFaltantes.Add("Descripción");
                 if (publicacion.FechaInicio == default(DateTime)) camposFaltantes.Add("Fecha de Inicio");
                 if (publicacion.FechaFinalizacion == default(DateTime)) camposFaltantes.Add("Fecha de Finalización");
                 if (publicacion.IdEstado <= 0) camposFaltantes.Add("Estado");

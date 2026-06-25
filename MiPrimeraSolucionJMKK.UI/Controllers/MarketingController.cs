@@ -14,9 +14,9 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
     [Authorize(Roles = "Administrador")]
     public class MarketingController : Controller
     {
-        private IObtenerTodasLasPublicacionesLN _obtenerTodasLasPublicacionesLN;
-        private IRegistrarPublicacionLN _registrarPublicacionLN;
-        private IEditarPublicacionLN _editarPublicacionLN;
+        private readonly IObtenerTodasLasPublicacionesLN _obtenerTodasLasPublicacionesLN;
+        private readonly IRegistrarPublicacionLN _registrarPublicacionLN;
+        private readonly IEditarPublicacionLN _editarPublicacionLN;
 
         public MarketingController()
         {
@@ -25,126 +25,126 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             _editarPublicacionLN = new EditarPublicacionLN();
         }
 
-        public ActionResult Index() => RedirectToAction("ObtenerTodasLasPublicaciones");
+        public ActionResult Index()
+        {
+            return RedirectToAction("ObtenerTodasLasPublicaciones");
+        }
 
-            public ActionResult ObtenerTodasLasPublicaciones()
+        // LISTADO
+        public ActionResult ObtenerTodasLasPublicaciones()
+        {
+            var lista = _obtenerTodasLasPublicacionesLN.Obtener();
+            return View(lista); // ✔ LISTA
+        }
+
+        // CREATE
+        public ActionResult AgregarPublicacion()
+        {
+            return View(new MarketingDto());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AgregarPublicacion(MarketingDto publicacion)
+        {
+            if (!ModelState.IsValid)
+                return View(publicacion);
+
+            try
             {
-                var lista = _obtenerTodasLasPublicacionesLN.Obtener();
-                return View(lista);
-            }
+                bool ok = _registrarPublicacionLN.Registrar(publicacion);
 
-            public ActionResult AgregarPublicacion()
-            {
-                return View(new MarketingDto());
-            }
-
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public ActionResult AgregarPublicacion(MarketingDto publicacion)
-            {
-                if (!ModelState.IsValid)
-                    return View(publicacion);
-
-                try
+                if (ok)
                 {
-                    bool seRegistro = _registrarPublicacionLN.Registrar(publicacion);
-
-                    if (seRegistro)
-                    {
-                        TempData["MensajeExito"] = "La publicación se registró de manera exitosa.";
-                        return RedirectToAction("ObtenerTodasLasPublicaciones");
-                    }
-
-                    TempData["MensajeError"] = "Error al registrar la publicación.";
-                    return View(publicacion);
+                    TempData["MensajeExito"] = "Publicación registrada correctamente.";
+                    return RedirectToAction("ObtenerTodasLasPublicaciones");
                 }
-                catch (ArgumentException aex)
-                {
-                    TempData["MensajeError"] = aex.Message;
-                    return View(publicacion);
-                }
-                catch (Exception ex)
-                {
-                    MiPrimeraSolucionJMKK.UI.Helpers.LogHelper.Log(ex);
-                    TempData["MensajeError"] = "Error en el sistema. Revise logs.";
-                    return View(publicacion);
-                }
-            }
 
-            public ActionResult EditarPublicacion(int id)
-            {
-                var lista = _obtenerTodasLasPublicacionesLN.Obtener();
-                var publicacion = lista.FirstOrDefault(p => p.IdPublicacion == id);
-
+                TempData["MensajeError"] = "Error al registrar.";
                 return View(publicacion);
             }
-
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public ActionResult EditarPublicacion(MarketingDto publicacion)
+            catch (Exception ex)
             {
-                if (!ModelState.IsValid)
-                    return View(publicacion);
+                TempData["MensajeError"] = ex.Message;
+                return View(publicacion);
+            }
+        }
 
-                try
-                {
-                    bool seEdito = _editarPublicacionLN.Editar(publicacion);
+        // EDIT GET
+        public ActionResult EditarPublicacion(int id)
+        {
+            var lista = _obtenerTodasLasPublicacionesLN.Obtener();
+            var publicacion = lista.FirstOrDefault(x => x.IdPublicacion == id);
 
-                    if (seEdito)
-                    {
-                        if (publicacion.IdEstado == 2)
-                            TempData["MensajeExito"] = "La publicación fue desactivada exitosamente.";
-                        else
-                            TempData["MensajeExito"] = "La publicación fue editada de manera exitosa.";
-
-                        return RedirectToAction("ObtenerTodasLasPublicaciones");
-                    }
-
-                    TempData["MensajeError"] = "Error al editar la publicación.";
-                    return View(publicacion);
-                }
-                catch (ArgumentException aex)
-                {
-                    TempData["MensajeError"] = aex.Message;
-                    return View(publicacion);
-                }
-                catch (Exception ex)
-                {
-                    MiPrimeraSolucionJMKK.UI.Helpers.LogHelper.Log(ex);
-                    TempData["MensajeError"] = "Error en el sistema. Revise logs.";
-                    return View(publicacion);
-                }
+            if (publicacion == null)
+            {
+                TempData["MensajeError"] = "Publicación no encontrada.";
+                return RedirectToAction("ObtenerTodasLasPublicaciones");
             }
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public ActionResult DesactivarPublicacion(int id)
+            return View(publicacion); // ✔ SOLO 1 DTO
+        }
+
+        // EDIT POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditarPublicacion(MarketingDto publicacion)
+        {
+            if (!ModelState.IsValid)
+                return View(publicacion);
+
+            try
             {
-                try
+                bool ok = _editarPublicacionLN.Editar(publicacion);
+
+                if (ok)
                 {
-                    var lista = _obtenerTodasLasPublicacionesLN.Obtener();
-                    var publicacion = lista.FirstOrDefault(p => p.IdPublicacion == id);
+                    TempData["MensajeExito"] =
+                        publicacion.IdEstado == 2
+                        ? "Publicación desactivada."
+                        : "Publicación actualizada.";
 
-                    if (publicacion == null)
-                    {
-                        TempData["MensajeError"] = "La publicación no existe.";
-                        return RedirectToAction("ObtenerTodasLasPublicaciones");
-                    }
-
-                    publicacion.IdEstado = 2; 
-
-                    _editarPublicacionLN.Editar(publicacion);
-
-                    TempData["MensajeExito"] = "La publicación fue desactivada exitosamente.";
                     return RedirectToAction("ObtenerTodasLasPublicaciones");
                 }
-                catch (Exception ex)
+
+                TempData["MensajeError"] = "Error al actualizar.";
+                return View(publicacion);
+            }
+            catch (Exception ex)
+            {
+                TempData["MensajeError"] = ex.Message;
+                return View(publicacion);
+            }
+        }
+
+        // DELETE LOGIC (soft delete)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DesactivarPublicacion(int id)
+        {
+            try
+            {
+                var lista = _obtenerTodasLasPublicacionesLN.Obtener();
+                var pub = lista.FirstOrDefault(x => x.IdPublicacion == id);
+
+                if (pub == null)
                 {
-                    MiPrimeraSolucionJMKK.UI.Helpers.LogHelper.Log(ex);
-                    TempData["MensajeError"] = "Error en el sistema. Revise logs.";
+                    TempData["MensajeError"] = "No existe la publicación.";
                     return RedirectToAction("ObtenerTodasLasPublicaciones");
                 }
+
+                pub.IdEstado = 2;
+
+                _editarPublicacionLN.Editar(pub);
+
+                TempData["MensajeExito"] = "Publicación desactivada.";
+                return RedirectToAction("ObtenerTodasLasPublicaciones");
+            }
+            catch (Exception ex)
+            {
+                TempData["MensajeError"] = "Error interno.";
+                return RedirectToAction("ObtenerTodasLasPublicaciones");
             }
         }
     }
-    
+}

@@ -1,9 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing
 {
@@ -18,7 +18,7 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing
         public string TipoContenido { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La descripción es obligatoria.")]
-        public string Descripcion { get; set; } = string.Empty;
+        public string Contenido { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La fecha de inicio es obligatoria.")]
         public DateTime FechaInicio { get; set; }
@@ -31,7 +31,7 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing
 
         public decimal? Precio { get; set; }
 
-        public DateTime FechaRegistro { get; set; }
+        public DateTime FechaPublicacion { get; set; }
 
         public string DescripcionTipoContenido { get; set; } = string.Empty;
 

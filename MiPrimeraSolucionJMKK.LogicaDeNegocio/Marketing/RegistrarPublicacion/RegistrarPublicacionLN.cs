@@ -28,7 +28,7 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.RegistrarPublicacion
                 if (string.IsNullOrWhiteSpace(publicacion.Titulo)) camposFaltantes.Add("Título");
                 if (string.IsNullOrWhiteSpace(publicacion.TipoContenido))
     camposFaltantes.Add("Tipo de Contenido");
-                if (string.IsNullOrWhiteSpace(publicacion.Descripcion)) camposFaltantes.Add("Descripción");
+                if (string.IsNullOrWhiteSpace(publicacion.Contenido)) camposFaltantes.Add("Descripción");
                 if (publicacion.FechaInicio == default(DateTime)) camposFaltantes.Add("Fecha de Inicio");
                 if (publicacion.FechaFinalizacion == default(DateTime)) camposFaltantes.Add("Fecha de Finalización");
                 if (publicacion.IdEstado <= 0) camposFaltantes.Add("Estado");
@@ -43,7 +43,7 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.RegistrarPublicacion
     (!publicacion.Precio.HasValue || publicacion.Precio < 0))
                     throw new System.ArgumentException("El precio es obligatorio y debe ser mayor o igual a cero para menús");
 
-                publicacion.FechaRegistro = DateTime.Now;
+                publicacion.FechaPublicacion = DateTime.Now;
 
                 int cantidad = _registrarPublicacionAD.Registrar(publicacion);
 

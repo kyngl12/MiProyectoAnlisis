@@ -7,27 +7,23 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
+
             <div class="card shadow-sm">
                 <div class="card-body p-4">
 
-                    ```
-                    <h2 class="mb-4">
-                        <i class="bi bi-pencil-square me-2"></i>Editar Publicación
-                    </h2>
+                    <h2 class="mb-4">Editar Publicación</h2>
 
                     @if (TempData["MensajeExito"] != null)
                     {
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="bi bi-check-circle-fill me-2"></i>@TempData["MensajeExito"]
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <div class="alert alert-success alert-dismissible fade show">
+                            @TempData["MensajeExito"]
                         </div>
                     }
 
                     @if (TempData["MensajeError"] != null)
                     {
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["MensajeError"]
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            @TempData["MensajeError"]
                         </div>
                     }
 
@@ -36,150 +32,67 @@
                         @Html.AntiForgeryToken()
 
                         @Html.HiddenFor(m => m.IdPublicacion)
-                        @Html.HiddenFor(m => m.FechaCreacion)
+                        @Html.HiddenFor(m => m.FechaPublicacion)
 
                         <div class="mb-3">
                             <label class="form-label">ID Publicación</label>
-                            <input type="text"
-                                   class="form-control"
-                                   value="@Model.IdPublicacion"
-                                   disabled />
+                            <input class="form-control" value="@Model.IdPublicacion" disabled />
                         </div>
 
                         <div class="mb-3">
                             @Html.LabelFor(m => m.Titulo, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.Titulo,
-                                new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Ej: Promo 2x1 en hamburguesas"
-                                })
+                            @Html.TextBoxFor(m => m.Titulo, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Titulo, "", new { @class = "text-danger small" })
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.TipoContenido, new { @class = "form-label" })
-
-                            @Html.DropDownListFor(
-                                m => m.TipoContenido,
-                                new SelectList(
-                                    new[]
-                                    {
-                                        "Menú",
-                                        "Evento",
-                                        "Promoción"
-                                    },
-                                    Model.TipoContenido
-                                ),
-                                "-- Seleccione tipo --",
-                                new { @class = "form-select" }
-                            )
-
-                            @Html.ValidationMessageFor(m => m.TipoContenido, "", new { @class = "text-danger small" })
+                            @Html.LabelFor(m => m.Contenido, new { @class = "form-label" })
+                            @Html.TextAreaFor(m => m.Contenido, new { @class = "form-control", rows = 4 })
+                            @Html.ValidationMessageFor(m => m.Contenido, "", new { @class = "text-danger small" })
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Descripcion, new { @class = "form-label" })
-                            @Html.TextAreaFor(m => m.Descripcion,
-                                new
-                                {
-                                    @class = "form-control",
-                                    rows = 4,
-                                    placeholder = "Descripción de la publicación..."
-                                })
-                            @Html.ValidationMessageFor(m => m.Descripcion, "", new { @class = "text-danger small" })
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                @Html.LabelFor(m => m.FechaInicio, new { @class = "form-label" })
-                                @Html.TextBoxFor(
-                                    m => m.FechaInicio,
-                                    "{0:yyyy-MM-dd}",
-                                    new
-                                    {
-                                        @class = "form-control",
-                                        type = "date"
-                                    })
-                                @Html.ValidationMessageFor(m => m.FechaInicio, "", new { @class = "text-danger small" })
-                            </div>
-
-                            <div class="col-md-6">
-                                @Html.LabelFor(m => m.FechaFinalizacion, new { @class = "form-label" })
-                                @Html.TextBoxFor(
-                                    m => m.FechaFinalizacion,
-                                    "{0:yyyy-MM-dd}",
-                                    new
-                                    {
-                                        @class = "form-control",
-                                        type = "date"
-                                    })
-                                @Html.ValidationMessageFor(m => m.FechaFinalizacion, "", new { @class = "text-danger small" })
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.Precio, new { @class = "form-label" })
-                            @Html.TextBoxFor(
-                                m => m.Precio,
-                                new
-                                {
-                                    @class = "form-control",
-                                    type = "number",
-                                    step = "0.01",
-                                    placeholder = "Solo si es menú"
-                                })
-                            @Html.ValidationMessageFor(m => m.Precio, "", new { @class = "text-danger small" })
-                        </div>
-
-                        <div class="mb-4">
                             @Html.LabelFor(m => m.IdEstado, new { @class = "form-label" })
 
                             @Html.DropDownListFor(
                                 m => m.IdEstado,
-                                new SelectList(
-                                    new[]
-                                    {
-                                        new { Value = 1, Text = "Activo" },
-                                        new { Value = 2, Text = "Inactivo" }
-                                    },
-                                    "Value",
-                                    "Text",
-                                    Model.IdEstado
-                                ),
-                                "-- Seleccione estado --",
+                                new SelectList(new[]
+                                {
+                                    new { Value = 1, Text = "Activa" },
+                                    new { Value = 2, Text = "Inactiva" }
+                                }, "Value", "Text", Model.IdEstado),
+                                "-- Seleccione --",
                                 new { @class = "form-select" }
                             )
 
                             @Html.ValidationMessageFor(m => m.IdEstado, "", new { @class = "text-danger small" })
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label">Fecha de Registro</label>
-                            <input type="text"
-                                   class="form-control"
-                                   value="@Model.FechaCreacion.ToString("dd/MM/yyyy")"
+                        <div class="mb-3">
+                            <label class="form-label">Fecha Publicación</label>
+                            <input class="form-control"
+                                   value="@(Model.FechaPublicacion != null ? Model.FechaPublicacion.ToString("dd/MM/yyyy") : "")"
                                    disabled />
                         </div>
 
-                        <div class="d-flex gap-2 justify-content-end">
+                        <div class="d-flex justify-content-end gap-2">
                             @Html.ActionLink(
                                 "Cancelar",
                                 "ObtenerTodasLasPublicaciones",
+                                "Marketing",
                                 null,
-                                new { @class = "btn btn-secondary" })
+                                new { @class = "btn btn-secondary" }
+                            )
 
-                            <button type="submit" class="btn btn-pubrock">
-                                <i class="bi bi-save-fill me-1"></i>Actualizar Publicación
+                            <button type="submit" class="btn btn-primary">
+                                Guardar
                             </button>
                         </div>
                     }
 
                 </div>
             </div>
+
         </div>
     </div>
-    ```
-
 </div>
-
