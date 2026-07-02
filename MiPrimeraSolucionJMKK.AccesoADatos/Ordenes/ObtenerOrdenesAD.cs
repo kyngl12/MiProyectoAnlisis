@@ -21,6 +21,7 @@ namespace GestionPubRock.AccesoADatos.Ordenes
                        o.ID_ESTADO_ORDEN AS IdEstadoOrden, eo.DESCRIPCION AS EstadoOrden
                 FROM PUBROCK_ORDEN_TB o
                 LEFT JOIN PUBROCK_ESTADO_ORDEN_TB eo ON o.ID_ESTADO_ORDEN = eo.ID_ESTADO_ORDEN
+                WHERE o.ID_ESTADO = (SELECT ID_ESTADO FROM PUBROCK_ESTADO_TB WHERE DESCRIPCION = 'Activo')
                 ORDER BY o.ID_ORDEN DESC
             ";
 

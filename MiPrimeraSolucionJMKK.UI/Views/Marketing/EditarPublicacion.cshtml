@@ -1,17 +1,17 @@
 @model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing.MarketingDto
 
 @{
-    ViewBag.Title = "Editar Publicación";
+    ViewBag.Title = "Editar Publicacion";
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <div class="card shadow-sm">
+            <div class="card-modern">
                 <div class="card-body p-4">
 
-                    <h2 class="mb-4">Editar Publicación</h2>
+                    <h2 class="mb-4">Editar Publicacion</h2>
 
                     @if (TempData["MensajeExito"] != null)
                     {
@@ -35,7 +35,7 @@
                         @Html.HiddenFor(m => m.FechaPublicacion)
 
                         <div class="mb-3">
-                            <label class="form-label">ID Publicación</label>
+                            <label class="form-label">ID Publicacion</label>
                             <input class="form-control" value="@Model.IdPublicacion" disabled />
                         </div>
 
@@ -49,6 +49,50 @@
                             @Html.LabelFor(m => m.Contenido, new { @class = "form-label" })
                             @Html.TextAreaFor(m => m.Contenido, new { @class = "form-control", rows = 4 })
                             @Html.ValidationMessageFor(m => m.Contenido, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.FechaInicio, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.FechaInicio, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(m => m.FechaInicio, "", new { @class = "text-danger small" })
+                            </div>
+
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.FechaFinalizacion, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.FechaFinalizacion, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(m => m.FechaFinalizacion, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.TipoContenido, new { @class = "form-label" })
+
+                            @Html.DropDownListFor(
+                                m => m.TipoContenido,
+                                new SelectList(new[]
+                                {
+                                    "Menu",
+                                    "Evento",
+                                    "Promocion"
+                                }, Model.TipoContenido),
+                                "-- Seleccione tipo --",
+                                new { @class = "form-select" }
+                            )
+
+                            @Html.ValidationMessageFor(m => m.TipoContenido, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Precio, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Precio, new
+                            {
+                                @class = "form-control",
+                                type = "number",
+                                step = "0.01",
+                                placeholder = "Solo si es menu"
+                            })
+                            @Html.ValidationMessageFor(m => m.Precio, "", new { @class = "text-danger small" })
                         </div>
 
                         <div class="mb-3">
@@ -69,7 +113,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Fecha Publicación</label>
+                            <label class="form-label">Fecha Publicacion</label>
                             <input class="form-control"
                                    value="@(Model.FechaPublicacion != null ? Model.FechaPublicacion.ToString("dd/MM/yyyy") : "")"
                                    disabled />

@@ -1,0 +1,90 @@
+@model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reservacion.ReservacionRequestDto
+
+@{
+    ViewBag.Title = "Registrar Reservacion";
+}
+
+<div class="container py-3">
+    <div class="card-modern">
+        <h2>Registrar Reservacion</h2>
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formReservacion" }))
+        {
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label>Fecha</label>
+        <input type="date" name="Fecha" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Hora inicio</label>
+        <input type="time" name="HoraInicio" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Hora fin</label>
+        <input type="time" name="HoraFin" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Cantidad de personas</label>
+        <input type="number" name="CantidadPersonas" class="form-control" min="1" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Id Cliente</label>
+        <input type="number" name="IdCliente" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Id Mesa</label>
+        <input type="number" name="IdMesa" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Observaciones</label>
+        <textarea name="Observaciones" class="form-control"></textarea>
+    </div>
+
+
+        <button id="btnRegistrarReservacion" type="button" class="btn btn-primary">Registrar</button>
+        @Html.ActionLink("Volver", "Index", "Reservaciones", null, new { @class = "btn btn-secondary ms-2" })
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function(){
+            $('#btnRegistrarReservacion').click(function(){
+                var data = {
+                    Fecha: $('input[name=Fecha]').val(),
+                    HoraInicio: $('input[name=HoraInicio]').val(),
+                    HoraFin: $('input[name=HoraFin]').val(),
+                    CantidadPersonas: $('input[name=CantidadPersonas]').val(),
+                    IdCliente: $('input[name=IdCliente]').val(),
+                    IdMesa: $('input[name=IdMesa]').val(),
+                    Observaciones: $('textarea[name=Observaciones]').val()
+                };
+
+                // incluir token antiforgery
+                data.__RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
+
+                $.ajax({
+                    url: '@Url.Action("Registrar","Reservaciones")',
+                    method: 'POST',
+                    data: data,
+                    success: function(res){
+                        if(res.success) {
+                            Swal.fire('Exito', res.message, 'success').then(()=> location.href='@Url.Action("Index","Reservaciones")');
+                        } else {
+                            Swal.fire('Error', res.message, 'error');
+                        }
+                    },
+                    error: function(){ Swal.fire('Error','Error en el servidor','error'); }
+                });
+            });
+        });
+    </script>
+}

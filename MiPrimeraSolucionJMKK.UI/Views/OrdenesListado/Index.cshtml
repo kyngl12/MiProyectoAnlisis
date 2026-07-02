@@ -4,18 +4,48 @@
     ViewBag.Title = "Ordenes";
 }
 
-<h2>Ordenes de Compra</h2>
+<div class="container py-3">
+    <div class="card-modern">
+        <h2>Ordenes de Compra</h2>
 
 @if (TempData["MensajeExitoOrden"] != null)
 {
     <div class="alert alert-success">@TempData["MensajeExitoOrden"]</div>
 }
 
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger">@TempData["MensajeError"]</div>
+}
+
 <div class="mb-3">
-    @Html.ActionLink("Crear Orden", "Crear", "Ordenes", null, new { @class = "btn btn-pubrock" })
+    @Html.ActionLink("Crear Orden", "Crear", "Ordenes", null, new { @class = "btn btn-pubrock btn-primary" })
 </div>
 
-<table class="table table-striped">
+<form method="get" action="@Url.Action("Search","OrdenesListado")" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input type="text" name="termino" class="form-control" placeholder="Numero o cliente" />
+    </div>
+    <div class="col-auto">
+        <input type="date" name="fecha" class="form-control" />
+    </div>
+    <div class="col-auto">
+        <select name="estado" class="form-control">
+            <option value="">Todos</option>
+            <option value="1">Pendiente</option>
+            <option value="2">Confirmada</option>
+            <option value="3">Preparando</option>
+            <option value="4">En camino</option>
+            <option value="5">Entregada</option>
+            <option value="6">Cancelada</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-secondary" type="submit">Buscar</button>
+    </div>
+</form>
+
+<table class="table-modern">
     <thead>
         <tr>
             <th>ID</th>
@@ -33,8 +63,29 @@
                 <td>@o.FechaOrden.ToString("dd/MM/yyyy")</td>
                 <td>@o.Observaciones</td>
                 <td>@o.CantidadItems</td>
-                <td>@o.EstadoOrdenDescripcion</td>
+                <td>
+                    @o.EstadoOrdenDescripcion
+                    <div class="mt-1">
+                        <div class="btn-group" role="group">
+                            @Html.ActionLink("Editar", "Editar", "Ordenes", new { id = o.IdOrden }, new { @class = "btn btn-sm btn-outline-warning" })
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @using (Html.BeginForm("Eliminar", "OrdenesListado", FormMethod.Post, new { @class = "m-0 p-0" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.Hidden("id", o.IdOrden)
+                                        <button type="submit" class="dropdown-item text-danger">Eliminar orden</button>
+                                    }
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
             </tr>
         }
     </tbody>
+
 </table>
+    </div>
+</div>

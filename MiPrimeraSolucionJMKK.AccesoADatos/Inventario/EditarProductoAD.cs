@@ -42,7 +42,7 @@ namespace GestionPubRock.AccesoADatos.Inventario
                     var existeCodigo = _ctx.Database.SqlQuery<int>(
                         "SELECT COUNT(1) FROM PUBROCK_PRODUCTO_TB WHERE CODIGO_BARRAS = @p0 AND ID_PRODUCTO <> @p1",
                         producto.Codigo,
-                        producto.Codigo
+                        producto.IdProducto
                     ).FirstOrDefault() > 0;
 
                     if (existeCodigo)
@@ -64,7 +64,7 @@ namespace GestionPubRock.AccesoADatos.Inventario
                 }
 
                 entidad.NombreProducto = producto.Nombre;
-                entidad.Descripcion = producto.Categoria;
+                entidad.Descripcion = producto.Nombre; // mantener descripción coherente (no sobreescribir con nombre de categoría)
                 entidad.PrecioVenta = producto.PrecioUnitario;
                 entidad.IdCategoriaProducto = idCategoria;
 
@@ -78,9 +78,9 @@ namespace GestionPubRock.AccesoADatos.Inventario
                             FECHA_ULTIMA_ACTUALIZACION = GETDATE()
                         WHERE ID_PRODUCTO = @p1";
 
-                    int cantidadInt = Convert.ToInt32(Math.Floor(producto.Cantidad));
+                    int cantidadInt = Convert.ToInt32(System.Math.Floor(producto.Cantidad));
 
-                    _ctx.Database.ExecuteSqlCommand(sqlInv, cantidadInt, producto.Codigo);
+                    _ctx.Database.ExecuteSqlCommand(sqlInv, cantidadInt, producto.IdProducto);
                 }
                 catch { }
 

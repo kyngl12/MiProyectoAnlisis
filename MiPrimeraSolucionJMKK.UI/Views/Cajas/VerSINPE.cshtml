@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold">SINPE de la Caja</h2>
-            <p class="mb-0"><strong>Caja:</strong> @ViewBag.NombreCaja | <strong>Teléfono:</strong> @ViewBag.TelefonoSINPE</p>
+            <p class="mb-0"><strong>Caja:</strong> @ViewBag.NombreCaja | <strong>Telefono:</strong> @ViewBag.TelefonoSINPE</p>
         </div>
     </div>
 
@@ -33,9 +33,9 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>Teléfono Origen</th>
+                        <th>Telefono Origen</th>
                         <th>Nombre Origen</th>
-                        <th>Teléfono Destinatario</th>
+                        <th>Telefono Destinatario</th>
                         <th>Nombre Destinatario</th>
                         <th>Monto</th>
                         <th>Descripción</th>
@@ -75,7 +75,7 @@
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="idSinpe" value="@item.IdSinpe" />
                                             <input type="hidden" name="idCaja" value="@ViewBag.IdCaja" />
-                                            <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('¿Está seguro de sincronizar este SINPE?')">
+                                            <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Esta seguro de sincronizar este SINPE?')">
                                                 <i class="bi bi-check-circle"></i> Sincronizar
                                             </button>
                                         }

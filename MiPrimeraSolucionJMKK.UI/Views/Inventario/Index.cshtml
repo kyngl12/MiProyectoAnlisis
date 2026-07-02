@@ -4,7 +4,9 @@
     ViewBag.Title = "Inventario";
 }
 
-<h2>Inventario de Productos</h2>
+<div class="container py-3">
+    <div class="card-modern">
+        <h2>Inventario de Productos</h2>
 
 @if (TempData["MensajeInfo"] != null)
 {
@@ -24,23 +26,23 @@
 @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
 {
     <p>
-        <a class="btn btn-primary" href="@Url.Action("AgregarProducto", "Inventario")">
+        <a class="btn btn-pubrock btn-rounded" href="@Url.Action("AgregarProducto", "Inventario")">
             Agregar Producto
         </a>
     </p>
 }
 
 <form method="post" action="@Url.Action("Buscar", "Inventario")" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="termino" class="form-control" placeholder="Buscar por nombre o código" />
-        <button class="btn btn-primary" type="submit">Buscar</button>
+    <div class="input-group rounded-pill overflow-hidden" style="max-width:540px">
+        <input type="text" name="termino" class="form-control form-control-sm" placeholder="Buscar por nombre o codigo" />
+        <button class="btn btn-outline-secondary btn-sm" type="submit">Buscar</button>
     </div>
 </form>
 
-<table class="table table-striped">
+<table class="table-modern">
     <thead>
         <tr>
-            <th>Código</th>
+            <th>Codigo</th>
             <th>Nombre</th>
             <th>Categoría</th>
             <th>Cantidad</th>
@@ -73,47 +75,30 @@
                     <td>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
                         {
-                            @Html.ActionLink(
-                                "Editar",
-                                "EditarProducto",
-                                new { id = p.IdProducto },
-                                new { @class = "btn btn-warning btn-sm me-1" }
-                            )
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="btn-group" role="group">
+                                    @Html.ActionLink("Editar", "EditarProducto", new { id = p.IdProducto }, new { @class = "btn btn-sm btn-outline-warning" })
+                                    @using (Html.BeginForm("EliminarProducto", "Inventario", FormMethod.Post, new { @class = "m-0 p-0" }))
+                                    {
+                                        @Html.Hidden("id", p.IdProducto)
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar este producto?');">Eliminar</button>
+                                    }
+                                </div>
 
-                            using (Html.BeginForm("EliminarProducto", "Inventario", FormMethod.Post))
-                            {
-                                @Html.Hidden("id", p.IdProducto)
-                                <button type="submit"
-                                        class="btn btn-danger btn-sm me-1"
-                                        onclick="return confirm('¿Está seguro que desea eliminar este producto?');">
-                                    Eliminar
-                                </button>
-                            }
-
-                            using (Html.BeginForm("RegistrarMovimiento", "Inventario", FormMethod.Post))
-                            {
-                                @Html.Hidden("idProducto", p.IdProducto)
-
-                                <input type="number"
-                                       name="cantidad"
-                                       class="form-control mb-1"
-                                       placeholder="Cantidad"
-                                       required />
-
-                                <select name="tipo" class="form-control mb-1">
-                                    <option value="ENTRADA">Entrada</option>
-                                    <option value="SALIDA">Salida</option>
-                                </select>
-
-                                <input type="text"
-                                       name="motivo"
-                                       class="form-control mb-1"
-                                       placeholder="Motivo" />
-
-                                <button type="submit" class="btn btn-primary btn-sm">
-                                    Movimiento
-                                </button>
-                            }
+                                <div>
+                                    @using (Html.BeginForm("RegistrarMovimiento", "Inventario", FormMethod.Post, new { @class = "d-flex gap-1 align-items-center m-0" }))
+                                    {
+                                        @Html.Hidden("idProducto", p.IdProducto)
+                                        <input type="number" name="cantidad" class="form-control form-control-sm" placeholder="Cant" required style="width:80px" />
+                                        <select name="tipo" class="form-select form-select-sm" style="width:110px">
+                                            <option value="ENTRADA">Entrada</option>
+                                            <option value="SALIDA">Salida</option>
+                                        </select>
+                                        <input type="text" name="motivo" class="form-control form-control-sm" placeholder="Motivo" style="width:140px" />
+                                        <button type="submit" class="btn btn-sm btn-pubrock">OK</button>
+                                    }
+                                </div>
+                            </div>
                         }
                     </td>
                 </tr>
@@ -126,4 +111,7 @@
             </tr>
         }
     </tbody>
+
 </table>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+@model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Ordenes.OrdenDto
+
+@{
+    ViewBag.Title = "Editar Orden";
+}
+
+<div class="container py-3">
+    <div class="card-modern">
+        <h2>Editar Orden</h2>
+
+        @using (Html.BeginForm("Editar", "Ordenes", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(m => m.NumeroOrden)
+
+            <div class="mb-3">
+                <label class="form-label">Observaciones</label>
+                @Html.TextAreaFor(m => m.Observaciones, 5, 80, new { @class = "form-control" })
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                @Html.ActionLink("Cancelar", "Index", "OrdenesListado", null, new { @class = "btn btn-secondary ms-2" })
+            </div>
+        }
+    </div>
+</div>

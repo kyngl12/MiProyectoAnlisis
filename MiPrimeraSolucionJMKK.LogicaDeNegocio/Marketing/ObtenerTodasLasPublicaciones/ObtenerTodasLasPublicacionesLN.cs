@@ -36,7 +36,7 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.ObtenerTodasLasPublicaciones
             }
             catch (Exception ex)
             {
-                _bitacora.RegistrarError("PUBROCK_PUBLICACION_TB", ex);
+                _bitacora.RegistrarError("PUBROCK_MARKETING_TB", ex);
                 throw;
             }
         }

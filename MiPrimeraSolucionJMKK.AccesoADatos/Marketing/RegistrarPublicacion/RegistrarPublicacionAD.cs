@@ -23,13 +23,19 @@ namespace GestionPubRock.AccesoADatos.Marketing.RegistrarPublicacion
             try
             {
                 var existeTitulo = _elContexto.Database.SqlQuery<int?>(
-                    "SELECT 1 FROM PUBROCK_PUBLICACION_TB WHERE TITULO = @p0",
+                    "SELECT 1 FROM PUBROCK_MARKETING_TB WHERE TITULO = @p0",
                     publicacion.Titulo
                 ).FirstOrDefault();
 
                 if (existeTitulo != null) return -1;
 
                 MarketingEntidad publicacionAGuardar = ConvertirAEntidad(publicacion);
+
+                // asegurar que IdEstado sea válido (usar 'Activo' si no se proporcionó)
+                if (publicacionAGuardar.IdEstado <= 0)
+                {
+                    publicacionAGuardar.IdEstado = _elContexto.Database.SqlQuery<int?>("SELECT TOP 1 ID_ESTADO FROM PUBROCK_ESTADO_TB WHERE DESCRIPCION = 'Activo'").FirstOrDefault() ?? 1;
+                }
 
                 _elContexto.Marketing.Add(publicacionAGuardar);
                 int cantidadDeRegistrosAlmacenados = _elContexto.SaveChanges();

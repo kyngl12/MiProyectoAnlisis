@@ -1,13 +1,13 @@
 @model MiPrimeraSolucionJMKK.Abstracciones.Modelos.ConfiguracionComercio.ConfiguracionComercioDto
 
 @{
-    ViewBag.Title = "Agregar Configuración";
+    ViewBag.Title = "Agregar Configuracion";
 }
 
 <div class="container py-5">
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Agregar Configuración de Comercio</h3>
+            <h3 class="mb-0">Agregar Configuracion de Comercio</h3>
         </div>
         <div class="card-body">
             @if (TempData["Error"] != null)
@@ -25,7 +25,7 @@
 
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Tipo de Configuración</label>
+                        <label class="form-label fw-bold">Tipo de Configuracion</label>
                         @Html.DropDownListFor(
                             m => m.TipoConfiguracion,
                             new List<SelectListItem>
@@ -34,17 +34,17 @@
                                 new SelectListItem { Text = "Externa", Value = "2" },
                                 new SelectListItem { Text = "Ambas", Value = "3" }
                             },
-                            "Seleccione una opción",
+                            "Seleccione una opcion",
                             new { @class = "form-select", required = "required" }
                         )
                         @Html.ValidationMessageFor(m => m.TipoConfiguracion, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Comisión (%)</label>
+                        <label class="form-label fw-bold">Comision (%)</label>
                         @Html.TextBoxFor(m => m.Comision, new { @class = "form-control", type = "number", min = "0", max = "100", required = "required", placeholder = "Ej: 20" })
                         @Html.ValidationMessageFor(m => m.Comision, "", new { @class = "text-danger" })
-                        <small class="form-text text-muted">Ingrese el porcentaje de comisión (sin el símbolo %)</small>
+                        <small class="form-text text-muted">Ingrese el porcentaje de comision (sin el simbolo %)</small>
                     </div>
                 </div>
 

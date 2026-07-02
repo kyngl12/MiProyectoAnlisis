@@ -7,8 +7,9 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm">
+            <div class="card-modern">
                 <div class="card-body p-4">
+                        <div class="card-ui form-card">
 
                     <h2 class="mb-4"><i class="bi bi-person-plus-fill me-2"></i>Agregar Nuevo Usuario</h2>
 
@@ -26,45 +27,45 @@
 
                         <div class="mb-3">
                             @Html.LabelFor(m => m.Cedula, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.Cedula, new { @class = "form-control", placeholder = "Ej: 112340567" })
+                            @Html.TextBoxFor(m => m.Cedula, new { @class = "form-control input form-control-large", placeholder = "Ej: 112340567" })
                             @Html.ValidationMessageFor(m => m.Cedula, "", new { @class = "text-danger small" })
                         </div>
 
                         <div class="mb-3">
                             @Html.LabelFor(m => m.Nombre, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", placeholder = "Ej: Juan" })
+                            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control input form-control-large", placeholder = "Ej: Juan" })
                             @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger small" })
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.ApellidoPaterno, "Primer Apellido", new { @class = "form-label" })
-                                @Html.TextBoxFor(m => m.ApellidoPaterno, new { @class = "form-control", placeholder = "Ej: Pérez" })
+                                @Html.TextBoxFor(m => m.ApellidoPaterno, new { @class = "form-control input form-control-large", placeholder = "Ej: Perez" })
                                 @Html.ValidationMessageFor(m => m.ApellidoPaterno, "", new { @class = "text-danger small" })
                             </div>
 
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.ApellidoMaterno, "Segundo Apellido", new { @class = "form-label" })
-                                @Html.TextBoxFor(m => m.ApellidoMaterno, new { @class = "form-control", placeholder = "Ej: García" })
+                                @Html.TextBoxFor(m => m.ApellidoMaterno, new { @class = "form-control input form-control-large", placeholder = "Ej: Garcia" })
                                 @Html.ValidationMessageFor(m => m.ApellidoMaterno, "", new { @class = "text-danger small" })
                             </div>
                         </div>
 
                         <div class="mb-3">
                             @Html.LabelFor(m => m.CorreoElectronico, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.CorreoElectronico, new { @class = "form-control", placeholder = "Ej: usuario@ejemplo.com", type = "email" })
+                            @Html.TextBoxFor(m => m.CorreoElectronico, new { @class = "form-control input form-control-large", placeholder = "Ej: usuario@ejemplo.com", type = "email" })
                             @Html.ValidationMessageFor(m => m.CorreoElectronico, "", new { @class = "text-danger small" })
                         </div>
 
                         <div class="mb-3">
                             @Html.LabelFor(m => m.Contrasenia, new { @class = "form-label" })
-                            @Html.PasswordFor(m => m.Contrasenia, new { @class = "form-control", placeholder = "Mínimo 6 caracteres" })
+                            @Html.PasswordFor(m => m.Contrasenia, new { @class = "form-control input form-control-large", placeholder = "Mínimo 6 caracteres" })
                             @Html.ValidationMessageFor(m => m.Contrasenia, "", new { @class = "text-danger small" })
                         </div>
 
                         <div class="mb-3">
                             @Html.LabelFor(m => m.Telefono, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", placeholder = "Ej: 88887777" })
+                            @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control input form-control-large", placeholder = "Ej: 88887777" })
                             @Html.ValidationMessageFor(m => m.Telefono, "", new { @class = "text-danger small" })
                         </div>
 

@@ -7,7 +7,7 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm">
+            <div class="card-modern">
                 <div class="card-body p-4">
 
                     <h2 class="mb-4"><i class="bi bi-person-gear me-2"></i>Editar Usuario</h2>
@@ -50,13 +50,13 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.ApellidoPaterno, new { @class = "form-label" })
-                                @Html.TextBoxFor(m => m.ApellidoPaterno, new { @class = "form-control", placeholder = "Ej: Pérez" })
+                                @Html.TextBoxFor(m => m.ApellidoPaterno, new { @class = "form-control", placeholder = "Ej: Perez" })
                                 @Html.ValidationMessageFor(m => m.ApellidoPaterno, "", new { @class = "text-danger small" })
                             </div>
 
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.ApellidoMaterno, new { @class = "form-label" })
-                                @Html.TextBoxFor(m => m.ApellidoMaterno, new { @class = "form-control", placeholder = "Ej: García" })
+                                @Html.TextBoxFor(m => m.ApellidoMaterno, new { @class = "form-control", placeholder = "Ej: Garcia" })
                                 @Html.ValidationMessageFor(m => m.ApellidoMaterno, "", new { @class = "text-danger small" })
                             </div>
                         </div>

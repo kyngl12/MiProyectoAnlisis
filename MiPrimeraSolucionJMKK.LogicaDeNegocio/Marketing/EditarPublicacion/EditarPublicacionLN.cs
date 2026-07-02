@@ -58,7 +58,7 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.EditarPublicacion
 
                 if (cantidad > 0)
                 {
-                    try { _bitacora.Registrar("PUBROCK_PUBLICACION_TB", "UPDATE", null, publicacion); } catch { }
+                    try { _bitacora.Registrar("PUBROCK_MARKETING_TB", "UPDATE", null, publicacion); } catch { }
                     return true;
                 }
 
@@ -72,7 +72,7 @@ namespace GestionPubRock.LogicaDeNegocio.Marketing.EditarPublicacion
             }
             catch (Exception ex)
             {
-                _bitacora.RegistrarError("PUBROCK_PUBLICACION_TB", ex);
+                _bitacora.RegistrarError("PUBROCK_MARKETING_TB", ex);
                 throw;
             }
         }

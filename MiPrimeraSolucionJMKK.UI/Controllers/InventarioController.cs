@@ -1,6 +1,7 @@
 using GestionPubRock.LogicaDeNegocio.Inventario;
 using MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace MiPrimeraSolucionJMKK.UI.Controllers
@@ -103,6 +104,8 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
                     TempData["MensajeExito"] = "El producto fue registrado de manera exitosa";
                     return RedirectToAction("Index");
                 }
+
+
 
                 TempData["MensajeInfo"] = "No se pudo registrar el producto";
 

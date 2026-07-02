@@ -4,7 +4,9 @@
     ViewBag.Title = "Crear Orden";
 }
 
-<h2>Crear Orden de Compra</h2>
+<div class="container py-3">
+    <div class="card-modern">
+        <h2>Crear Orden de Compra</h2>
 
 @if (TempData["MensajeError"] != null)
 {
@@ -43,5 +45,8 @@
         @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control", rows = 3 })
     </div>
 
+
     <button class="btn btn-primary" type="submit">Crear Orden</button>
 }
+    </div>
+</div>

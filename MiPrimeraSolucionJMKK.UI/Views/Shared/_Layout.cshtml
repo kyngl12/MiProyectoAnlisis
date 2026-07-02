@@ -3,262 +3,162 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Gestión PubRock</title>
+    <title>@ViewBag.Title - Gestion PubRock</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap CSS -->
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/site.css" rel="stylesheet" />
-
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-    <style>
-        body {
-            background-color: var(--secundario);
-            font-family: 'Open Sans', sans-serif;
-            color: var(--terciario);
-        }
-
-        :root {
-            --primario: #3E2723;
-            --secundario: #121212;
-            --terciario: #F5E0C3;
-            --acento: #EA9999;
-            --exito: #82E0AA;
-            --alerta: #F8C471;
-        }
-
-        .sidebar {
-            min-height: 100vh;
-            width: 280px;
-            background-color: var(--primario);
-            color: var(--terciario);
-            border-right: 1px solid rgba(234,153,153,0.2);
-        }
-
-            .sidebar .nav-link {
-                color: var(--terciario);
-                text-decoration: none;
-                padding: 12px 15px;
-                margin: 5px 0;
-                border-radius: 8px;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }
-
-                .sidebar .nav-link:hover {
-                    background-color: var(--acento);
-                    color: var(--secundario);
-                    padding-left: 20px;
-                }
-
-                .sidebar .nav-link.active {
-                    background-color: rgba(234,153,153,0.2);
-                    border-left: 4px solid var(--acento);
-                }
-
-        .content {
-            padding: 2rem;
-            background-color: var(--secundario);
-            color: var(--terciario);
-        }
-
-        footer {
-            background-color: var(--primario);
-            border-top: 2px solid var(--acento);
-            color: var(--terciario);
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .logo-text {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--acento);
-            text-transform: uppercase;
-            text-align: center;
-            padding: 20px 0;
-            border-bottom: 2px solid rgba(234,153,153,0.3);
-            margin-bottom: 20px;
-        }
-
-        .nav-section-title {
-            color: var(--acento);
-            font-family: 'Oswald', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-            padding: 15px 15px 5px;
-        }
-
-        .card {
-            background: linear-gradient(145deg,#3E2723,#2b1b18);
-            border: none;
-            border-radius: 15px;
-            color: var(--terciario);
-            box-shadow: 0 4px 15px rgba(0,0,0,.3);
-            transition: all .3s ease;
-        }
-
-            .card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 8px 25px rgba(234,153,153,.2);
-            }
-
-        h2 {
-            font-family: 'Oswald', sans-serif;
-            color: var(--acento);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-label {
-            color: var(--terciario);
-            font-weight: 600;
-        }
-
-        .form-control {
-            background-color: #1b1b1b;
-            color: var(--terciario);
-            border: 1px solid rgba(245,224,195,.15);
-        }
-
-            .form-control:focus {
-                background-color: #1b1b1b;
-                color: var(--terciario);
-                border-color: var(--acento);
-                box-shadow: 0 0 10px rgba(234,153,153,.25);
-            }
-
-        .btn-pubrock {
-            background-color: var(--acento);
-            color: var(--secundario);
-            border: none;
-            font-weight: 700;
-            transition: .3s ease;
-        }
-
-            .btn-pubrock:hover {
-                background-color: var(--terciario);
-                color: var(--secundario);
-                transform: translateY(-2px);
-            }
-
-        .link-acento {
-            color: var(--acento);
-        }
-
-            .link-acento:hover {
-                color: var(--terciario);
-            }
-
-        .login-card {
-            width: 420px;
-            margin: auto;
-        }
-
-        .card h1,
-        .card h2,
-        .card h3,
-        .card h4,
-        .card h5,
-        .card h6 {
-            color: var(--terciario) !important;
-        }
-
-        .card p,
-        .card span,
-        .card small {
-            color: var(--terciario) !important;
-            opacity: 0.9;
-        }
-
-        .text-muted {
-            color: rgba(245,224,195,0.75) !important;
-        }
-
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap (local fallback) -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- Project styles (keep existing structure + custom overrides) -->
+    <link href="~/Content/Styles/variables.css" rel="stylesheet" />
+    <link href="~/Content/Styles/layout.css" rel="stylesheet" />
+    <link href="~/Content/Styles/components.css" rel="stylesheet" />
+    <link href="~/Content/Styles/forms.css" rel="stylesheet" />
+    <link href="~/Content/Styles/tables.css" rel="stylesheet" />
+    <link href="~/Content/Styles/buttons.css" rel="stylesheet" />
+    <link href="~/Content/Styles/dashboard.css" rel="stylesheet" />
+    <link href="~/Content/Styles/animations.css" rel="stylesheet" />
+    <link href="~/Content/site.custom.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet" />
 </head>
 <body>
 
-    <div class="d-flex">
+    <div class="app-shell d-flex">
+        <aside class="app-sidebar bg-white border-end">
+            <div class="logo mb-4"><span class="brand">PubRock</span></div>
 
-        <div class="sidebar p-3 flex-shrink-0" style="width: 280px;">
-            <div class="logo-text">
-                <i class="bi bi-cash-coin"></i> Gestión PubRock
-            </div>
-
-            <ul class="nav flex-column">
-
-                @if (User.Identity.IsAuthenticated)
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Administrador"))
                 {
-                    if (User.IsInRole("Administrador"))
-                    {
-                        <li class="nav-section-title">Navegación</li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })
-                        </li>
+                    <div class="nav-section-title">Navegación</div>
+                    <div class="sidebar-icons">
+                        <a href="@Url.Action("Index","Home")" class="nav-link">
+                            <span class="nav-icon"> 
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M3 11.5L12 4l9 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M5 12v7a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Inicio</span>
+                        </a>
 
-                        <li class="nav-section-title">Gestión</li>
-                        <!-- Solo mostrar módulos del sprint -->
-                        <li class="nav-item">
-                            @Html.ActionLink("Usuarios", "ObtenerTodosLosUsuarios", "Usuarios", null, new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Inventario", "Index", "Inventario", null, new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Ordenes", "Index", "OrdenesListado", null, new { @class = "nav-link" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Marketing", "Index", "Marketing", null, new { @class = "nav-link" })
-                        </li>
-                        <!-- Eliminado enlace duplicado a Crear; acceso desde módulo Ordenes -->
-                        <li class="nav-item">
-                            @Html.ActionLink("Reservaciones", "Index", "Reservaciones", null, new { @class = "nav-link" })
-                        </li>
-                    }
+                        <div class="nav-section-title">Gestion</div>
 
-                    if (User.IsInRole("Empleado"))
-                    {
-                        <li class="nav-section-title">Navegación</li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })
-                        </li>
-                        <!-- Empleado puede acceder a Reservaciones -->
-                        <li class="nav-item">
-                            @Html.ActionLink("Reservaciones", "Index", "Reservaciones", null, new { @class = "nav-link" })
-                        </li>
-                    }
+                        <a href="@Url.Action("ObtenerTodosLosUsuarios","Usuarios")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Usuarios</span>
+                        </a>
+
+                        <a href="@Url.Action("Index","Inventario")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                  <path d="M7 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Inventario</span>
+                        </a>
+
+                        <a href="@Url.Action("Index","OrdenesListado")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M21 15V6a2 2 0 0 0-2-2h-5l-2-2H5a2 2 0 0 0-2 2v11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M7 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Ordenes</span>
+                        </a>
+
+                        <a href="@Url.Action("Index","Marketing")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M20 8v6a2 2 0 0 1-2 2H8l-4 2V6a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M7 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Marketing</span>
+                        </a>
+
+                        <a href="@Url.Action("Index","Reservaciones")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                  <path d="M16 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="nav-text">Reservaciones</span>
+                        </a>
+                    </div>
                 }
-                else
+                else if (User.IsInRole("Empleado"))
                 {
-                    <li class="nav-item">
-                        @Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })
-                    </li>
+                    <div class="nav-section-title">Navegación</div>
+                    <div class="sidebar-icons">
+                        @Html.ActionLink("Inicio","Index","Home",null,new { @class = "nav-link" })
+                        @Html.ActionLink("Reservaciones","Index","Reservaciones",null,new { @class = "nav-link" })
+                    </div>
                 }
-            </ul>
+            }
+            else
+            {
+                @Html.ActionLink("Inicio","Index","Home",null,new { @class = "nav-link" })
+            }
 
-            <div class="mt-auto pt-4" style="border-top: 2px solid rgba(255,255,255,0.2);">
-                @Html.Partial("_LoginPartial")
+            <div style="margin-top:20px">@Html.Partial("_LoginPartial")</div>
+        </aside>
+
+        <main class="app-content flex-grow-1 p-4">
+            <nav class="navbar navbar-expand-lg navbar-white bg-white shadow-sm mb-4 rounded">
+                <div class="container-fluid">
+                    <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index","Home")">
+                        <span class="brand me-2">PubRock</span>
+                        <small class="text-muted">Panel</small>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topbarNav" aria-controls="topbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="topbarNav">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item me-3">
+                                    <span class="text-secondary">@User.Identity.Name</span>
+                                </li>
+                                <li class="nav-item">
+                                    @Html.ActionLink("Cerrar sesión","Logout","Account",null,new { @class = "btn btn-outline-secondary btn-sm" })
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    @Html.ActionLink("Iniciar sesión","Login","Account",null,new { @class = "btn btn-primary btn-sm text-white" })
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+                @RenderBody()
+                <div class="app-footer mt-4 text-center text-muted">© @DateTime.Now.Year - Sistema Gestion PubRock</div>
             </div>
-        </div>
-        <div class="content flex-grow-1">
-            @RenderBody()
-        </div>
-
+        </main>
     </div>
 
     <!-- FOOTER -->
     <footer>
-        © @DateTime.Now.Year - Sistema Gestión de PubRock
+        © @DateTime.Now.Year - Sistema Gestion de PubRock
     </footer>
 
-    <script src="~/Scripts/jquery-3.7.0.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="@Url.Content("~/Scripts/SweetAlert/sweetalert2@11.js")"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

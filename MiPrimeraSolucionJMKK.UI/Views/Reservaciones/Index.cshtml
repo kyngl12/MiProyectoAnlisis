@@ -4,7 +4,12 @@
     ViewBag.Title = "Reservaciones";
 }
 
-<h2>Reservaciones</h2>
+<div class="container py-3">
+    <div class="card-modern">
+        <h2>Reservaciones</h2>
+        <div class="mb-3">
+            @Html.ActionLink("Agregar Reservacion", "Registrar", "Reservaciones", null, new { @class = "btn btn-pubrock" })
+        </div>
 
 @if (TempData["MensajeInfo"] != null)
 {
@@ -16,7 +21,9 @@
     <div class="alert alert-danger">@TempData["MensajeError"]</div>
 }
 
-<table class="table table-striped">
+@Html.AntiForgeryToken()
+
+<table class="table-modern">
     <thead>
         <tr>
             <th>Id</th>
@@ -35,7 +42,43 @@
                 <td>@(r.Estado ? "Activa" : "Inactiva")</td>
                 <td>@r.Cliente</td>
                 <td>@r.Observaciones</td>
+                <td>
+                    @if (r.Estado)
+                    {
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-outline-danger btn-cancelar me-2" data-id="@r.Id"><span class="text">Cancelar</span></button>
+                            <a href="@Url.Action("Registrar","Reservaciones")" class="btn btn-sm btn-outline-secondary">Ver</a>
+                        </div>
+                    }
+                </td>
             </tr>
         }
     </tbody>
+
 </table>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function(){
+            $('.btn-cancelar').click(function(){
+                var id = $(this).data('id');
+                Swal.fire({
+                    title: 'Confirmar',
+                    text: 'Desea cancelar la reservacion?',
+                    icon: 'warning',
+                    showCancelButton: true
+                }).then(function(resp){
+                    if(resp.isConfirmed){
+                        $.post('@Url.Action("Cancelar","Reservaciones")', { id: id, __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() }, function(res){
+                            if(res.success) { Swal.fire('Ok', res.message, 'success').then(function(){ location.reload(); }); }
+                            else Swal.fire('Error', res.message, 'error');
+                        }).fail(function(){ Swal.fire('Error','Error servidor','error'); });
+                    }
+                });
+            });
+        });
+    </script>
+}

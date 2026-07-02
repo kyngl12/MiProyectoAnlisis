@@ -5,18 +5,18 @@
 }
 
 <div class="container py-5">
+    <div class="card-modern p-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Publicaciones</h2>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Publicaciones</h2>
-
-        @Html.ActionLink(
-            "Nueva Publicación",
-            "AgregarPublicacion",
-            "Marketing",
-            null,
-            new { @class = "btn btn-primary" }
-        )
-    </div>
+            @Html.ActionLink(
+                "Nueva Publicacion",
+                "AgregarPublicacion",
+                "Marketing",
+                null,
+                new { @class = "btn btn-primary" }
+            )
+        </div>
 
     @if (TempData["MensajeExito"] != null)
     {
@@ -36,7 +36,7 @@
         <thead class="table-dark">
             <tr>
                 <th>ID</th>
-                <th>Título</th>
+                <th>Titulo</th>
                 <th>Contenido</th>
                 <th>Fecha</th>
                 <th>Estado</th>
@@ -62,26 +62,24 @@
                             @(item.IdEstado == 1 ? "Activa" : "Inactiva")
                         </td>
 
-                        <td>
-                            @Html.ActionLink(
-                                "Editar",
-                                "EditarPublicacion",
-                                "Marketing",
-                                new { id = item.IdPublicacion },
-                                new { @class = "btn btn-sm btn-warning me-1" }
-                            )
+            <td>
+                            <div class="d-flex gap-2 align-items-center">
+                                @Html.ActionLink("Editar", "EditarPublicacion", "Marketing", new { id = item.IdPublicacion }, new { @class = "btn btn-sm btn-outline-warning" })
 
-                            @using (Html.BeginForm("DesactivarPublicacion", "Marketing", FormMethod.Post))
-                            {
-                                @Html.AntiForgeryToken()
-                                @Html.Hidden("id", item.IdPublicacion)
-
-                                <button type="submit"
-                                        class="btn btn-sm btn-danger"
-                                        onclick="return confirm('¿Desactivar esta publicación?');">
-                                    Desactivar
-                                </button>
-                            }
+                                @using (Html.BeginForm(item.IdEstado == 1 ? "DesactivarPublicacion" : "ActivarPublicacion", "Marketing", FormMethod.Post, new { @class = "m-0 p-0" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("id", item.IdPublicacion)
+                                    if(item.IdEstado == 1)
+                                    {
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Desactivar</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-sm btn-outline-success">Activar</button>
+                                    }
+                                }
+                            </div>
                         </td>
                     </tr>
                 }
@@ -97,4 +95,5 @@
         </tbody>
     </table>
 
+    </div>
 </div>

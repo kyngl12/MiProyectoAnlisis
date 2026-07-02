@@ -98,10 +98,14 @@
     <Compile Include="ReportesMensuales\ConsultarReporteMensual\ConsultarReporteMensualAD.cs" />
     <Compile Include="ReportesMensuales\GenerarReporteMensual\GenerarReportesMensualesAD.cs" />
     <Compile Include="ReportesMensuales\ObtenerTodosLosReportesMensuales\ObtenerTodosLosReportesMensualesAD.cs" />
+    <Compile Include="Reservaciones\CancelarReservacionAD.cs" />
     <Compile Include="Reservaciones\ObtenerReservacionesAD.cs" />
+    <Compile Include="Reservaciones\RegistrarReservacionAD.cs" />
     <Compile Include="SINPESApi\SINPESApiAD.cs" />
     <Compile Include="SINPES\RegistrarSINPES\RegistrarSINPESAD.cs" />
     <Compile Include="SINPES\ValidacionCajaTelefonoSINPES\ValidarCajaTelefonoSINPESAD.cs" />
+    <Content Include="SQL.sql" />
+    <Compile Include="SQL.cs" />
     <Compile Include="Usuarios\EditarUsuario\EditarUsuarioAD.cs" />
     <Compile Include="Usuarios\InactivarUsuario\InactivarUsuarioAD.cs" />
     <Compile Include="Usuarios\ObtenerTodosLosTipoUsuarios\ObtenerTodosLosTiposDeUsuarioAD.cs" />

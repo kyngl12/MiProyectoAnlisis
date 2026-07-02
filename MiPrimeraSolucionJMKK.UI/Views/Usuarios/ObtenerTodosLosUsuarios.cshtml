@@ -1,138 +1,129 @@
-@model IEnumerable<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing.MarketingDto>
+@model IEnumerable<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Usuarios.UsuarioDto>
 
 @{
-    ViewBag.Title = "Publicaciones";
+    ViewBag.Title = "Usuarios";
 }
 
-<div class="container-fluid py-4">
+<div class="container py-3">
+    @Html.AntiForgeryToken()
+    <div class="card-modern">
+        <h2>Usuarios</h2>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="bi bi-megaphone-fill me-2"></i>Publicaciones</h2>
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success">@TempData["MensajeExito"]</div>
+}
 
-        @Html.ActionLink("Agregar Publicación", "AgregarPublicacion", null, new { @class = "btn btn-pubrock" })
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger">@TempData["MensajeError"]</div>
+}
+
+<p>
+    @Html.ActionLink("Agregar Usuario", "AgregarUsuario", "Usuarios", null, new { @class = "btn btn-primary" })
+</p>
+
+<table class="table-modern">
+    <thead>
+        <tr>
+            <th>Cedula</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Correo</th>
+            <th>Telefono</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var u in Model)
+            {
+                <tr>
+                    <td>@u.Cedula</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar me-2">@u.Nombre.Substring(0,1).ToUpper()</div>
+                            <div>
+                                <div class="fw-bold">@u.Nombre</div>
+                                <div class="text-muted" style="font-size:.85rem">@u.CorreoElectronico</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@u.ApellidoPaterno @u.ApellidoMaterno</td>
+                    <td>@u.CorreoElectronico</td>
+                    <td>@u.Telefono</td>
+                    <td>@u.DescripcionTipoUsuario</td>
+                    <td>
+                        @if(u.IdEstado == 1){ <span class="badge-status badge-active">Activo</span> } else { <span class="badge-status badge-inactive">Inactivo</span> }
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            <div class="btn-group actions-group" role="group">
+                                @Html.ActionLink("Detalles", "DetallesDelUsuario", new { cedula = u.Cedula }, new { @class = "btn btn-sm btn-outline-info" })
+                                @Html.ActionLink("Editar", "EditarUsuario", new { cedula = u.Cedula }, new { @class = "btn btn-sm btn-outline-warning" })
+                                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Acciones
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <button class="dropdown-item btn-inactivar-user text-danger" data-cedula="@u.Cedula">Inactivar usuario</button>
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("DetallesDelUsuario","Usuarios", new { cedula = u.Cedula })">Ver perfil</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="8" class="text-center">No hay usuarios registrados</td></tr>
+        }
+    </tbody>
+
+</table>
     </div>
-
-    @if (TempData["MensajeExito"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i>@TempData["MensajeExito"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-
-    @if (TempData["MensajeError"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["MensajeError"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-
-    <div class="card">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-
-                <table class="table table-hover align-middle mb-0" style="color: var(--terciario);">
-
-                    <thead style="background-color: rgba(234,153,153,0.15); color: var(--acento);">
-                        <tr>
-                            <th>ID</th>
-                            <th>Título</th>
-                            <th>Contenido</th>
-                            <th>Fecha Publicación</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr style="border-color: rgba(245,224,195,0.1);">
-                                <td>@item.IdPublicacion</td>
-
-                                <td>
-                                    <strong>@item.Titulo</strong>
-                                </td>
-
-                                <td>
-                                    @(item.Contenido.Length > 50
-                                        ? item.Contenido.Substring(0, 50) + "..."
-                                        : item.Contenido)
-                                </td>
-
-                                <td>@item.FechaPublicacion.ToString("dd/MM/yyyy")</td>
-
-                                <td>
-                                    @if (item.IdEstado == 1)
-                                    {
-                                        <span class="badge" style="background-color: var(--exito); color: #121212;">
-                                            Activa
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge" style="background-color: var(--acento); color: #121212;">
-                                            Inactiva
-                                        </span>
-                                    }
-                                </td>
-
-                                <td>
-                                    <div class="d-flex gap-1">
-
-                                        @Html.ActionLink(
-                                            "Editar",
-                                            "EditarPublicacion",
-                                            "Publicaciones",
-                                            new { idPublicacion = item.IdPublicacion },
-                                            new { @class = "btn btn-sm btn-pubrock" }
-                                        )
-
-                                        @Html.ActionLink(
-                                            "Detalles",
-                                            "DetallesDeLaPublicacion",
-                                            "Publicaciones",
-                                            new { idPublicacion = item.IdPublicacion },
-                                            new { @class = "btn btn-sm btn-outline-secondary" }
-                                        )
-
-                                        @if (item.IdEstado == 1)
-                                        {
-                                            using (Html.BeginForm(
-                                                "InactivarPublicacion",
-                                                "Publicaciones",
-                                                new { idPublicacion = item.IdPublicacion },
-                                                FormMethod.Post))
-                                            {
-                                                @Html.AntiForgeryToken()
-
-                                                <button type="submit"
-                                                        class="btn btn-sm"
-                                                        style="background-color: transparent; border: 1px solid var(--acento); color: var(--acento);"
-                                                        onclick="return confirm('¿Desea inactivar esta publicación?')">
-                                                    <i class="bi bi-x-circle"></i> Inactivar
-                                                </button>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <span class="btn btn-sm disabled"
-                                                  style="border: 1px solid rgba(245,224,195,0.2); color: rgba(245,224,195,0.3);">
-                                                <i class="bi bi-x-circle"></i> Inactiva
-                                            </span>
-                                        }
-
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-
-                </table>
-
-            </div>
-        </div>
-    </div>
-
 </div>
+
+<script>
+    $(function(){
+        $('.btn-inactivar-user').click(function(){
+            var cedula = $(this).data('cedula');
+            Swal.fire({
+                title: 'Confirmar inactivación',
+                text: '¿Desea inactivar este usuario? Esta acción puede revertirse desde el perfil.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, inactivar',
+                cancelButtonText: 'Cancelar'
+            }).then(function(result){
+                if(!result.isConfirmed) return;
+
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.post('@Url.Action("InactivarUsuario","Usuarios")', { cedula: cedula, __RequestVerificationToken: token })
+                    .done(function(res){
+                        // si el controlador devuelve JSON con success
+                        try{
+                            if(res && res.success){
+                                Swal.fire('Inactivado', res.message || 'Usuario inactivado correctamente', 'success').then(function(){ location.reload(); });
+                                return;
+                            }
+                        }catch(e){}
+                        // por defecto recargar
+                        location.reload();
+                    })
+                    .fail(function(){
+                        Swal.fire('Error', 'No se pudo completar la petición. Intente nuevamente.', 'error');
+                    });
+            });
+        });
+    });
+</script>

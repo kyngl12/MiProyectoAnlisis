@@ -272,6 +272,16 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\site.custom.css" />
+    <Content Include="Content\Styles\animations.css" />
+    <Content Include="Content\Styles\app.css" />
+    <Content Include="Content\Styles\buttons.css" />
+    <Content Include="Content\Styles\components.css" />
+    <Content Include="Content\Styles\dashboard.css" />
+    <Content Include="Content\Styles\forms.css" />
+    <Content Include="Content\Styles\layout.css" />
+    <Content Include="Content\Styles\tables.css" />
+    <Content Include="Content\Styles\variables.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -352,6 +362,8 @@
     <Content Include="Views\Marketing\EditarPublicacion.cshtml" />
     <Content Include="Views\Marketing\ObtenerTodasLasPublicaciones.cshtml" />
     <Content Include="Views\Inventario\EditarProducto.cshtml" />
+    <Content Include="Views\Ordenes\Editar.cshtml" />
+    <Content Include="Views\Reservaciones\Registrar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

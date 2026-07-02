@@ -4,7 +4,9 @@
     ViewBag.Title = "Agregar Producto";
 }
 
-<h2>Registrar Producto</h2>
+<div class="container py-3">
+    <div class="card-modern">
+        <h2>Registrar Producto</h2>
 
 @if (TempData["MensajeError"] != null)
 {
@@ -48,5 +50,8 @@
         @Html.ValidationMessageFor(m => m.PrecioUnitario, "", new { @class = "text-danger" })
     </div>
 
+
     <button class="btn btn-primary" type="submit">Guardar Producto</button>
 }
+    </div>
+</div>

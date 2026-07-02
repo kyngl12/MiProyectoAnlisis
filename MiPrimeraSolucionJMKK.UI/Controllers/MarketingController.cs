@@ -136,11 +136,39 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
                 pub.IdEstado = 2;
 
                 _editarPublicacionLN.Editar(pub);
-
                 TempData["MensajeExito"] = "Publicación desactivada.";
                 return RedirectToAction("ObtenerTodasLasPublicaciones");
             }
             catch (Exception ex)
+            {
+                TempData["MensajeError"] = "Error interno.";
+                return RedirectToAction("ObtenerTodasLasPublicaciones");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ActivarPublicacion(int id)
+        {
+            try
+            {
+                var lista = _obtenerTodasLasPublicacionesLN.Obtener();
+                var pub = lista.FirstOrDefault(x => x.IdPublicacion == id);
+
+                if (pub == null)
+                {
+                    TempData["MensajeError"] = "No existe la publicación.";
+                    return RedirectToAction("ObtenerTodasLasPublicaciones");
+                }
+
+                pub.IdEstado = 1; // Activo
+
+                _editarPublicacionLN.Editar(pub);
+
+                TempData["MensajeExito"] = "Publicación activada.";
+                return RedirectToAction("ObtenerTodasLasPublicaciones");
+            }
+            catch
             {
                 TempData["MensajeError"] = "Error interno.";
                 return RedirectToAction("ObtenerTodasLasPublicaciones");

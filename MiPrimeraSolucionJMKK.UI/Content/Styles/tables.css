@@ -1,0 +1,302 @@
+/* ============================= */
+/* TABLES CSS - TABLAS PROFESIONALES */
+/* ============================= */
+
+/* TABLAS BASE */
+.table,
+.table-modern {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+/* TABLE HEADS */
+.table thead,
+.table-modern thead {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: white;
+}
+
+.table thead th,
+.table-modern thead th {
+  padding: 1.25rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  white-space: nowrap;
+}
+
+/* TABLE ROWS */
+.table tbody tr,
+.table-modern tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: all var(--transition-base) var(--transition-timing);
+}
+
+.table tbody tr:hover,
+.table-modern tbody tr:hover {
+  background-color: var(--bg-hover);
+  box-shadow: inset -4px 0 0 var(--color-primary);
+}
+
+.table tbody tr:last-child,
+.table-modern tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* TABLE CELLS */
+.table td,
+.table th,
+.table-modern td,
+.table-modern th {
+  padding: 1rem 1.25rem;
+  vertical-align: middle;
+  color: var(--color-gray-800);
+}
+
+.table td,
+.table-modern td {
+  font-size: 0.95rem;
+  color: var(--color-gray-700);
+}
+
+/* TABLE STRIPED */
+.table-striped tbody tr:nth-child(odd) {
+  background-color: var(--color-gray-50);
+}
+
+.table-striped tbody tr:nth-child(odd):hover {
+  background-color: var(--bg-hover);
+}
+
+/* TABLE COMPACT */
+.table-compact td,
+.table-compact th {
+  padding: 0.75rem;
+  font-size: 0.9rem;
+}
+
+/* TABLE BORDERED */
+.table-bordered,
+.table-bordered thead th,
+.table-bordered td {
+  border: 1px solid var(--border-color);
+}
+
+.table-bordered thead {
+  border-bottom: 2px solid var(--color-primary);
+}
+
+/* TABLE HOVER */
+.table-hover tbody tr:hover {
+  background-color: rgba(26, 95, 122, 0.05);
+}
+
+/* TABLE VARIANT COLORS */
+.table-primary {
+  background: linear-gradient(135deg, rgba(26, 95, 122, 0.05) 0%, transparent 100%);
+}
+
+.table-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);
+}
+
+.table-danger {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, transparent 100%);
+}
+
+.table-warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, transparent 100%);
+}
+
+/* CELL TYPES */
+.cell-avatar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cell-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cell-status.active {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.cell-status.inactive {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.cell-status.pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.cell-status .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* TABLE ACTIONS */
+.table-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.table-actions .btn-sm {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+/* TABLE RESPONSIVE */
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive > .table {
+  margin-bottom: 0;
+}
+
+/* TABLE PAGINATION */
+.table-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.25rem;
+}
+
+.page-item {
+  display: inline-block;
+}
+
+.page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-base);
+  background-color: white;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: all var(--transition-base) var(--transition-timing);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.page-link:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.page-item.active .page-link {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.page-item.disabled .page-link {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--color-gray-100);
+}
+
+/* EMPTY STATE */
+.table-empty {
+  padding: 3rem;
+  text-align: center;
+  color: var(--color-gray-600);
+}
+
+.table-empty p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* TABLE FOOTER */
+.table tfoot {
+  background: linear-gradient(135deg, var(--color-gray-50) 0%, var(--color-gray-100) 100%);
+  border-top: 2px solid var(--border-color);
+}
+
+.table tfoot td {
+  font-weight: 600;
+  color: var(--color-gray-800);
+}
+
+/* RESPONSIVE STACKED TABLE */
+@media (max-width: 768px) {
+  .table-responsive-stack {
+    display: block;
+  }
+
+  .table-responsive-stack thead {
+    display: none;
+  }
+
+  .table-responsive-stack tbody tr {
+    display: block;
+    border: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+  }
+
+  .table-responsive-stack tbody td {
+    display: block;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+    padding-right: 0;
+  }
+
+  .table-responsive-stack tbody td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--color-gray-600);
+  }
+}

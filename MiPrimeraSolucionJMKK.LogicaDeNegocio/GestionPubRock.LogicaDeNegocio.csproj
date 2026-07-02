@@ -83,7 +83,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportesMensuales\ObtenerTodosLosReportesMensuales\ObtenerTodosLosReportesMensualesLN.cs" />
     <Compile Include="ReportesMensuales\GenerarReporteMensual\GenerarReportesMensualesLN.cs" />
+    <Compile Include="Reservaciones\CancelarReservacionLN.cs" />
     <Compile Include="Reservaciones\ObtenerReservacionesLN.cs" />
+    <Compile Include="Reservaciones\RegistrarReservacionLN.cs" />
     <Compile Include="SINPESApi\SINPESApiLN.cs" />
     <Compile Include="SINPES\RegistrarSINPES\RegistrarSINPESLN.cs" />
     <Compile Include="Usuarios\EditarUsuario\EditarUsuarioLN.cs" />

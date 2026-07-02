@@ -37,8 +37,8 @@
 
                         <div class="mb-3 position-relative">
                             <i class="bi bi-journal-text position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
-                            @Html.LabelFor(model => model.Descripcion, "Descripción", new { @class = "form-label fw-semibold" })
-                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control rounded ps-5", rows = 3, placeholder = "Opcional: breve descripción de la caja" })
+                            @Html.LabelFor(model => model.Descripcion, "Descripcion", new { @class = "form-label fw-semibold" })
+                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control rounded ps-5", rows = 3, placeholder = "Opcional: breve descripcion de la caja" })
                             @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger small" })
                         </div>
 

@@ -1,13 +1,13 @@
 @model MiPrimeraSolucionJMKK.Abstracciones.Modelos.ConfiguracionComercio.ConfiguracionComercioDto
 
 @{
-    ViewBag.Title = "Editar Configuración";
+    ViewBag.Title = "Editar Configuracion";
 }
 
 <div class="container py-5">
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-header bg-warning text-dark">
-            <h3 class="mb-0">Editar Configuración de Comercio</h3>
+            <h3 class="mb-0">Editar Configuracion de Comercio</h3>
         </div>
         <div class="card-body">
             @if (TempData["Error"] != null)
@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Tipo de Configuración</label>
+                        <label class="form-label fw-bold">Tipo de Configuracion</label>
                         @Html.DropDownListFor(
                             m => m.TipoConfiguracion,
                             new List<SelectListItem>
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Comisión (%)</label>
+                        <label class="form-label fw-bold">Comision (%)</label>
                         @Html.TextBoxFor(m => m.Comision, new { @class = "form-control", type = "number", min = "0", max = "100", required = "required" })
                         @Html.ValidationMessageFor(m => m.Comision, "", new { @class = "text-danger" })
                     </div>
