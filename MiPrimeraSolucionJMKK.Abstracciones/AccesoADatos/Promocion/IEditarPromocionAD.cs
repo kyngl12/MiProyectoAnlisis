@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Promocion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Promocion
 {
-    internal interface IEditarPromocionAD
+    public interface IEditarPromocionAD
     {
+        bool Editar(PromocionDto laPromocion);
     }
 }

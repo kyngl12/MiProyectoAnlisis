@@ -16,7 +16,7 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.Modelos.Promocion
         public string NombrePromocion { get; set; }
 
         [StringLength(255)]
-        public string? Descripcion { get; set; }
+        public string Descripcion { get; set; }
 
         [Required(ErrorMessage = "El porcentaje es obligatorio.")]
         [Range(1, 100, ErrorMessage = "El porcentaje ingresado no es válido.")]

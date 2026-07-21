@@ -1,5 +1,12 @@
-﻿using System;
+﻿using GestionPubRock.AccesoADatos.Bitacora.RegistrarBitacora;
+using GestionPubRock.AccesoADatos.Promocion;
+using MiPrimeraSolucionJMKK.Abstacciones.LogicaDeNegocio.Bitacora.RegistrarBitacora;
+using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Promocion;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Promocion;
+using MiPrimeraSolucionJMKK.LogicaDeNegocio.Bitacora.RegistrarBitacora;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

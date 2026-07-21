@@ -1,7 +1,11 @@
-﻿using System;
+﻿using GestionPubRock.LogicaDeNegocio.Promocion;
+using MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Promocion;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Promocion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace GestionPubRock.UI.Controllers
 {
@@ -130,5 +134,4 @@ namespace GestionPubRock.UI.Controllers
             return RedirectToAction("ObtenerTodasLasPromociones");
         }
     }
-}
 }

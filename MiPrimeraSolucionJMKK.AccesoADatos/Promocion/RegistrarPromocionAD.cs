@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using GestionPubRock.AccesoADatos.Entidades;
+using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Promocion;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Promocion;
 
 namespace GestionPubRock.AccesoADatos.Promocion
 {
@@ -74,3 +73,4 @@ namespace GestionPubRock.AccesoADatos.Promocion
             };
         }
     }
+}

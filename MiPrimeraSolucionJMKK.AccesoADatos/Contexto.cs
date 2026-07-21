@@ -15,6 +15,7 @@ namespace GestionPubRock.AccesoADatos
             public Contexto()
         {
 
+
         }
 
         public DbSet<ComerciosEntidad> Comercios { get; set; }

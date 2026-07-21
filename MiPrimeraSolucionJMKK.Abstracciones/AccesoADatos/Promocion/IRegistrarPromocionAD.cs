@@ -7,9 +7,10 @@ using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Promocion;
 
 namespace MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Promocion
 {
-    public interface IEditarPromocionAD
+    public interface IRegistrarPromocionAD
     {
-        bool Editar(PromocionDto laPromocion);
+        int Registrar(PromocionDto laPromocion);
     }
 }
+
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Promocion;
+using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Promocion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
