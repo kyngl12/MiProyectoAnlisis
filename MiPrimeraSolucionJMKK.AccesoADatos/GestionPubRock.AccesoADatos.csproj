@@ -79,6 +79,8 @@
     <Compile Include="Entidades\ConfiguracionComercioEntidad.cs" />
     <Compile Include="Entidades\MarketingEntidad.cs" />
     <Compile Include="Entidades\ProductosEntidad.cs" />
+    <Compile Include="Entidades\PromocionEntidad.cs" />
+    <Compile Include="Entidades\PromocionProductoEntidad.cs" />
     <Compile Include="Entidades\ReportesMensualesEntidad.cs" />
     <Compile Include="Entidades\ReservacionEntidad.cs" />
     <Compile Include="Entidades\SINPESEntidad.cs" />
@@ -94,6 +96,10 @@
     <Compile Include="Marketing\RegistrarPublicacion\RegistrarPublicacionAD.cs" />
     <Compile Include="Ordenes\ObtenerOrdenesAD.cs" />
     <Compile Include="Ordenes\RegistrarOrdenAD.cs" />
+    <Compile Include="Promocion\DesactivarPromocionAD.cs" />
+    <Compile Include="Promocion\EditarPromocionAD.cs" />
+    <Compile Include="Promocion\ObtenerTodasLasPromocionesAD.cs" />
+    <Compile Include="Promocion\RegistrarPromocionAD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportesMensuales\ConsultarReporteMensual\ConsultarReporteMensualAD.cs" />
     <Compile Include="ReportesMensuales\GenerarReporteMensual\GenerarReportesMensualesAD.cs" />

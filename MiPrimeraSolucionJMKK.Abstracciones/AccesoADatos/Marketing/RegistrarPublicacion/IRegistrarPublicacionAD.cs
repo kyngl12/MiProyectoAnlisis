@@ -7,8 +7,7 @@ using MiPrimeraSolucionJMKK.Abstracciones.Modelos.Marketing;
 
 namespace MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Marketing.RegistrarPublicacion
 {
-    public interface IRegistrarPublicacionAD
-    {
+    public interface IRegistrarPublicacionAD {
         int Registrar(MarketingDto laPublicacion);
-    }
+  }
 }

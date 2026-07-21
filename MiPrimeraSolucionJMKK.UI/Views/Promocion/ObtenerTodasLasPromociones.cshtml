@@ -1,0 +1,136 @@
+@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Promociones.PromocionDto>
+
+@{
+    ViewBag.Title = "Promociones";
+}
+
+<div class="container py-5">
+    <div class="card-modern p-3">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Promociones</h2>
+
+            @Html.ActionLink(
+                "Nueva Promoción",
+                "AgregarPromocion",
+                "Promocion",
+                null,
+                new { @class = "btn btn-primary" }
+            )
+        </div>
+
+        @if (TempData["MensajeExito"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["MensajeExito"]
+            </div>
+        }
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
+            </div>
+        }
+
+        <table class="table table-hover table-bordered">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Promoción</th>
+                    <th>Descripción</th>
+                    <th>Descuento</th>
+                    <th>Vigencia</th>
+                    <th>Producto</th>
+                    <th>Estado</th>
+                    <th style="width:220px;">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.IdPromocion</td>
+
+                            <td>@item.NombrePromocion</td>
+
+                            <td>
+                                @(item.Descripcion != null && item.Descripcion.Length > 40
+                                    ? item.Descripcion.Substring(0,40) + "..."
+                                    : item.Descripcion)
+                            </td>
+
+                            <td>@item.PorcentajeDescuento %</td>
+
+                            <td>
+                                @item.FechaInicio.ToString("dd/MM/yyyy")
+                                <br />
+                                <small>al @item.FechaFin.ToString("dd/MM/yyyy")</small>
+                            </td>
+
+                            <td>@item.IdProducto</td>
+
+                            <td>
+                                @(item.IdEstado == 1 ? "Activa" : "Inactiva")
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex gap-2 align-items-center">
+
+                                    @Html.ActionLink(
+                                        "Editar",
+                                        "EditarPromocion",
+                                        "Promocion",
+                                        new { id = item.IdPromocion },
+                                        new { @class = "btn btn-sm btn-outline-warning" }
+                                    )
+
+                                    @using (Html.BeginForm("DesactivarPromocion", "Promocion", FormMethod.Post, new { @class = "m-0 p-0" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        @Html.Hidden("id", item.IdPromocion)
+
+                                        if (item.IdEstado == 1)
+                                        {
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                Desactivar
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" disabled>
+                                                Inactiva
+                                            </button>
+                                        }
+                                    }
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="text-center text-muted">
+                            No hay promociones registradas.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>

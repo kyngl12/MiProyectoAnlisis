@@ -70,6 +70,10 @@
     <Compile Include="AccesoADatos\Marketing\EditarPublicacion\IEditarPublicacionAD.cs" />
     <Compile Include="AccesoADatos\Marketing\ObtenerTodasLasPublicaciones\IObtenerTodasLasPublicacionesAD.cs" />
     <Compile Include="AccesoADatos\Marketing\RegistrarPublicacion\IRegistrarPublicacionAD.cs" />
+    <Compile Include="AccesoADatos\Promocion\IDesactivarPromocionAD.cs" />
+    <Compile Include="AccesoADatos\Promocion\IEditarPromocionAD.cs" />
+    <Compile Include="AccesoADatos\Promocion\IObtenerTodasLasPromocionesAD.cs" />
+    <Compile Include="AccesoADatos\Promocion\IRegistrarPromocionAD.cs" />
     <Compile Include="AccesoADatos\ReportesMensuales\ConsultaReporteMensual\IConsultarReporteMensualAD.cs" />
     <Compile Include="AccesoADatos\ReportesMensuales\GenerarReporteMensual\IGenerarReportesMensualesAD.cs" />
     <Compile Include="AccesoADatos\ReportesMensuales\ObtenerTodosLosReportesMensuales\IObtenerTodosLosReportesMensualesAD.cs" />
@@ -98,6 +102,10 @@
     <Compile Include="LogicaDeNegocio\Marketing\EditarPublicacion\IEditarPublicacionLN.cs" />
     <Compile Include="LogicaDeNegocio\Marketing\ObtenerTodasLasPublicaciones\IObtenerTodasLasPublicacionesLN.cs" />
     <Compile Include="LogicaDeNegocio\Marketing\RegistrarPublicacion\IRegistrarPublicacionLN.cs" />
+    <Compile Include="LogicaDeNegocio\Promocion\IDesactivarPromocionLN.cs" />
+    <Compile Include="LogicaDeNegocio\Promocion\IEditarPublicacionLN.cs" />
+    <Compile Include="LogicaDeNegocio\Promocion\IObtenerTodasLasPromocionesLN.cs" />
+    <Compile Include="LogicaDeNegocio\Promocion\IRegistrarPromocionLN.cs" />
     <Compile Include="LogicaDeNegocio\ReportesMensuales\GenerarReporteMensual\IGenerarReportesMensualesLN.cs" />
     <Compile Include="LogicaDeNegocio\ReportesMensuales\ObtenerTodosLosReportesMensuales\IObtenerTodosLosReportesMensualesLN.cs" />
     <Compile Include="LogicaDeNegocio\SINPESApi\ISINPESApiLN.cs" />
@@ -117,6 +125,7 @@
     <Compile Include="Modelos\Ordenes\OrdenDto.cs" />
     <Compile Include="Modelos\Ordenes\OrdenListDto.cs" />
     <Compile Include="Modelos\Productos\ProductoDto.cs" />
+    <Compile Include="Modelos\Promocion\PromocionDto.cs" />
     <Compile Include="Modelos\ReportesMensuales\ReportesMensualesDto.cs" />
     <Compile Include="Modelos\Reservacion\ReservacionDto.cs" />
     <Compile Include="Modelos\Reservacion\ReservacionesRequestDto.cs" />

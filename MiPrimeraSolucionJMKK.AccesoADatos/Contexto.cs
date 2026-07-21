@@ -28,6 +28,9 @@ namespace GestionPubRock.AccesoADatos
         public DbSet<ReservacionEntidad> Reservaciones { get; set; }
         public DbSet<ProductosEntidad> Productos { get; set; }
         public DbSet<MarketingEntidad> Marketing { get; set; }
+        public DbSet<PromocionEntidad> Promocion { get; set; }
+
+        public DbSet<PromocionProductoEntidad> PromocionProducto { get; set; }
 
 
 

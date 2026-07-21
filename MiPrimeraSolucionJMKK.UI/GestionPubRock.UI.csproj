@@ -238,6 +238,7 @@
     <Compile Include="Controllers\MarketingController.cs" />
     <Compile Include="Controllers\OrdenesController.cs" />
     <Compile Include="Controllers\OrdenesListadoController.cs" />
+    <Compile Include="Controllers\PromocionController.cs" />
     <Compile Include="Controllers\ReportesMensualesController.cs" />
     <Compile Include="Controllers\ComerciosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -364,6 +365,9 @@
     <Content Include="Views\Inventario\EditarProducto.cshtml" />
     <Content Include="Views\Ordenes\Editar.cshtml" />
     <Content Include="Views\Reservaciones\Registrar.cshtml" />
+    <Content Include="Views\Promocion\AgregarPromocion.cshtml" />
+    <Content Include="Views\Promocion\EditarPromocion.cshtml" />
+    <Content Include="Views\Promocion\ObtenerTodasLasPromociones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

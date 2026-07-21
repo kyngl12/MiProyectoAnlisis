@@ -1,0 +1,135 @@
+@model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Promociones.PromocionDto
+
+@{
+    ViewBag.Title = "Agregar Promoción";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card-modern">
+                <div class="card-body p-4">
+
+                    <h2 class="mb-4">
+                        <i class="bi bi-percent me-2"></i>Agregar Nueva Promoción
+                    </h2>
+
+                    @if (TempData["MensajeError"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            @TempData["MensajeError"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("AgregarPromocion", "Promocion", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.NombrePromocion, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.NombrePromocion, new
+                            {
+                                @class = "form-control",
+                                placeholder = "Ej: Descuento Fin de Semana"
+                            })
+                            @Html.ValidationMessageFor(m => m.NombrePromocion, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Descripcion, new { @class = "form-label" })
+                            @Html.TextAreaFor(m => m.Descripcion, new
+                            {
+                                @class = "form-control",
+                                rows = 4,
+                                placeholder = "Descripción de la promoción..."
+                            })
+                            @Html.ValidationMessageFor(m => m.Descripcion, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.PorcentajeDescuento, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.PorcentajeDescuento, new
+                            {
+                                @class = "form-control",
+                                type = "number",
+                                min = "1",
+                                max = "100",
+                                step = "0.01",
+                                placeholder = "Ingrese un porcentaje"
+                            })
+                            @Html.ValidationMessageFor(m => m.PorcentajeDescuento, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.FechaInicio, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.FechaInicio, "{0:yyyy-MM-dd}", new
+                                {
+                                    @class = "form-control",
+                                    type = "date"
+                                })
+                                @Html.ValidationMessageFor(m => m.FechaInicio, "", new { @class = "text-danger small" })
+                            </div>
+
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.FechaFin, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.FechaFin, "{0:yyyy-MM-dd}", new
+                                {
+                                    @class = "form-control",
+                                    type = "date"
+                                })
+                                @Html.ValidationMessageFor(m => m.FechaFin, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.IdProducto, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.IdProducto, new
+                            {
+                                @class = "form-control",
+                                type = "number",
+                                placeholder = "Ingrese el ID del producto"
+                            })
+                            @Html.ValidationMessageFor(m => m.IdProducto, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-4">
+                            @Html.LabelFor(m => m.IdEstado, new { @class = "form-label" })
+
+                            @Html.DropDownListFor(
+                                m => m.IdEstado,
+                                new SelectList(new[]
+                                {
+                                    new { Value = 1, Text = "Activo" },
+                                    new { Value = 2, Text = "Inactivo" }
+                                }, "Value", "Text"),
+                                "-- Seleccione estado --",
+                                new { @class = "form-select" }
+                            )
+
+                            @Html.ValidationMessageFor(m => m.IdEstado, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-end">
+
+                            @Html.ActionLink(
+                                "Cancelar",
+                                "Index",
+                                "Home",
+                                null,
+                                new { @class = "btn btn-secondary" })
+
+                            <button type="submit" class="btn btn-pubrock">
+                                <i class="bi bi-check-circle-fill me-1"></i>Guardar Promoción
+                            </button>
+
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
