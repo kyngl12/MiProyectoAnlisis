@@ -1,0 +1,81 @@
+@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos.ProductoDto>
+
+@{
+    ViewBag.Title = "Catálogo de Productos";
+}
+
+<div class="container py-3">
+    <div class="card-modern">
+
+        <h2>Catálogo de Productos</h2>
+
+        <p class="text-muted">
+            Consulte los productos disponibles y sus precios.
+        </p>
+
+        @if (TempData["MensajeInfo"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["MensajeInfo"]
+            </div>
+        }
+
+        <table class="table-modern">
+
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Disponibles</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var p in Model)
+                    {
+                        <tr>
+
+                            <td>@p.Codigo</td>
+
+                            <td>@p.Nombre</td>
+
+                            <td>@p.Categoria</td>
+
+                            <td>
+                                @p.Cantidad
+
+                                @if (p.Cantidad <= 5)
+                                {
+                                    <span class="badge bg-warning text-dark ms-2">
+                                        Pocas unidades
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                ₡ @p.PrecioUnitario
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            No hay productos disponibles.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>

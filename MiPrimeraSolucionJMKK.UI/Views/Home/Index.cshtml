@@ -1,161 +1,436 @@
-﻿@{
-    ViewBag.Title = "Gestion Operativa y Administrativa PubRock";
+﻿<!--  <div class="alert alert-info">
+    ¿Está autenticado?: @User.Identity.IsAuthenticated |
+    Usuario: @User.Identity.Name |
+    ¿Es Cliente?: @User.IsInRole("Cliente")
+</div>-->
+
+
+@{
+    if (User.IsInRole("Cliente"))
+    {
+        ViewBag.Title = "Inicio";
+    }
+    else
+    {
+        ViewBag.Title = "Gestion Operativa y Administrativa PubRock";
+    }
 }
 
-<div class="container py-5">
-    <div class="card-modern p-4">
-    <section class="hero mb-5">
-        <div class="hero-content">
-            <h1>PubRock — Gestión que impulsa tu negocio</h1>
-            <p class="lead">Optimiza operaciones, atiende clientes y controla ventas desde una única plataforma diseñada para bares y restaurantes.</p>
+@if (User.IsInRole("Cliente"))
+{
 
-            <div class="cta">
-                @if (!Request.IsAuthenticated)
-                {
-                    @Html.ActionLink("Comenzar — Iniciar sesión", "Login", "Account", null, new { @class = "btn btn-lg btn-white btn-rounded" })
-                    @Html.ActionLink("Registrar cliente", "AgregarUsuario", "Usuarios", null, new { @class = "btn btn-lg btn-pubrock btn-rounded" })
-                }
-                else if (User.IsInRole("Administrador"))
-                {
-                    @Html.ActionLink("Registrar cliente", "AgregarUsuario", "Usuarios", null, new { @class = "btn btn-lg btn-pubrock btn-rounded" })
-                    @Html.ActionLink("Ir al panel", "Index", "Home", null, new { @class = "btn btn-lg btn-outline-light btn-rounded" })
-                }
+
+
+
+    <!-- ESTILOS ADICIONALES -->
+    <style>
+        /* Asegurar que las imágenes del carrusel tengan un buen tamaño sin deformarse */
+        .carousel-item img {
+            height: 70vh; /* Altura: 70% de la ventana */
+            object-fit: cover; /* Recorta la imagen para llenar el espacio */
+        }
+
+        /* Mejora para las cards modernas */
+        .card-modern {
+            transition: transform 0.2s ease, shadow 0.2s ease;
+        }
+
+            .card-modern:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+            }
+    </style>
+
+    <!-- =========================================
+         1. CARRUSEL DE BIENVENIDA (Reemplaza al cuadro negro)
+         ========================================= -->
+    <div id="carouselPubRock" class="carousel slide carousel-fade shadow-sm mb-5" data-bs-ride="carousel">
+        <!-- Indicadores (puntos de abajo) -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselPubRock" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselPubRock" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselPubRock" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+
+        <!-- Diapositivas / Slides -->
+        <div class="carousel-inner rounded-bottom-4">
+            <!-- Slide 1: General -->
+            <div class="carousel-item active" data-bs-interval="5000">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSwCHrVRERCPL7MnwKz9vX3zp7F2rkgkBDLTp90GQJPfPvlVcppSwWCzc&s=10" class="d-block w-100" alt="Ambiente PubRock">
+                <div class="carousel-caption d-none d-md-block rounded-3 p-3" style="background-color: rgba(0,0,0,0.5);">
+                    <h1 class="display-4 fw-bold text-white">Bienvenido a PubRock</h1>
+                    <p class="lead text-light">Música, Sabor y Leyenda.</p>
+                </div>
             </div>
-
-            <div class="mt-3">
-                <small>Funciones destacadas: Punto de Venta • Inventario en tiempo real • Reservaciones • Marketing</small>
+            <!-- Slide 2: Comida -->
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSspBZtt4rqeb7X0MBsOTDK7Xybylzgj1YejR_c2M4toOgTqC7wl8xdHjI&s=10" class="d-block w-100" alt="Hamburguesas Artesanales">
+                <div class="carousel-caption d-none d-md-block rounded-3 p-3" style="background-color: rgba(0,0,0,0.5);">
+                    <h2 class="display-5 fw-bold text-white">Las Mejores Hamburguesas</h2>
+                    <p class="lead text-light">Sabor artesanal que hace rockear tu paladar.</p>
+                </div>
+            </div>
+            <!-- Slide 3: Eventos -->
+            <div class="carousel-item" data-bs-interval="5000">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHCy994Ta0M18jdjaD4QNTSqRmgQ5VoJJfwp7r_xiHqsM8XTRracUJqSM&s=10" class="d-block w-100" alt="Concierto en vivo">
+                <div class="carousel-caption d-none d-md-block rounded-3 p-3" style="background-color: rgba(0,0,0,0.5);">
+                    <h2 class="display-5 fw-bold text-white">Música en Vivo</h2>
+                    <p class="lead text-light">Disfruta de las mejores bandas locales cada fin de semana.</p>
+                </div>
             </div>
         </div>
 
-        <div class="hero-graphic">
-            <div class="card-cta">
-                <div style="font-size:1.1rem;font-weight:700">Clientes</div>
-                <div style="font-size:1.9rem;margin-top:.4rem">1,248</div>
-                <div style="font-size:.85rem;opacity:.9;margin-top:.4rem">+12% respecto al mes anterior</div>
-            </div>
-        </div>
-    </section>
-
-    <div class="modules-grid mb-5">
-        <a class="module-card" href="@Url.Action("Index","Inventario")">
-            <div class="module-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M7 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div>
-                <div class="module-title">Inventario</div>
-                <div class="module-desc">Administre productos, stock y categorias</div>
-            </div>
-        </a>
-
-        <a class="module-card" href="@Url.Action("Index","Reservaciones")">
-            <div class="module-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M16 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div>
-                <div class="module-title">Reservaciones</div>
-                <div class="module-desc">Crear y gestionar reservas de clientes</div>
-            </div>
-        </a>
-
-        <a class="module-card" href="@Url.Action("Index","OrdenesListado")">
-            <div class="module-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 15V6a2 2 0 0 0-2-2h-5l-2-2H5a2 2 0 0 0-2 2v11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M7 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div>
-                <div class="module-title">Ordenes</div>
-                <div class="module-desc">Crear, editar y seguir pedidos</div>
-            </div>
-        </a>
-
-        <a class="module-card" href="@Url.Action("Index","Usuarios")">
-            <div class="module-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div>
-                <div class="module-title">Usuarios</div>
-                <div class="module-desc">Gestion de usuarios y roles</div>
-            </div>
-        </a>
-
-        <a class="module-card" href="@Url.Action("Index","Marketing")">
-            <div class="module-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 8v6a2 2 0 0 1-2 2H8l-4 2V6a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div>
-                <div class="module-title">Marketing</div>
-                <div class="module-desc">Publicaciones y promociones</div>
-            </div>
-        </a>
+        <!-- Controles (Flechas) -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselPubRock" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselPubRock" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+        </button>
     </div>
 
-    @if (Request.IsAuthenticated)
-    {
-        <section class="card p-4 mt-4">
-            <div class="card-body">
-                <h3 class="h4 fw-bold mb-4">
-                    <i class="bi bi-grid-3x3-gap-fill me-2"></i>
-                    Modulos Disponibles
-                </h3>
+    <div class="container py-2">
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                Punto de Venta
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                Gestión de Órdenes
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                Inventario en Tiempo Real
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                Usuarios y Roles
-                            </li>
-                        </ul>
+        <!-- =========================================
+             2. SOBRE NOSOTROS (Título en Negro)
+             ========================================= -->
+        <section class="mb-5 text-center px-md-5">
+            <h2 class="fw-bold mb-3 text-dark">Nuestra Esencia</h2> <!-- text-dark asegura negro -->
+            <p class="text-muted fs-5 col-md-10 mx-auto">
+                En **PubRock** fusionamos la energía del rock and roll con la pasión por la cocina de calidad.
+                Somos el lugar ideal para desconectar, disfrutar de una hamburguesa legendaria y escuchar buena música con amigos.
+            </p>
+        </section>
+
+        <!-- =========================================
+             3. ACCESOS RÁPIDOS / CARDS (Manteniendo funcionalidad)
+             ========================================= -->
+        <section class="mb-5">
+            <div class="row g-4">
+                <!-- Menú -->
+                <div class="col-md-4">
+                    <div class="card card-modern p-4 h-100 d-flex flex-column justify-content-between shadow-sm rounded-4 border-0">
+                        <div>
+                            <div class="fs-1 mb-2">🍔</div>
+                            <h4 class="fw-bold text-dark">Nuestro Menú</h4>
+                            <p class="text-muted">
+                                Hamburguesas, entradas, bebidas y promociones.
+                            </p>
+                        </div>
+                        @Html.ActionLink("Ver Menú", "Catalogo", "Inventario", null, new { @class = "btn btn-outline-dark w-100 mt-2 fw-semibold" })
                     </div>
+                </div>
 
-                    <div class="col-md-6">
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                Contabilidad y Cierre de Caja
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                Promociones Automáticas
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                Reservaciones
-                            </li>
-                            <li class="mb-2">
-                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                Reportes y Marketing
-                            </li>
-                        </ul>
+                <!-- Ambiente -->
+                <div class="col-md-4">
+                    <div class="card card-modern p-4 h-100 d-flex flex-column justify-content-between shadow-sm rounded-4 border-0">
+                        <div>
+                            <div class="fs-1 mb-2">🎸</div>
+                            <h4 class="fw-bold text-dark">Ambiente</h4>
+                            <p class="text-muted">
+                                Música en vivo, eventos especiales y galería.
+                            </p>
+                        </div>
+                        @Html.ActionLink("Ver Eventos", "Index", "Eventos", null, new { @class = "btn btn-outline-dark w-100 mt-3fw-semibold" })
+                    </div>
+                </div>
+
+                <!-- Reservaciones -->
+                <div class="col-md-4">
+                    <div class="card card-modern p-4 h-100 d-flex flex-column justify-content-between shadow-sm rounded-4 border-0" style="background-color: #fff8eb;">
+                        <div>
+                            <div class="fs-1 mb-2">📅</div>
+                            <h4 class="fw-bold text-dark">Reservaciones</h4>
+                            <p class="text-muted">
+                                Reserva tu mesa rápido y asegura tu lugar.
+                            </p>
+                        </div>
+                        @Html.ActionLink("Reservar Ahora", "Index", "Reservaciones", null, new { @class = "btn btn-warning w-100 mt-3 fw-bold shadow-sm" })
                     </div>
                 </div>
             </div>
         </section>
-    }
+
+        <!-- =========================================
+             4. CONTACTO Y UBICACIÓN CON MAPA
+             ========================================= -->
+        <section id="contacto" class="p-4 p-md-5 rounded-4 bg-light shadow-sm mb-5 border">
+            <h3 class="fw-bold text-center mb-4 text-dark">📍 Visítanos o Contáctanos</h3>
+
+            <!-- Info en Texto (3 columnas en desktop) -->
+            <div class="row g-4 text-center mb-4 pb-3 border-bottom">
+                <div class="col-md-4">
+                    <div class="fs-3 text-warning">📞</div>
+                    <h6 class="fw-bold mb-1 text-dark">Teléfono / WhatsApp</h6>
+                    <small class="text-muted">+506 7083-5077</small>
+                </div>
+                <div class="col-md-4">
+                    <div class="fs-3 text-warning">✉️</div>
+                    <h6 class="fw-bold mb-1 text-dark">Correo</h6>
+                    <small class="text-muted">pubrockcr@hotmail.com</small>
+                </div>
+                <div class="col-md-4">
+                    <div class="fs-3 text-warning">⏰</div>
+                    <h6 class="fw-bold mb-1 text-dark">Horario</h6>
+                    <small class="text-muted">Mar-Dom: 5PM - 1AM</small>
+                </div>
+            </div>
+
+
+            <!-- TARJETAS DE REDES SOCIALES (Estilo Minimalista) -->
+            <div class="row g-4 mb-4">
+                <!-- Instagram Card -->
+                <div class="col-md-6">
+                    <div class="card card-modern p-4 rounded-4 border-0 shadow-sm bg-white h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="fs-3 me-3 text-dark">📸</span>
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-dark">Instagram</h5>
+                                    <small class="text-muted">@@pubrock_cr</small>
+                                </div>
+                            </div>
+                            <p class="small text-secondary mb-3">
+                                Mira nuestras fotos, platos del día y ambiente en vivo en nuestras historias.
+                            </p>
+                        </div>
+                        <div>
+                            <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.instagram.com%2F%2540pubrock_cr&h=AUBRUX2mW-GaE2B05-DbFFS_NQ1opcHbySK95CHMCyCGPsQoqZ8NyYxmxuLETsePFlB-NSmMlZ9B5znaWjl4NN5D6TM3nocuSSWMrl1-3PCotVcLXvknHsk08QRWo_90_Qi2xzF_9seVyiauUyXd" target="_blank" class="btn btn-outline-dark btn-sm fw-semibold rounded-pill px-4">
+                                Seguir en Instagram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Facebook Card -->
+                <div class="col-md-6">
+                    <div class="card card-modern p-4 rounded-4 border-0 shadow-sm bg-white h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="fs-3 me-3 text-dark">📘</span>
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-dark">Facebook</h5>
+                                    <small class="text-muted">Pub Rock CR Oficial</small>
+                                </div>
+                            </div>
+                            <p class="small text-secondary mb-3">
+                                Enterate de los próximos eventos, cartelera de bandas y promociones.
+                            </p>
+                        </div>
+                        <div>
+                            <a href="https://www.facebook.com/PubRockCR/?locale=es_LA" target="_blank" class="btn btn-outline-dark btn-sm fw-semibold rounded-pill px-4">
+                                Visitar Facebook
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- El Mapa abajo de la info -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
+                        <!-- MAPA EMBEDIDO DE GOOGLE (Reemplaza la dirección en 'q=') -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
+                                    <!-- Pega aquí directamente el HTML que copiaste de Google Maps -->
+                                    <center>
+                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.0364073240535!2d-84.06138172496976!3d9.930925990170962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e39b46cc0935%3A0x665ae8e9b44d1b9d!2sPub%20Rock!5e0!3m2!1ses!2scr!4v1784693637395!5m2!1ses!2scr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
+                                            width="100%"
+                                            height="350"
+                                            style="border:0;"
+                                            allowfullscreen=""
+                                            loading="lazy"
+                                            referrerpolicy="no-referrer-when-downgrade">
+                                        </iframe>
+                                    </center>
+                                </div>
+                                <small class="text-muted d-block text-center mt-2">Visítanos en nuestra ubicación principal.</small>
+                            </div>
+                        </div>
+                        <!-- NOTA: Para producción, necesitas una API KEY de Google Maps.
+                Mientras tanto, puedes usar un iframe gratuito generado en google.com/maps -> Compartir -> Insertar mapa -->
+                    </div>
+                    <small class="text-muted d-block text-center mt-2">Av. Principal Rock City, Cartago.</small>
+                </div>
+            </div>
+        </section>
+
     </div>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+}
+else
+{
+    <div class="container py-5">
+        <div class="card-modern p-4">
+            <section class="hero mb-5">
+                <div class="hero-content">
+                    <h1>PubRock — Gestión que impulsa tu negocio</h1>
+                    <p class="lead">Optimiza operaciones, atiende clientes y controla ventas desde una única plataforma diseñada para bares y restaurantes.</p>
+
+                    <div class="cta">
+                        @if (!Request.IsAuthenticated)
+                        {
+                            @Html.ActionLink("Comenzar — Iniciar sesión", "Login", "Account", null, new { @class = "btn btn-lg btn-white btn-rounded" })
+                            @Html.ActionLink("Registrar cliente", "AgregarUsuario", "Usuarios", null, new { @class = "btn btn-lg btn-pubrock btn-rounded" })
+                        }
+                        else if (User.IsInRole("Administrador"))
+                        {
+                            @Html.ActionLink("Registrar cliente", "AgregarUsuario", "Usuarios", null, new { @class = "btn btn-lg btn-pubrock btn-rounded" })
+                            @Html.ActionLink("Ir al panel", "Index", "Home", null, new { @class = "btn btn-lg btn-outline-light btn-rounded" })
+                        }
+                    </div>
+
+                    <div class="mt-3">
+                        <small>Funciones destacadas: Punto de Venta • Inventario en tiempo real • Reservaciones • Marketing</small>
+                    </div>
+                </div>
+
+                <div class="hero-graphic">
+                    <div class="card-cta">
+                        <div style="font-size:1.1rem;font-weight:700">Clientes</div>
+                        <div style="font-size:1.9rem;margin-top:.4rem">1,248</div>
+                        <div style="font-size:.85rem;opacity:.9;margin-top:.4rem">+12% respecto al mes anterior</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="modules-grid mb-5">
+                <a class="module-card" href="@Url.Action("Index","Inventario")">
+                    <div class="module-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M7 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="module-title">Inventario</div>
+                        <div class="module-desc">Administre productos, stock y categorias</div>
+                    </div>
+                </a>
+
+                <a class="module-card" href="@Url.Action("Index","Reservaciones")">
+                    <div class="module-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M16 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="module-title">Reservaciones</div>
+                        <div class="module-desc">Crear y gestionar reservas de clientes</div>
+                    </div>
+                </a>
+
+                <a class="module-card" href="@Url.Action("Index","OrdenesListado")">
+                    <div class="module-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V6a2 2 0 0 0-2-2h-5l-2-2H5a2 2 0 0 0-2 2v11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M7 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="module-title">Ordenes</div>
+                        <div class="module-desc">Crear, editar y seguir pedidos</div>
+                    </div>
+                </a>
+
+                <a class="module-card" href="@Url.Action("Index","Usuarios")">
+                    <div class="module-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="module-title">Usuarios</div>
+                        <div class="module-desc">Gestion de usuarios y roles</div>
+                    </div>
+                </a>
+
+                <a class="module-card" href="@Url.Action("Index","Marketing")">
+                    <div class="module-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 8v6a2 2 0 0 1-2 2H8l-4 2V6a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="module-title">Marketing</div>
+                        <div class="module-desc">Publicaciones y promociones</div>
+                    </div>
+                </a>
+            </div>
+
+            @if (Request.IsAuthenticated)
+            {
+                <section class="card p-4 mt-4">
+                    <div class="card-body">
+                        <h3 class="h4 fw-bold mb-4">
+                            <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+                            Modulos Disponibles
+                        </h3>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Punto de Venta
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Gestión de Órdenes
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Inventario en Tiempo Real
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Usuarios y Roles
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Contabilidad y Cierre de Caja
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Promociones Automáticas
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Reservaciones
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Reportes y Marketing
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+        </div>
+    </div>
+}

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace MiPrimeraSolucionJMKK.UI.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador, Cliente")]
     public class InventarioController : Controller
     {
         private readonly ObtenerProductosLN _ln;
@@ -233,6 +233,19 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "Cliente")]
+        public ActionResult Catalogo()
+        {
+            var lista = _ln.ObtenerTodos();
+
+            if (lista == null || lista.Count == 0)
+            {
+                TempData["MensajeInfo"] = "No hay productos disponibles.";
+            }
+
+            return View(lista);
         }
     }
 
