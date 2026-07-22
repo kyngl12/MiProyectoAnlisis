@@ -9,6 +9,7 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
     [Authorize(Roles = "Administrador, Cliente")]
     public class InventarioController : Controller
     {
+
         private readonly ObtenerProductosLN _ln;
         private readonly MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario.RegistrarProducto.RegistrarProductoLN _registrarLN;
         private readonly EditarProductoLN _editarLN;
@@ -105,8 +106,6 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
                     return RedirectToAction("Index");
                 }
 
-
-
                 TempData["MensajeInfo"] = "No se pudo registrar el producto";
 
                 CargarCategorias();
@@ -128,7 +127,7 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             }
         }
 
-        //Editar
+        // Editar
         public ActionResult EditarProducto(int id)
         {
             try
@@ -192,8 +191,8 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             }
         }
 
-    //Eliminar
-    [HttpPost]
+        // Eliminar
+        [HttpPost]
         public ActionResult EliminarProducto(int id)
         {
             var ln = new EliminarProductoLN();
@@ -211,8 +210,7 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             return RedirectToAction("Index");
         }
 
-        //Movimiento bitacora
-
+        // Movimiento bitacora
         [HttpPost]
         public ActionResult RegistrarMovimiento(int idProducto, int cantidad, string tipo, string motivo)
         {
@@ -225,7 +223,7 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             }
             else if (resultado.Contains("Stock bajo"))
             {
-                TempData["MensajeInfo"] = resultado; 
+                TempData["MensajeInfo"] = resultado;
             }
             else
             {
@@ -235,6 +233,10 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             return RedirectToAction("Index");
         }
 
+        // ==========================================
+        // VISTA CLIENTE: CATÁLOGO DE PRODUCTOS
+        // ==========================================
+
         [Authorize(Roles = "Cliente")]
         public ActionResult Catalogo()
         {
@@ -242,9 +244,9 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
 
             var lista = _ln.ObtenerTodos();
 
-            if (lista == null || lista.Count == 0)
+            if (lista == null || !lista.Any())
             {
-                TempData["MensajeInfo"] = "No hay productos disponibles.";
+                TempData["MensajeInfo"] = "No hay productos disponibles en el catálogo.";
             }
 
             return View(lista);
@@ -256,9 +258,15 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
         {
             CargarCategorias();
 
+            // Si se selecciona la opción vacía o "-- Todas las categorías --", se recargan todos
+            if (string.IsNullOrWhiteSpace(categoria))
+            {
+                return RedirectToAction("Catalogo");
+            }
+
             var lista = _ln.ObtenerPorFiltro(categoria, null, null);
 
-            if (lista == null || lista.Count == 0)
+            if (lista == null || !lista.Any())
             {
                 TempData["MensajeInfo"] = "No se encontraron productos para esa categoría.";
             }
@@ -266,5 +274,4 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             return View(lista);
         }
     }
-
-    }
+}
