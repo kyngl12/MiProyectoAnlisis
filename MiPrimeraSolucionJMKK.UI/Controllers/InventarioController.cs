@@ -238,11 +238,29 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
         [Authorize(Roles = "Cliente")]
         public ActionResult Catalogo()
         {
+            CargarCategorias();
+
             var lista = _ln.ObtenerTodos();
 
             if (lista == null || lista.Count == 0)
             {
                 TempData["MensajeInfo"] = "No hay productos disponibles.";
+            }
+
+            return View(lista);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Cliente")]
+        public ActionResult Catalogo(string categoria)
+        {
+            CargarCategorias();
+
+            var lista = _ln.ObtenerPorFiltro(categoria, null, null);
+
+            if (lista == null || lista.Count == 0)
+            {
+                TempData["MensajeInfo"] = "No se encontraron productos para esa categoría.";
             }
 
             return View(lista);

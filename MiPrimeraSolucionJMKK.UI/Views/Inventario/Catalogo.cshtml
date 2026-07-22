@@ -20,6 +20,33 @@
             </div>
         }
 
+
+        @using (Html.BeginForm("Catalogo", "Inventario", FormMethod.Post))
+        {
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+
+                    @Html.DropDownList(
+                        "categoria",
+                        ViewBag.Categorias as SelectList,
+                        "-- Todas las categorías --",
+                        new { @class = "form-select" })
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button type="submit" class="btn btn-pubrock">
+                        Filtrar
+                    </button>
+
+                </div>
+
+            </div>
+        }
+
+
         <table class="table-modern">
 
             <thead>
