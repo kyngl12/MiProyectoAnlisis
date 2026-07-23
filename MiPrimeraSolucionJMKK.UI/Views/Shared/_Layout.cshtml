@@ -17,6 +17,7 @@
     <link href="~/Content/Styles/buttons.css" rel="stylesheet" />
     <link href="~/Content/Styles/dashboard.css" rel="stylesheet" />
     <link href="~/Content/Styles/animations.css" rel="stylesheet" />
+    <link href="~/Content/Styles/factura.css" rel="stylesheet" />
     <link href="~/Content/site.custom.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet" />
 
@@ -484,6 +485,8 @@
     <script src="~/Scripts/jquery-3.7.1.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     <script src="@Url.Content("~/Scripts/SweetAlert/sweetalert2@11.js")"></script>
+    <!-- PDF Generation: html2pdf.js (requires jsPDF + html2canvas) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

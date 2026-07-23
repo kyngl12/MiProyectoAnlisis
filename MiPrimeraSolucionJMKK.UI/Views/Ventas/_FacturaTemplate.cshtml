@@ -1,0 +1,107 @@
+<!-- Plantilla de Factura Profesional (Solo HTML, sin modelo Razor) -->
+<!-- Sera renderizada con datos dinamicos desde JavaScript -->
+
+<div id="facturaTemplate" style="display: none;">
+    <div class="factura-page">
+        <!-- Encabezado -->
+        <div class="factura-header">
+            <div class="factura-logo-section">
+                <div class="factura-logo">🎸</div>
+                <div class="factura-empresa">
+                    <h1>PubRock CR</h1>
+                    <p>Gestion de Pub & Rock</p>
+                </div>
+            </div>
+            <div class="factura-numero">
+                <div class="numero-label">Factura No.</div>
+                <div class="numero-valor" id="facturaNumero">001-001-000000001</div>
+            </div>
+        </div>
+
+        <!-- Datos de la empresa -->
+        <div class="factura-empresa-info">
+            <div class="info-item">
+                <span class="label">Empresa:</span>
+                <span class="value">Pub Rock CR</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Telefono:</span>
+                <span class="value">(506) 2234-5678</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Direccion:</span>
+                <span class="value">San Jose, Costa Rica</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Email:</span>
+                <span class="value">ventas@pubrock.cr</span>
+            </div>
+        </div>
+
+        <!-- Fechas -->
+        <div class="factura-fechas">
+            <div class="fecha-item">
+                <span class="label">Fecha de Factura:</span>
+                <span class="value" id="facturaFecha">01/01/2025</span>
+            </div>
+            <div class="fecha-item">
+                <span class="label">Hora:</span>
+                <span class="value" id="facturaHora">10:30 AM</span>
+            </div>
+            <div class="fecha-item">
+                <span class="label">Vendedor:</span>
+                <span class="value" id="facturaVendedor">-</span>
+            </div>
+        </div>
+
+        <!-- Tabla de detalles -->
+        <div class="factura-detalle">
+            <table class="tabla-detalles">
+                <thead>
+                    <tr>
+                        <th>Descripcion</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-right">Precio Unit.</th>
+                        <th class="text-right">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="facturaDetalleBody">
+                    <!-- Rellenado dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Totales -->
+        <div class="factura-totales">
+            <div class="totales-container">
+                <div class="total-item">
+                    <span>Subtotal:</span>
+                    <span class="valor" id="facturaSubtotal">₡ 0.00</span>
+                </div>
+                <div class="total-item">
+                    <span>IVA (13%):</span>
+                    <span class="valor" id="facturaIVA">₡ 0.00</span>
+                </div>
+                <div class="total-item total-final">
+                    <span>TOTAL:</span>
+                    <span class="valor" id="facturaTotal">₡ 0.00</span>
+                </div>
+                <div class="total-item">
+                    <span>Metodo de Pago:</span>
+                    <span class="valor" id="facturaMetodoPago">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie de pagina -->
+        <div class="factura-footer">
+            <div class="footer-text">
+                <p>Gracias por su compra</p>
+                <p class="footer-small">Esta factura es valida como comprobante de compra.</p>
+            </div>
+            <div class="footer-qr" id="facturaQR">
+                <!-- QR placeholder -->
+            </div>
+        </div>
+    </div>
+</div>

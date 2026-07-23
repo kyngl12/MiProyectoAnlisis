@@ -272,9 +272,16 @@ body,
   z-index: 101;
 }
 
-.modal,
 .dropdown-menu {
   z-index: 200;
+}
+
+.modal {
+  z-index: 1055;
+}
+
+.modal-backdrop {
+  z-index: 1050;
 }
 
 /* SCROLL BEHAVIOR */

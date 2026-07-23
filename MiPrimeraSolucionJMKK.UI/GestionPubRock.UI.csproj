@@ -281,6 +281,7 @@
     <Content Include="Content\Styles\buttons.css" />
     <Content Include="Content\Styles\components.css" />
     <Content Include="Content\Styles\dashboard.css" />
+    <Content Include="Content\Styles\factura.css" />
     <Content Include="Content\Styles\forms.css" />
     <Content Include="Content\Styles\layout.css" />
     <Content Include="Content\Styles\tables.css" />
@@ -372,6 +373,7 @@
     <Content Include="Views\Promocion\ObtenerTodasLasPromociones.cshtml" />
     <Content Include="Views\Inventario\Catalogo.cshtml" />
     <Content Include="Views\Ventas\Index.cshtml" />
+    <Content Include="Views\Ventas\_FacturaTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
