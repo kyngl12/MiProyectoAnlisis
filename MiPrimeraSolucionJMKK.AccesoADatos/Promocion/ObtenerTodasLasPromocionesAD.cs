@@ -17,26 +17,42 @@ namespace GestionPubRock.AccesoADatos.Promocion
             _elContexto = new Contexto();
         }
 
-        public List<PromocionDto> Obtener()
+        public List<PromocionDto> Obtener(string criterio = "")
         {
             try
             {
-                var promociones = (from p in _elContexto.Promocion
-                                   join pp in _elContexto.PromocionProducto
-                                   on p.IdPromocion equals pp.IdPromocion
-                                   select new PromocionDto
-                                   {
-                                       IdPromocion = p.IdPromocion,
-                                       NombrePromocion = p.NombrePromocion,
-                                       Descripcion = p.Descripcion,
-                                       PorcentajeDescuento = p.PorcentajeDescuento,
-                                       FechaInicio = p.FechaInicio,
-                                       FechaFin = p.FechaFin,
-                                       IdEstado = p.IdEstado,
-                                       IdProducto = pp.IdProducto
-                                   }).ToList();
+                var consulta =
+                    from p in _elContexto.Promocion
+                    join pp in _elContexto.PromocionProducto
+                        on p.IdPromocion equals pp.IdPromocion
+                    join pr in _elContexto.Productos
+                        on pp.IdProducto equals pr.IdProducto
+                    select new
+                    {
+                        Promocion = p,
+                        Producto = pr
+                    };
 
-                return promociones;
+                if (!string.IsNullOrWhiteSpace(criterio))
+                {
+                    criterio = criterio.ToLower();
+
+                    consulta = consulta.Where(x =>
+                        x.Promocion.NombrePromocion.ToLower().Contains(criterio) ||
+                        x.Producto.NombreProducto.ToLower().Contains(criterio));
+                }
+
+                return consulta.Select(x => new PromocionDto
+                {
+                    IdPromocion = x.Promocion.IdPromocion,
+                    NombrePromocion = x.Promocion.NombrePromocion,
+                    Descripcion = x.Promocion.Descripcion,
+                    PorcentajeDescuento = x.Promocion.PorcentajeDescuento,
+                    FechaInicio = x.Promocion.FechaInicio,
+                    FechaFin = x.Promocion.FechaFin,
+                    IdEstado = x.Promocion.IdEstado,
+                    IdProducto = x.Producto.IdProducto
+                }).ToList();
             }
             catch
             {
@@ -45,3 +61,4 @@ namespace GestionPubRock.AccesoADatos.Promocion
         }
     }
 }
+

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Gestion PubRock</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap (local fallback) -->
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <!-- Project styles (keep existing structure + custom overrides) -->
@@ -19,6 +19,269 @@
     <link href="~/Content/Styles/animations.css" rel="stylesheet" />
     <link href="~/Content/site.custom.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet" />
+
+    <!-- ===== Tema visual "Cafecito" (override, no toca los .css originales) ===== -->
+    <style>
+        :root {
+            --coffee-950: #2b1c14;
+            --coffee-900: #3a271a;
+            --coffee-800: #4a3222;
+            --coffee-700: #5c3f2b;
+            --coffee-600: #7a5136;
+            --coffee-500: #9c6b46;
+            --coffee-400: #c08e5f;
+            --coffee-200: #e7cba8;
+            --coffee-100: #f3e2c8;
+            --cream-50: #fbf6ee;
+            --cream-25: #fdfaf4;
+            --accent: #b5652f;
+            --accent-dark: #96501f;
+            --success: #6f8f53;
+            --text-main: #3a271a;
+            --text-muted: #8a7364;
+            --shadow-sm: 0 1px 2px rgba(43, 28, 20, .06), 0 1px 3px rgba(43, 28, 20, .08);
+            --shadow-md: 0 4px 14px rgba(43, 28, 20, .10);
+            --shadow-lg: 0 12px 32px rgba(43, 28, 20, .14);
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--cream-50);
+            color: var(--text-main);
+        }
+
+        /* ---------- Layout shell ---------- */
+        .app-shell {
+            min-height: 100vh;
+        }
+
+        /* ---------- Sidebar ---------- */
+        .app-sidebar {
+            width: 250px;
+            min-width: 250px;
+            background: linear-gradient(180deg, var(--coffee-900) 0%, var(--coffee-950) 100%) !important;
+            border: none !important;
+            padding: 22px 16px;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+            .app-sidebar .logo {
+                padding: 4px 10px 18px;
+                border-bottom: 1px solid rgba(255,255,255,.08);
+                margin-bottom: 18px !important;
+            }
+
+            .app-sidebar .brand {
+                font-weight: 800;
+                font-size: 1.35rem;
+                letter-spacing: .3px;
+                color: var(--cream-25);
+                background: linear-gradient(90deg, var(--coffee-200), var(--coffee-400));
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+        .nav-section-title {
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .09em;
+            color: var(--coffee-400);
+            margin: 18px 10px 8px;
+        }
+
+        .sidebar-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: var(--coffee-100) !important;
+            font-weight: 500;
+            font-size: .92rem;
+            text-decoration: none !important;
+            transition: background .18s ease, color .18s ease, transform .12s ease;
+        }
+
+            .nav-link .nav-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 22px;
+                height: 22px;
+                opacity: .85;
+                flex-shrink: 0;
+            }
+
+            .nav-link:hover {
+                background: rgba(255, 255, 255, .08);
+                color: #fff !important;
+                transform: translateX(2px);
+            }
+
+                .nav-link:hover .nav-icon {
+                    opacity: 1;
+                }
+
+            .nav-link.active {
+                background: var(--accent);
+                color: #fff !important;
+                box-shadow: var(--shadow-sm);
+            }
+
+        /* Login partial container in sidebar */
+        .app-sidebar > div[style*="margin-top"] {
+            margin-top: auto !important;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+
+        /* ---------- Topbar ---------- */
+        .app-content {
+            background: var(--cream-50);
+        }
+
+        .navbar.navbar-white {
+            background: var(--cream-25) !important;
+            border: 1px solid var(--coffee-100);
+            border-radius: var(--radius) !important;
+            box-shadow: var(--shadow-sm) !important;
+        }
+
+        .navbar-brand .brand {
+            font-weight: 800;
+            color: var(--coffee-800);
+        }
+
+        .navbar-brand small {
+            color: var(--text-muted) !important;
+        }
+
+        .navbar .text-secondary {
+            color: var(--coffee-700) !important;
+            font-weight: 500;
+        }
+
+        .navbar .btn-primary {
+            background: var(--accent) !important;
+            border-color: var(--accent) !important;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background .15s ease, transform .12s ease;
+        }
+
+            .navbar .btn-primary:hover {
+                background: var(--accent-dark) !important;
+                transform: translateY(-1px);
+            }
+
+        .navbar .btn-outline-secondary {
+            color: var(--coffee-700) !important;
+            border-color: var(--coffee-400) !important;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all .15s ease;
+        }
+
+            .navbar .btn-outline-secondary:hover {
+                background: var(--coffee-700) !important;
+                border-color: var(--coffee-700) !important;
+                color: #fff !important;
+            }
+
+        /* ---------- Content area ---------- */
+        .container-fluid {
+            animation: fadeIn .25s ease;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app-footer {
+            font-size: .82rem;
+            color: var(--text-muted);
+            padding-top: 14px;
+        }
+
+        footer {
+            display: none; /* evita el pie de página duplicado visualmente (el de app-footer ya lo muestra) */
+        }
+
+        /* ---------- Scrollbar cafecito ---------- */
+        .app-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .app-sidebar::-webkit-scrollbar-thumb {
+            background: var(--coffee-600);
+            border-radius: 10px;
+        }
+
+        /* ---------- Responsive ---------- */
+        @@media (max-width: 991.98px) {
+            .app-shell {
+                flex-direction: column;
+            }
+
+            .app-sidebar {
+                width: 100%;
+                min-width: 100%;
+                height: auto;
+                position: relative;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+
+                .app-sidebar .logo {
+                    border-bottom: none;
+                    margin-bottom: 0 !important;
+                    padding: 0 10px;
+                }
+
+            .nav-section-title {
+                display: none;
+            }
+
+            .sidebar-icons {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .app-sidebar > div[style*="margin-top"] {
+                margin-top: 0 !important;
+                border-top: none;
+                padding-top: 0;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -30,133 +293,133 @@
             {
                 if (User.IsInRole("Administrador"))
                 {
-            <div class="nav-section-title">Navegación</div>
-            <div class="sidebar-icons">
-                <a href="@Url.Action("Index","Home")" class="nav-link">
-                    <span class="nav-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 11.5L12 4l9 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M5 12v7a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                    <span class="nav-text">Inicio</span>
-                </a>
+                    <div class="nav-section-title">Navegación</div>
+                    <div class="sidebar-icons">
+                        <a href="@Url.Action("Index","Home")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 11.5L12 4l9 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M5 12v7a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Inicio</span>
+                        </a>
 
-                <div class="nav-section-title">Gestion</div>
+                        <div class="nav-section-title">Gestion</div>
 
-                <a href="@Url.Action("ObtenerTodosLosUsuarios","Usuarios")" class="nav-link">
-                    <span class="nav-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                    <span class="nav-text">Usuarios</span>
-                </a>
+                        <a href="@Url.Action("ObtenerTodosLosUsuarios","Usuarios")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Usuarios</span>
+                        </a>
 
-                <a href="@Url.Action("Index","Inventario")" class="nav-link">
-                    <span class="nav-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5" />
-                            <path d="M7 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
-                    </span>
-                    <span class="nav-text">Inventario</span>
-                </a>
+                        <a href="@Url.Action("Index","Inventario")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5" />
+                                    <path d="M7 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Inventario</span>
+                        </a>
 
-                <a href="@Url.Action("Index","OrdenesListado")" class="nav-link">
-                    <span class="nav-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 15V6a2 2 0 0 0-2-2h-5l-2-2H5a2 2 0 0 0-2 2v11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </span>
-                    <span class="nav-text">Ordenes</span>
-                </a>
+                        <a href="@Url.Action("Index","OrdenesListado")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21 15V6a2 2 0 0 0-2-2h-5l-2-2H5a2 2 0 0 0-2 2v11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M7 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Ordenes</span>
+                        </a>
 
-                <a href="@Url.Action("Index","Marketing")" class="nav-link">
-                    <span class="nav-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 8v6a2 2 0 0 1-2 2H8l-4 2V6a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                    </span>
-                    <span class="nav-text">Marketing</span>
-                </a>
+                        <a href="@Url.Action("Index","Marketing")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 8v6a2 2 0 0 1-2 2H8l-4 2V6a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M7 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Marketing</span>
+                        </a>
 
-                <a href="@Url.Action("Index","Reservaciones")" class="nav-link">
-                    <span class="nav-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" />
-                            <path d="M16 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
-                    </span>
-                    <span class="nav-text">Reservaciones</span>
-                </a>
+                        <a href="@Url.Action("Index","Reservaciones")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" />
+                                    <path d="M16 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Reservaciones</span>
+                        </a>
 
-                <a href="@Url.Action("ObtenerTodasLasPromociones","Promocion")" class="nav-link">
-                    <span class="nav-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19 5L5 19" stroke="currentColor"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round" />
-                            <circle cx="7" cy="7" r="2"
-                                    stroke="currentColor"
-                                    stroke-width="1.5" />
-                            <circle cx="17" cy="17" r="2"
-                                    stroke="currentColor"
-                                    stroke-width="1.5" />
-                        </svg>
-                    </span>
-                    <span class="nav-text">Promociones</span>
-                </a>
+                        <a href="@Url.Action("ObtenerTodasLasPromociones","Promocion")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 5L5 19" stroke="currentColor"
+                                          stroke-width="1.5"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round" />
+                                    <circle cx="7" cy="7" r="2"
+                                            stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    <circle cx="17" cy="17" r="2"
+                                            stroke="currentColor"
+                                            stroke-width="1.5" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Promociones</span>
+                        </a>
 
-            </div>
+                    </div>
                 }
                 else if (User.IsInRole("Empleado"))
                 {
-            <div class="nav-section-title">Navegación</div>
-            <div class="sidebar-icons">
-                @Html.ActionLink("Inicio","Index","Home",null,new { @class = "nav-link" })
-                @Html.ActionLink("Reservaciones","Index","Reservaciones",null,new { @class = "nav-link" })
-            </div>
+                    <div class="nav-section-title">Navegación</div>
+                    <div class="sidebar-icons">
+                        @Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })
+                        @Html.ActionLink("Reservaciones", "Index", "Reservaciones", null, new { @class = "nav-link" })
+                    </div>
                 }
 
-            else if (User.IsInRole("Cliente"))
-{
-            <div class="nav-section-title">Navegación</div>
+                else if (User.IsInRole("Cliente"))
+                {
+                    <div class="nav-section-title">Navegación</div>
 
-            <div class="sidebar-icons">
+                    <div class="sidebar-icons">
 
-                <a href="@Url.Action("Index","Home")" class="nav-link">
-                    <span class="nav-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 11.5L12 4l9 7.5"
-                                  stroke="currentColor"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round" />
-                            <path d="M5 12v7a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-7"
-                                  stroke="currentColor"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round" />
-                        </svg>
-                    </span>
+                        <a href="@Url.Action("Index","Home")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 11.5L12 4l9 7.5"
+                                          stroke="currentColor"
+                                          stroke-width="1.5"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round" />
+                                    <path d="M5 12v7a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-7"
+                                          stroke="currentColor"
+                                          stroke-width="1.5"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round" />
+                                </svg>
+                            </span>
 
-                    <span class="nav-text">Inicio</span>
-                </a>
+                            <span class="nav-text">Inicio</span>
+                        </a>
 
-            </div>
-}
+                    </div>
+                }
 
             }
             else
             {
-            @Html.ActionLink("Inicio","Index","Home",null,new { @class = "nav-link" })
+                @Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })
             }
 
             <div style="margin-top:20px">@Html.Partial("_LoginPartial")</div>
@@ -180,13 +443,13 @@
                                     <span class="text-secondary">@User.Identity.Name</span>
                                 </li>
                                 <li class="nav-item">
-                                    @Html.ActionLink("Cerrar sesión","Logout","Account",null,new { @class = "btn btn-outline-secondary btn-sm" })
+                                    @Html.ActionLink("Cerrar sesión", "Logout", "Account", null, new { @class = "btn btn-outline-secondary btn-sm" })
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    @Html.ActionLink("Iniciar sesión","Login","Account",null,new { @class = "btn btn-primary btn-sm text-white" })
+                                    @Html.ActionLink("Iniciar sesión", "Login", "Account", null, new { @class = "btn btn-primary btn-sm text-white" })
                                 </li>
                             }
                         </ul>

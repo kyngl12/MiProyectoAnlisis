@@ -28,11 +28,11 @@ namespace GestionPubRock.LogicaDeNegocio.Promocion
             _bitacora = new RegistrarBitacoraLN(new RegistrarBitacoraAD(connectionString));
         }
 
-        public List<PromocionDto> Obtener()
+        public List<PromocionDto> Obtener(string criterio = "")
         {
             try
             {
-                return _obtenerTodasLasPromocionesAD.Obtener();
+                return _obtenerTodasLasPromocionesAD.Obtener(criterio);
             }
             catch (Exception ex)
             {

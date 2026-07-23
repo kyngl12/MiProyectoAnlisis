@@ -11,13 +11,26 @@
             <h2>Promociones</h2>
 
             @Html.ActionLink(
-                "Nueva Promoción",
+                "Nueva Promocion",
                 "AgregarPromocion",
                 "Promocion",
                 null,
                 new { @class = "btn btn-primary" }
             )
         </div>
+
+        <form method="post" action="@Url.Action("Buscar", "Promocion")" class="mb-3">
+            <div class="input-group rounded-pill overflow-hidden" style="max-width:540px">
+                <input type="text"
+                       name="criterio"
+                       class="form-control form-control-sm"
+                       placeholder="Buscar por nombre de promocion o producto" />
+
+                <button class="btn btn-outline-secondary btn-sm" type="submit">
+                    Consultar
+                </button>
+            </div>
+        </form>
 
         @if (TempData["MensajeExito"] != null)
         {
@@ -33,104 +46,111 @@
             </div>
         }
 
-        <table class="table table-hover table-bordered">
+        @if (TempData["MensajeInfo"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["MensajeInfo"]
+            </div>
+        }
 
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Promoción</th>
-                    <th>Descripción</th>
-                    <th>Descuento</th>
-                    <th>Vigencia</th>
-                    <th>Producto</th>
-                    <th>Estado</th>
-                    <th style="width:220px;">Acciones</th>
-                </tr>
-            </thead>
+    <table class="table table-hover table-bordered">
 
-            <tbody>
+        <thead style="background-color:#1f6f8b; color:white;">
+            <tr>
+                <th>ID</th>
+                <th>Promocion</th>
+                <th>Descripcion</th>
+                <th>Descuento</th>
+                <th>Vigencia</th>
+                <th>Producto</th>
+                <th>Estado</th>
+                <th style="width:220px;">Acciones</th>
+            </tr>
+        </thead>
 
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var item in Model)
-                    {
-                        <tr>
+        <tbody>
 
-                            <td>@item.IdPromocion</td>
-
-                            <td>@item.NombrePromocion</td>
-
-                            <td>
-                                @(item.Descripcion != null && item.Descripcion.Length > 40
-                                    ? item.Descripcion.Substring(0,40) + "..."
-                                    : item.Descripcion)
-                            </td>
-
-                            <td>@item.PorcentajeDescuento %</td>
-
-                            <td>
-                                @item.FechaInicio.ToString("dd/MM/yyyy")
-                                <br />
-                                <small>al @item.FechaFin.ToString("dd/MM/yyyy")</small>
-                            </td>
-
-                            <td>@item.IdProducto</td>
-
-                            <td>
-                                @(item.IdEstado == 1 ? "Activa" : "Inactiva")
-                            </td>
-
-                            <td>
-
-                                <div class="d-flex gap-2 align-items-center">
-
-                                    @Html.ActionLink(
-                                        "Editar",
-                                        "EditarPromocion",
-                                        "Promocion",
-                                        new { id = item.IdPromocion },
-                                        new { @class = "btn btn-sm btn-outline-warning" }
-                                    )
-
-                                    @using (Html.BeginForm("DesactivarPromocion", "Promocion", FormMethod.Post, new { @class = "m-0 p-0" }))
-                                    {
-                                        @Html.AntiForgeryToken()
-
-                                        @Html.Hidden("id", item.IdPromocion)
-
-                                        if (item.IdEstado == 1)
-                                        {
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                Desactivar
-                                            </button>
-                                        }
-                                        else
-                                        {
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" disabled>
-                                                Inactiva
-                                            </button>
-                                        }
-                                    }
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-                    }
-                }
-                else
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
                 {
                     <tr>
-                        <td colspan="8" class="text-center text-muted">
-                            No hay promociones registradas.
+
+                        <td>@item.IdPromocion</td>
+
+                        <td>@item.NombrePromocion</td>
+
+                        <td>
+                            @(item.Descripcion != null && item.Descripcion.Length > 40
+                            ? item.Descripcion.Substring(0, 40) + "..."
+                            : item.Descripcion)
                         </td>
+
+                        <td>@item.PorcentajeDescuento %</td>
+
+                        <td>
+                            @item.FechaInicio.ToString("dd/MM/yyyy")
+                            <br />
+                            <small>al @item.FechaFin.ToString("dd/MM/yyyy")</small>
+                        </td>
+
+                        <td>@item.IdProducto</td>
+
+                        <td>
+                            @(item.IdEstado == 1 ? "Activa" : "Inactiva")
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex gap-2 align-items-center">
+
+                                @Html.ActionLink(
+                                    "Editar",
+                                    "EditarPromocion",
+                                    "Promocion",
+                                    new { id = item.IdPromocion },
+                                    new { @class = "btn btn-sm btn-outline-warning" }
+                                )
+
+                                @using (Html.BeginForm("DesactivarPromocion", "Promocion", FormMethod.Post, new { @class = "m-0 p-0" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    @Html.Hidden("id", item.IdPromocion)
+
+                                    if (item.IdEstado == 1)
+                                    {
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            Desactivar
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" disabled>
+                                            Inactiva
+                                        </button>
+                                    }
+                                }
+
+                            </div>
+
+                        </td>
+
                     </tr>
                 }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted">
+                        No hay promociones registradas.
+                    </td>
+                </tr>
+            }
 
-            </tbody>
+        </tbody>
 
-        </table>
+    </table>
 
     </div>
 </div>

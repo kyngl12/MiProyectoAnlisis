@@ -9,6 +9,6 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.LogicaDeNegocio.Promocion
 {
     public interface IObtenerTodasLasPromocionesLN
     {
-        List<PromocionDto> Obtener();
+        List<PromocionDto> Obtener(string criterio = "");
     }
 }

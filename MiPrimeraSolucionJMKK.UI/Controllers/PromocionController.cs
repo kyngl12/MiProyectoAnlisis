@@ -115,6 +115,28 @@ namespace GestionPubRock.UI.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult Buscar(string criterio)
+        {
+            try
+            {
+                var lista = _obtenerTodasLasPromocionesLN.Obtener(criterio);
+
+                if (lista == null || !lista.Any())
+                {
+                    TempData["MensajeInfo"] = "No se encontraron promociones con el criterio ingresado.";
+                }
+
+                return View("ObtenerTodasLasPromociones", lista);
+            }
+            catch
+            {
+                TempData["MensajeError"] = "Error en el sistema. Por favor intente nuevamente.";
+                return RedirectToAction("ObtenerTodasLasPromociones");
+            }
+        }
+
+
         // DESACTIVAR
         [HttpPost]
         [ValidateAntiForgeryToken]
