@@ -1,11 +1,13 @@
 // Bitacora removida: no registrar en BD central desde Global.asax
 using System;
 using System.Configuration;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Helpers;
 using System.Security.Claims;
+using CasoPractico1;
 
 namespace MiPrimeraSolucionJMKK.UI
 {
@@ -14,6 +16,7 @@ namespace MiPrimeraSolucionJMKK.UI
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

@@ -245,6 +245,8 @@
     <Compile Include="Controllers\ReservacionesController.cs" />
     <Compile Include="Controllers\SINPESController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
+    <Compile Include="Controllers\VentaController.cs" />
+    <Compile Include="Controllers\VentasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -369,6 +371,7 @@
     <Content Include="Views\Promocion\EditarPromocion.cshtml" />
     <Content Include="Views\Promocion\ObtenerTodasLasPromociones.cshtml" />
     <Content Include="Views\Inventario\Catalogo.cshtml" />
+    <Content Include="Views\Ventas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

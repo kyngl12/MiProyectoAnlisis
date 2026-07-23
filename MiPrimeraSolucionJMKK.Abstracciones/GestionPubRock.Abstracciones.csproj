@@ -43,6 +43,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -86,6 +89,11 @@
     <Compile Include="AccesoADatos\Usuarios\ObtenerTodosLosUsuarios\IObtenerTodosLosUsuariosAD.cs" />
     <Compile Include="AccesoADatos\Usuarios\ObtenerUsuarioPorCedula\IObtenerUsuarioPorCedulaAD.cs" />
     <Compile Include="AccesoADatos\Usuarios\RegistrarUsuario\IRegistrarUsuarioAD.cs" />
+    <Compile Include="AccesoADatos\Ventas\IAnularVentaAD.cs" />
+    <Compile Include="AccesoADatos\Ventas\IBuscarProductosAD.cs" />
+    <Compile Include="AccesoADatos\Ventas\IObtenerDetalleVentaAD.cs" />
+    <Compile Include="AccesoADatos\Ventas\IProcesarVentaAD.cs" />
+    <Compile Include="AccesoADatos\Ventas\IRegistrarVentaAD.cs" />
     <Compile Include="LogicaDeNegocio\Bitacora\RegistrarBitacora\IRegistrarBitacoraLN.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\EditarCaja\IEditarCajaLN.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\ObtenerCajaPorId\IObtenerCajaPorIdLN.cs" />
@@ -116,6 +124,11 @@
     <Compile Include="LogicaDeNegocio\Usuarios\ObtenerTodosLosUsuarios\IObtenerTodosLosUsuariosLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\ObtenerUsuarioPorCedula\IObtenerUsuarioPorCedulaLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\RegistrarUsuario\IRegistrarUsuarioLN.cs" />
+    <Compile Include="LogicaDeNegocio\Ventas\IAnularVentaLN.cs" />
+    <Compile Include="LogicaDeNegocio\Ventas\IBuscarProductosLN.cs" />
+    <Compile Include="LogicaDeNegocio\Ventas\IObtenerDetalleVentaLN.cs" />
+    <Compile Include="LogicaDeNegocio\Ventas\IProcesarVentaLN.cs" />
+    <Compile Include="LogicaDeNegocio\Ventas\IRegistrarVentaLN.cs" />
     <Compile Include="Modelos\Bitacora\BitacoraEventoDto.cs" />
     <Compile Include="Modelos\Cajas\CajaDto.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\ObtenerCajasPorComercio\IObtenerCajasPorComercioLN.cs" />
@@ -134,6 +147,15 @@
     <Compile Include="Modelos\SINPES\SINPESDto.cs" />
     <Compile Include="Modelos\Usuarios\TipoUsuarioDto.cs" />
     <Compile Include="Modelos\Usuarios\UsuarioDto.cs" />
+    <Compile Include="Modelos\Ventas\AnularVentaRequestDto.cs" />
+    <Compile Include="Modelos\Ventas\BuscarProductoResponseDto.cs" />
+    <Compile Include="Modelos\Ventas\ComprobanteVentaDto.cs" />
+    <Compile Include="Modelos\Ventas\DetalleVentaRequestDto.cs" />
+    <Compile Include="Modelos\Ventas\DetalleVentaResponseDto.cs" />
+    <Compile Include="Modelos\Ventas\ProcesarVentaRequestDto.cs" />
+    <Compile Include="Modelos\Ventas\VentaOperacionResultDto.cs" />
+    <Compile Include="Modelos\Ventas\VentaRequestDto.cs" />
+    <Compile Include="Modelos\Ventas\VentaResponseDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +170,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.2\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.2\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
 </Project>
