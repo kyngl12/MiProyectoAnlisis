@@ -1,0 +1,77 @@
+@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.EgresoDto>
+
+@{
+    ViewBag.Title = "Egresos y Gastos Operativos";
+}
+
+<div class="container py-5">
+    <div class="card-modern p-3">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Egresos y Gastos Operativos</h2>
+
+            @Html.ActionLink(
+                "Registrar Gasto",
+                "Agregar",
+                "Egresos",
+                null,
+                new { @class = "btn btn-primary" }
+            )
+        </div>
+
+        @if (TempData["MensajeExito"] != null)
+        {
+            <div class="alert alert-success">@TempData["MensajeExito"]</div>
+        }
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">@TempData["MensajeError"]</div>
+        }
+
+        <table class="table table-hover table-bordered">
+            <thead style="background-color:#1f6f8b; color:white;">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Categoría</th>
+                    <th>Monto</th>
+                    <th>Tipo</th>
+                    <th>Comprobante</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Descripcion</td>
+                            <td>@item.Categoria</td>
+                            <td>@item.Monto.ToString("C2")</td>
+                            <td>
+                                @if (item.EsFijo)
+                                {
+                                    <span class="badge bg-secondary">Gasto Fijo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-dark">Variable</span>
+                                }
+                            </td>
+                            <td><small class="text-muted">@item.NumeroComprobante</small></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No hay egresos registrados.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

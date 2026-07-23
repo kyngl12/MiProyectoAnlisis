@@ -24,6 +24,11 @@ namespace MiPrimeraSolucionJMKK.LogicaDeNegocio.Ventas
 
         public VentaOperacionResultDto<int> Registrar(VentaRequestDto venta)
         {
+            if (GestionPubRock.AccesoADatos.Contabilidad.CierreCajaGuard.EstaLaCajaCerradaParaLaFecha(System.DateTime.Now))
+            {
+                return VentaOperacionResultDto<int>.Error(VentaResultadoCodigo.DatosInvalidos, "La caja ya se encuentra cerrada para esta jornada. No es posible registrar nuevas ventas.");
+            }
+
             if (venta == null || venta.IdEmpleado <= 0)
             {
                 return VentaOperacionResultDto<int>.Error(VentaResultadoCodigo.DatosInvalidos, "Debe indicar el empleado que registra la venta.");

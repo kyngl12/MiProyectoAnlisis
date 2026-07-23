@@ -1,0 +1,67 @@
+@model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.CierreCajaDto
+
+@{
+    ViewBag.Title = "Cierre de Caja";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card-modern">
+                <div class="card-body p-4">
+
+                    <h2 class="mb-4"><i class="bi bi-safe me-2"></i>Cierre de Caja del Día</h2>
+                    <p class="text-muted">Jornada del @DateTime.Now.ToString("dd/MM/yyyy")</p>
+
+                    @if (TempData["MensajeExito"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["MensajeExito"]</div>
+                    }
+
+                    @if (TempData["MensajeError"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["MensajeError"]</div>
+                    }
+
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Total de Ventas del Sistema</th>
+                                <td>@Model.TotalVentas.ToString("C2")</td>
+                            </tr>
+                            <tr>
+                                <th>Otros Ingresos</th>
+                                <td>@Model.TotalIngresos.ToString("C2")</td>
+                            </tr>
+                            <tr>
+                                <th>Egresos del Día</th>
+                                <td>@Model.TotalEgresos.ToString("C2")</td>
+                            </tr>
+                            <tr class="table-secondary">
+                                <th>Balance Esperado por el Sistema</th>
+                                <td><strong>@Model.BalanceFinal.ToString("C2")</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    @using (Html.BeginForm("Cerrar", "CierreCaja", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label">Monto Contado Físicamente</label>
+                            <input type="number" step="0.01" min="0" name="montoContado" class="form-control" placeholder="Ingrese el monto contado en caja" required />
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-pubrock" onclick="return confirm('¿Confirma el cierre de jornada? Esta acción bloqueará el registro de nuevas ventas para hoy.');">
+                                <i class="bi bi-lock-fill me-1"></i>Cerrar Jornada
+                            </button>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
