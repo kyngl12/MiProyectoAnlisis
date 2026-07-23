@@ -1,0 +1,100 @@
+@model MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.BalanceDto
+
+@{
+    ViewBag.Title = "Balance de Pérdidas y Ganancias";
+    var inicio = Model != null && Model.FechaInicio != default(DateTime) ? Model.FechaInicio : DateTime.Now.AddMonths(-1);
+    var fin = Model != null && Model.FechaFin != default(DateTime) ? Model.FechaFin : DateTime.Now;
+}
+
+<div class="container py-5">
+    <div class="card-modern p-4">
+
+        <h2 class="mb-4"><i class="bi bi-graph-up-arrow me-2"></i>Balance de Pérdidas y Ganancias</h2>
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">@TempData["MensajeError"]</div>
+        }
+
+        @using (Html.BeginForm("Generar", "Balance", FormMethod.Post, new { @class = "row g-3 mb-4" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="col-md-4">
+                <label class="form-label">Fecha de Inicio</label>
+                <input type="date" name="fechaInicio" class="form-control" value="@inicio.ToString("yyyy-MM-dd")" required />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Fecha de Finalización</label>
+                <input type="date" name="fechaFin" class="form-control" value="@fin.ToString("yyyy-MM-dd")" required />
+            </div>
+
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-pubrock w-100">
+                    <i class="bi bi-calculator me-1"></i>Generar Balance
+                </button>
+            </div>
+        }
+
+        @if (Model != null && Model.FechaInicio != default(DateTime))
+        {
+            <hr />
+
+            <div class="row text-center mb-4">
+                <div class="col-md-4">
+                    <div class="p-3 border rounded">
+                        <div class="text-muted small">Ingresos Totales</div>
+                        <div class="fs-4 text-success">@Model.TotalIngresos.ToString("C2")</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border rounded">
+                        <div class="text-muted small">Egresos Totales</div>
+                        <div class="fs-4 text-danger">@Model.TotalEgresos.ToString("C2")</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border rounded">
+                        <div class="text-muted small">@(Model.EsPerdida ? "Pérdida del Período" : "Utilidad Neta")</div>
+                        <div class="fs-4" style="color:@(Model.EsPerdida ? "red" : "green")">
+                            @Model.UtilidadNeta.ToString("C2")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5>Desglose por Categoría</h5>
+            <table class="table table-hover table-bordered">
+                <thead style="background-color:#1f6f8b; color:white;">
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Categoría</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var fila in Model.Desglose)
+                    {
+                        <tr>
+                            <td>@fila.Tipo</td>
+                            <td>@fila.Categoria</td>
+                            <td>@fila.Monto.ToString("C2")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-end">
+                @Html.ActionLink(
+                    "Descargar PDF",
+                    "DescargarPdf",
+                    "Balance",
+                    new { fechaInicio = Model.FechaInicio.ToString("yyyy-MM-dd"), fechaFin = Model.FechaFin.ToString("yyyy-MM-dd") },
+                    new { @class = "btn btn-outline-secondary" }
+                )
+            </div>
+        }
+
+    </div>
+</div>

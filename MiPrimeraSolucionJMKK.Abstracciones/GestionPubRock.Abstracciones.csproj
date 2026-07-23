@@ -61,6 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccesoADatos\Bitacora\RegistrarBitacora\IRegistrarBitacoraAD.cs" />
+    <Compile Include="AccesoADatos\Bitacora\BitacoraContable\IBitacoraContableAD.cs" />
+    <Compile Include="AccesoADatos\Contabilidad\ICierreCajaAD.cs" />
+    <Compile Include="AccesoADatos\Contabilidad\ICuentaPorPagarAD.cs" />
+    <Compile Include="AccesoADatos\Contabilidad\IEgresoAD.cs" />
+    <Compile Include="AccesoADatos\Contabilidad\IGenerarBalanceAD.cs" />
+    <Compile Include="AccesoADatos\Contabilidad\IImpuestoAD.cs" />
     <Compile Include="AccesoADatos\Comercios\EditarComercio\IEditarComercioAD.cs" />
     <Compile Include="AccesoADatos\Comercios\ObtenerComercioPorId\IObtenerComercioPorIdAD.cs" />
     <Compile Include="AccesoADatos\Comercios\ObtenerTodosLosComercios\IObtenerTodosLosComerciosAD.cs" />
@@ -95,6 +101,12 @@
     <Compile Include="AccesoADatos\Ventas\IProcesarVentaAD.cs" />
     <Compile Include="AccesoADatos\Ventas\IRegistrarVentaAD.cs" />
     <Compile Include="LogicaDeNegocio\Bitacora\RegistrarBitacora\IRegistrarBitacoraLN.cs" />
+    <Compile Include="LogicaDeNegocio\Bitacora\BitacoraContable\IBitacoraContableLN.cs" />
+    <Compile Include="LogicaDeNegocio\Contabilidad\ICuentaPorPagarLN.cs" />
+    <Compile Include="LogicaDeNegocio\Contabilidad\IEgresoLN.cs" />
+    <Compile Include="LogicaDeNegocio\Contabilidad\IGenerarBalanceLN.cs" />
+    <Compile Include="LogicaDeNegocio\Contabilidad\IImpuestoLN.cs" />
+    <Compile Include="LogicaDeNegocio\Contabilidad\IRealizarCierreCajaLN.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\EditarCaja\IEditarCajaLN.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\ObtenerCajaPorId\IObtenerCajaPorIdLN.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\ObtenerSINPESPorTelefonoCaja\IObtenerSINPESPorTelefonoCajaLN.cs" />
@@ -130,6 +142,16 @@
     <Compile Include="LogicaDeNegocio\Ventas\IProcesarVentaLN.cs" />
     <Compile Include="LogicaDeNegocio\Ventas\IRegistrarVentaLN.cs" />
     <Compile Include="Modelos\Bitacora\BitacoraEventoDto.cs" />
+    <Compile Include="Modelos\Bitacora\BitacoraContableDto.cs" />
+    <Compile Include="Modelos\Bitacora\BitacoraContableFiltroDto.cs" />
+    <Compile Include="Modelos\Contabilidad\BalanceCategoriaDto.cs" />
+    <Compile Include="Modelos\Contabilidad\BalanceDto.cs" />
+    <Compile Include="Modelos\Contabilidad\BalanceFiltroDto.cs" />
+    <Compile Include="Modelos\Contabilidad\CalculoImpuestoDto.cs" />
+    <Compile Include="Modelos\Contabilidad\CierreCajaDto.cs" />
+    <Compile Include="Modelos\Contabilidad\CuentaPorPagarDto.cs" />
+    <Compile Include="Modelos\Contabilidad\EgresoDto.cs" />
+    <Compile Include="Modelos\Contabilidad\ImpuestoDto.cs" />
     <Compile Include="Modelos\Cajas\CajaDto.cs" />
     <Compile Include="LogicaDeNegocio\Cajas\ObtenerCajasPorComercio\IObtenerCajasPorComercioLN.cs" />
     <Compile Include="Modelos\Comercios\ComercioDto.cs" />
