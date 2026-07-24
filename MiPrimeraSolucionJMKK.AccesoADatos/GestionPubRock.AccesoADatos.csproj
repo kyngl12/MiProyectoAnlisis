@@ -56,6 +56,9 @@
   <ItemGroup>
     <Compile Include="Bitacora\ObtenerBitacora\ObtenerBitacoraAD.cs" />
     <Compile Include="Bitacora\RegistrarBitacora\RegistrarBitacoraAD.cs" />
+    <Compile Include="Common\EmpleadoResolver.cs" />
+    <Compile Include="Bitacora\BitacoraContable\ObtenerBitacoraContableAD.cs" />
+    <Compile Include="Bitacora\BitacoraContable\RegistrarBitacoraContableAD.cs" />
     <Compile Include="Cajas\EditarCaja\EditarCajaAD.cs" />
     <Compile Include="Cajas\EditarCaja\IEditarCajaAD.cs" />
     <Compile Include="Cajas\ObtenerCajaPorId\IObtenerCajaPorIdAD.cs" />
@@ -83,6 +86,12 @@
     <Compile Include="Entidades\MarketingEntidad.cs" />
     <Compile Include="Entidades\ProductosEntidad.cs" />
     <Compile Include="Entidades\PromocionEntidad.cs" />
+    <Compile Include="Entidades\BitacoraContableEntidad.cs" />
+    <Compile Include="Entidades\CierreCajaEntidad.cs" />
+    <Compile Include="Entidades\CuentaPorPagarEntidad.cs" />
+    <Compile Include="Entidades\ImpuestoEntidad.cs" />
+    <Compile Include="Entidades\MovimientoFinancieroEntidad.cs" />
+    <Compile Include="Entidades\TipoMovimientoFinancieroEntidad.cs" />
     <Compile Include="Entidades\PromocionProductoEntidad.cs" />
     <Compile Include="Entidades\ReportesMensualesEntidad.cs" />
     <Compile Include="Entidades\ReservacionEntidad.cs" />
@@ -103,6 +112,18 @@
     <Compile Include="Promocion\EditarPromocionAD.cs" />
     <Compile Include="Promocion\ObtenerTodasLasPromocionesAD.cs" />
     <Compile Include="Promocion\RegistrarPromocionAD.cs" />
+    <Compile Include="Contabilidad\ActualizarImpuestoAD.cs" />
+    <Compile Include="Contabilidad\CierreCajaGuard.cs" />
+    <Compile Include="Contabilidad\GenerarBalanceAD.cs" />
+    <Compile Include="Contabilidad\MarcarCuentaPorPagarComoPagadaAD.cs" />
+    <Compile Include="Contabilidad\ObtenerCierreCajaPorFechaAD.cs" />
+    <Compile Include="Contabilidad\ObtenerCuentasPorPagarAD.cs" />
+    <Compile Include="Contabilidad\ObtenerEgresosAD.cs" />
+    <Compile Include="Contabilidad\ObtenerImpuestosAD.cs" />
+    <Compile Include="Contabilidad\ObtenerResumenDelDiaAD.cs" />
+    <Compile Include="Contabilidad\RegistrarCierreCajaAD.cs" />
+    <Compile Include="Contabilidad\RegistrarCuentaPorPagarAD.cs" />
+    <Compile Include="Contabilidad\RegistrarEgresoAD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportesMensuales\ConsultarReporteMensual\ConsultarReporteMensualAD.cs" />
     <Compile Include="ReportesMensuales\GenerarReporteMensual\GenerarReportesMensualesAD.cs" />
@@ -118,6 +139,8 @@
     <Compile Include="Ventas\ObtenerDetalleVentaAD.cs" />
     <Compile Include="Ventas\ProcesarVentaAD.cs" />
     <Compile Include="Ventas\RegistrarVentaAD.cs" />
+    <Content Include="Correccion_BD.sql" />
+    <Content Include="Diagnostico_BD.sql" />
     <Content Include="SQL.sql" />
     <Compile Include="SQL.cs" />
     <Compile Include="Usuarios\EditarUsuario\EditarUsuarioAD.cs" />
@@ -129,7 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="CHECKLIST.md" />
     <None Include="packages.config" />
+    <None Include="SOLUCION_BALANCE_DECIMAL_NULL.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MiPrimeraSolucionJMKK.Abstracciones\GestionPubRock.Abstracciones.csproj">

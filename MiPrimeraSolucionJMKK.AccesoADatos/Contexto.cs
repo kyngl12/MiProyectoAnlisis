@@ -32,6 +32,13 @@ namespace GestionPubRock.AccesoADatos
         public DbSet<PromocionEntidad> Promocion { get; set; }
 
         public DbSet<PromocionProductoEntidad> PromocionProducto { get; set; }
+	
+        public DbSet<TipoMovimientoFinancieroEntidad> TiposMovimientoFinanciero { get; set; }
+        public DbSet<MovimientoFinancieroEntidad> MovimientosFinancieros { get; set; }
+        public DbSet<CierreCajaEntidad> CierresCaja { get; set; }
+        public DbSet<ImpuestoEntidad> Impuestos { get; set; }
+        public DbSet<CuentaPorPagarEntidad> CuentasPorPagar { get; set; }
+        public DbSet<BitacoraContableEntidad> BitacoraContable { get; set; }
 
 
 

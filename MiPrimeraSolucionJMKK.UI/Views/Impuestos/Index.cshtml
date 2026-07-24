@@ -1,0 +1,114 @@
+@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.ImpuestoDto>
+
+@{
+    ViewBag.Title = "Configuración de Impuestos";
+}
+
+<div class="container py-5">
+    <div class="card-modern p-4 mb-4">
+
+        <h2 class="mb-4"><i class="bi bi-percent me-2"></i>Configuración de Impuestos de Ley</h2>
+
+        @if (TempData["MensajeExito"] != null)
+        {
+            <div class="alert alert-success">@TempData["MensajeExito"]</div>
+        }
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">@TempData["MensajeError"]</div>
+        }
+
+        <table class="table table-hover table-bordered">
+            <thead style="background-color:#1f6f8b; color:white;">
+                <tr>
+                    <th>Impuesto</th>
+                    <th>Porcentaje Actual</th>
+                    <th style="width:280px;">Actualizar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.NombreImpuesto</td>
+                            <td>@item.Porcentaje %</td>
+                            <td>
+                                @using (Html.BeginForm("Actualizar", "Impuestos", FormMethod.Post, new { @class = "d-flex gap-2 m-0" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("IdImpuesto", item.IdImpuesto)
+                                    @Html.Hidden("NombreImpuesto", item.NombreImpuesto)
+                                    <input type="number" step="0.01" min="0" max="100" name="Porcentaje" value="@item.Porcentaje" class="form-control form-control-sm" />
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Guardar</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-modern p-4">
+        <h4 class="mb-3"><i class="bi bi-calculator me-2"></i>Calculadora de Impuestos</h4>
+        <p class="text-muted small">Simula el desglose de IVA y cargo por servicio aplicado automáticamente al subtotal de una orden.</p>
+
+        <div class="row g-3 align-items-end mb-3">
+            <div class="col-md-4">
+                <label class="form-label">Subtotal de la orden</label>
+                <input type="number" id="subtotalOrden" step="0.01" min="0" class="form-control" value="0" />
+            </div>
+            <div class="col-md-3">
+                <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" id="exentoOrden" />
+                    <label class="form-check-label" for="exentoOrden">Exento de impuestos</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="button" id="btnCalcular" class="btn btn-pubrock w-100">Calcular</button>
+            </div>
+        </div>
+
+        <div id="resultadoCalculo" class="d-none">
+            <table class="table table-sm table-borderless mb-0">
+                <tr><td>Subtotal</td><td id="resSubtotal" class="text-end"></td></tr>
+                <tr><td id="resIvaLabel">IVA</td><td id="resIva" class="text-end"></td></tr>
+                <tr><td id="resServicioLabel">Servicio</td><td id="resServicio" class="text-end"></td></tr>
+                <tr class="border-top"><td><strong>Total</strong></td><td id="resTotal" class="text-end"><strong></strong></td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(function () {
+            $('#btnCalcular').on('click', function () {
+                var subtotal = parseFloat($('#subtotalOrden').val()) || 0;
+                var exento = $('#exentoOrden').is(':checked');
+
+                $.post('@Url.Action("Calcular", "Impuestos")', { subtotal: subtotal, exento: exento })
+                    .done(function (data) {
+                        if (!data.success) {
+                            Swal.fire('Error', data.message, 'error');
+                            return;
+                        }
+
+                        $('#resSubtotal').text(data.subtotal.toFixed(2));
+                        $('#resIvaLabel').text('IVA (' + data.porcentajeIva + '%)');
+                        $('#resServicioLabel').text('Servicio (' + data.porcentajeServicio + '%)');
+                        $('#resIva').text(data.montoIva.toFixed(2));
+                        $('#resServicio').text(data.montoServicio.toFixed(2));
+                        $('#resTotal').text(data.total.toFixed(2));
+                        $('#resultadoCalculo').removeClass('d-none');
+                    })
+                    .fail(function () {
+                        Swal.fire('Error', 'Error en el sistema. Favor intente de nuevo.', 'error');
+                    });
+            });
+        });
+    </script>
+}

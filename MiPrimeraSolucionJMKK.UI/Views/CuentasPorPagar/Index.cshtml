@@ -1,0 +1,108 @@
+@model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.CuentaPorPagarDto>
+
+@{
+    ViewBag.Title = "Cuentas por Pagar";
+}
+
+<div class="container py-5">
+    <div class="card-modern p-3">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Cuentas por Pagar a Proveedores</h2>
+
+            @Html.ActionLink(
+                "Nueva Cuenta por Pagar",
+                "Agregar",
+                "CuentasPorPagar",
+                null,
+                new { @class = "btn btn-primary" }
+            )
+        </div>
+
+        @if (TempData["MensajeExito"] != null)
+        {
+            <div class="alert alert-success">@TempData["MensajeExito"]</div>
+        }
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">@TempData["MensajeError"]</div>
+        }
+
+        @if (ViewBag.CuentasPorVencer != null && ((List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.CuentaPorPagarDto>)ViewBag.CuentasPorVencer).Any())
+        {
+            <div class="alert alert-warning">
+                <strong>Atención:</strong> hay cuentas por pagar que vencen en 2 días:
+                <ul class="mb-0">
+                    @foreach (var c in (List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.CuentaPorPagarDto>)ViewBag.CuentasPorVencer)
+                    {
+                        <li>@c.Proveedor — @c.Monto.ToString("C2") — vence el @c.FechaVencimiento.ToString("dd/MM/yyyy")</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <table class="table table-hover table-bordered">
+            <thead style="background-color:#1f6f8b; color:white;">
+                <tr>
+                    <th>Proveedor</th>
+                    <th>Descripción</th>
+                    <th>Monto</th>
+                    <th>Vencimiento</th>
+                    <th>Estado</th>
+                    <th style="width:160px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr class="@(item.EstaVencida ? "table-danger" : "")">
+                            <td>@item.Proveedor</td>
+                            <td>@item.Descripcion</td>
+                            <td>@item.Monto.ToString("C2")</td>
+                            <td>@item.FechaVencimiento.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (item.EstadoPago == "Pagado")
+                                {
+                                    <span class="badge bg-success">Pagado</span>
+                                }
+                                else if (item.EstaVencida)
+                                {
+                                    <span class="badge bg-danger">Vencida</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.EstadoPago == "Pendiente")
+                                {
+                                    using (Html.BeginForm("MarcarComoPagado", "CuentasPorPagar", FormMethod.Post, new { @class = "m-0 p-0" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.Hidden("id", item.IdCuentaPorPagar)
+                                        <button type="submit" class="btn btn-sm btn-outline-success">Marcar como pagado</button>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">Pagado el @item.FechaPago?.ToString("dd/MM/yyyy")</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No hay cuentas por pagar registradas.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -229,6 +229,12 @@
     <Compile Include="App_Start\WebApiConfig2.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BitacoraController.cs" />
+    <Compile Include="Controllers\BalanceController.cs" />
+    <Compile Include="Controllers\BitacoraContableController.cs" />
+    <Compile Include="Controllers\CierreCajaController.cs" />
+    <Compile Include="Controllers\CuentasPorPagarController.cs" />
+    <Compile Include="Controllers\EgresosController.cs" />
+    <Compile Include="Controllers\ImpuestosController.cs" />
     <Compile Include="Controllers\CajaAPIController.cs" />
     <Compile Include="Controllers\CajasController.cs" />
     <Compile Include="Controllers\ComercioAPIController.cs" />
@@ -251,6 +257,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\LogHelper.cs" />
+    <Compile Include="Helpers\SimplePdfBuilder.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -332,6 +339,14 @@
     <Content Include="Views\Cajas\EditarCaja.cshtml" />
     <Content Include="Views\Cajas\VerSINPE.cshtml" />
     <Content Include="Views\Bitacora\index.cshtml" />
+    <Content Include="Views\BitacoraContable\Index.cshtml" />
+    <Content Include="Views\Egresos\Index.cshtml" />
+    <Content Include="Views\Egresos\Agregar.cshtml" />
+    <Content Include="Views\CierreCaja\Index.cshtml" />
+    <Content Include="Views\Balance\Index.cshtml" />
+    <Content Include="Views\CuentasPorPagar\Index.cshtml" />
+    <Content Include="Views\CuentasPorPagar\Agregar.cshtml" />
+    <Content Include="Views\Impuestos\Index.cshtml" />
     <Content Include="Views\Usuarios\ObtenerTodosLosUsuarios.cshtml" />
     <Content Include="Views\Usuarios\AgregarUsuario.cshtml" />
     <Content Include="Views\Usuarios\EditarUsuario.cshtml" />

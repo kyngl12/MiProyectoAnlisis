@@ -388,6 +388,66 @@
                             <span class="nav-text">Promociones</span>
                         </a>
 
+                        <div class="nav-section-title">Contabilidad</div>
+
+                        <a href="@Url.Action("Index","Egresos")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 10h18M7 15h2M3 6h18v12H3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Egresos</span>
+                        </a>
+
+                        <a href="@Url.Action("Index","CierreCaja")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
+                                    <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Cierre de Caja</span>
+                        </a>
+
+                        <a href="@Url.Action("Index","Balance")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 19V9M10 19V5M16 19v-7M20 19H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Balance</span>
+                        </a>
+
+                        <a href="@Url.Action("Index","CuentasPorPagar")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 3h9l5 5v13H6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Cuentas por Pagar</span>
+                        </a>
+
+                        <a href="@Url.Action("Index","Impuestos")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
+                                    <path d="M9 15l6-6M9.5 10a.5.5 0 100-1 .5.5 0 000 1zM14.5 15a.5.5 0 100-1 .5.5 0 000 1z" stroke="currentColor" stroke-width="1.5" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Impuestos</span>
+                        </a>
+
+                        <a href="@Url.Action("Index","BitacoraContable")" class="nav-link">
+                            <span class="nav-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 4h11l3 3v13H5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M9 10h6M9 14h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+                            </span>
+                            <span class="nav-text">Bitácora Contable</span>
+                        </a>
+
                     </div>
                 }
                 else if (User.IsInRole("Empleado"))

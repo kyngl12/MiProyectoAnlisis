@@ -26,6 +26,15 @@ namespace GestionPubRock.AccesoADatos.Promocion
                 if (existePromocion != null)
                     return -1;
 
+                // Escenario 4: el producto seleccionado debe existir.
+                var existeProducto = _elContexto.Database.SqlQuery<int?>(
+                    "SELECT 1 FROM PUBROCK_PRODUCTO_TB WHERE ID_PRODUCTO = @p0",
+                    promocion.IdProducto
+                ).FirstOrDefault();
+
+                if (existeProducto == null)
+                    return -2;
+
                 PromocionEntidad promocionAGuardar = ConvertirAEntidad(promocion);
 
                 if (promocionAGuardar.IdEstado <= 0)
