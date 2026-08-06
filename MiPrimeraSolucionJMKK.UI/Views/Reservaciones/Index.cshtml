@@ -4,60 +4,498 @@
     ViewBag.Title = "Reservaciones";
 }
 
-<div class="container py-3">
-    <div class="card-modern">
-        <h2>Reservaciones</h2>
-        <div class="mb-3">
-            @Html.ActionLink("Agregar Reservacion", "Registrar", "Reservaciones", null, new { @class = "btn btn-pubrock" })
+<style>
+    :root {
+        --res-blue-950: #06142f;
+        --res-blue-900: #0a1f46;
+        --res-blue-800: #10376b;
+        --res-blue-700: #185695;
+        --res-blue-600: #2878bd;
+        --res-blue-500: #4298d4;
+        --res-blue-400: #68a5d8;
+        --res-blue-300: #9acced;
+        --res-blue-200: #c9e5f6;
+        --res-blue-100: #e7f3fb;
+        --res-blue-50: #f5faff;
+        --res-white: #ffffff;
+        --res-text: #14263a;
+        --res-muted: #718397;
+        --res-border: #dce9f3;
+        --res-border-light: #eaf1f7;
+        --res-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --res-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --res-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
+
+    .reservations-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
+
+    .reservations-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30%), radial-gradient(circle at 15% 90%, rgba(40, 120, 189, .18), transparent 32%), linear-gradient(135deg, var(--res-blue-950), var(--res-blue-800));
+        box-shadow: var(--res-shadow-lg);
+        overflow: hidden;
+    }
+
+        .reservations-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255,255,255,.035);
+            border-radius: 50%;
+        }
+
+        .reservations-hero::after {
+            content: "RESERVAS";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255,255,255,.035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .reservations-heading,
+    .reservations-hero-actions {
+        position: relative;
+        z-index: 2;
+    }
+
+    .reservations-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--res-blue-400);
+        color: var(--res-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .reservations-heading h1 {
+        margin: 0 0 13px;
+        color: var(--res-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.1rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .reservations-heading p {
+        max-width: 650px;
+        margin: 0;
+        color: rgba(255,255,255,.74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .reservations-add-button {
+        min-width: 190px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,.52);
+        border-radius: 999px;
+        color: var(--res-blue-950) !important;
+        background: var(--res-white);
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0,0,0,.14);
+    }
+
+        .reservations-add-button:hover {
+            color: var(--res-white) !important;
+            background: var(--res-blue-500);
+            border-color: var(--res-blue-500);
+            transform: translateY(-2px);
+        }
+
+    .reservations-alerts {
+        margin-top: 24px;
+    }
+
+        .reservations-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6,20,47,.05);
+        }
+
+        .reservations-alerts .alert-info {
+            color: var(--res-blue-900);
+            background: var(--res-blue-50);
+            border-color: var(--res-blue-200);
+        }
+
+        .reservations-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    .reservations-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--res-border);
+        border-radius: 20px;
+        background: var(--res-white);
+        box-shadow: var(--res-shadow-md);
+        overflow: hidden;
+    }
+
+    .reservations-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--res-border-light);
+    }
+
+        .reservations-table-heading h2 {
+            margin: 0;
+            color: var(--res-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .reservations-table-heading span {
+            color: var(--res-muted);
+            font-size: .78rem;
+        }
+
+    .reservations-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .reservations-table {
+        width: 100%;
+        min-width: 900px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--res-text);
+    }
+
+        .reservations-table thead th {
+            padding: 15px 17px;
+            color: var(--res-blue-800);
+            background: var(--res-blue-50);
+            border-bottom: 1px solid var(--res-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .reservations-table tbody td {
+            padding: 16px 17px;
+            border-bottom: 1px solid var(--res-border-light);
+            font-size: .86rem;
+            vertical-align: middle;
+        }
+
+        .reservations-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+    .reservations-id {
+        display: inline-flex;
+        align-items: center;
+        min-height: 29px;
+        padding: 5px 10px;
+        border: 1px solid var(--res-blue-100);
+        border-radius: 999px;
+        color: var(--res-blue-700);
+        background: var(--res-blue-50);
+        font-size: .75rem;
+        font-weight: 800;
+    }
+
+    .reservations-date {
+        color: var(--res-blue-900);
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .reservations-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: .72rem;
+        font-weight: 800;
+    }
+
+        .reservations-status.active {
+            color: #1f6942;
+            background: #effaf4;
+            border: 1px solid #bfe7cf;
+        }
+
+        .reservations-status.inactive {
+            color: #842029;
+            background: #fff2f3;
+            border: 1px solid #f3c5ca;
+        }
+
+        .reservations-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+    .reservations-client {
+        color: var(--res-blue-950);
+        font-weight: 700;
+    }
+
+    .reservations-observations {
+        color: var(--res-muted);
+        max-width: 260px;
+    }
+
+    .reservations-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .reservations-actions .btn {
+            min-height: 34px;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: .73rem;
+            font-weight: 800;
+        }
+
+    .reservations-cancel {
+        color: #9a2531 !important;
+        background: #fff1f2 !important;
+        border-color: #efbdc2 !important;
+    }
+
+        .reservations-cancel:hover {
+            color: #7c1923 !important;
+            background: #ffe1e4 !important;
+            border-color: #e1939c !important;
+        }
+
+    .reservations-view {
+        color: var(--res-blue-700) !important;
+        background: var(--res-white) !important;
+        border-color: var(--res-blue-200) !important;
+    }
+
+        .reservations-view:hover {
+            color: var(--res-white) !important;
+            background: var(--res-blue-700) !important;
+            border-color: var(--res-blue-700) !important;
+        }
+
+    @@media (max-width: 991.98px) {
+        .reservations-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .reservations-hero-actions,
+        .reservations-add-button {
+            width: 100%;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .reservations-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .reservations-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .reservations-table-section {
+            border-radius: 16px;
+        }
+    }
+</style>
+
+<div class="reservations-page">
+
+    <section class="reservations-hero">
+
+        <div class="reservations-heading">
+            <span class="reservations-eyebrow">
+                Gestión de reservaciones
+            </span>
+
+            <h1>
+                Reservaciones
+            </h1>
+
+            <p>
+                Consulta, administra y cancela reservaciones desde un solo lugar.
+            </p>
         </div>
 
-@if (TempData["MensajeInfo"] != null)
-{
-    <div class="alert alert-info">@TempData["MensajeInfo"]</div>
-}
+        <div class="reservations-hero-actions">
+            @Html.ActionLink(
+                "Agregar reservación",
+                "Registrar",
+                "Reservaciones",
+                null,
+                new { @class = "reservations-add-button" })
+        </div>
 
-@if (TempData["MensajeError"] != null)
-{
-    <div class="alert alert-danger">@TempData["MensajeError"]</div>
-}
+    </section>
 
-@Html.AntiForgeryToken()
+    <div class="reservations-alerts">
 
-<table class="table-modern">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            <th>Cliente</th>
-            <th>Observaciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var r in Model)
+        @if (TempData["MensajeInfo"] != null)
         {
-            <tr>
-                <td>@r.Id</td>
-                <td>@r.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
-                <td>@(r.Estado ? "Activa" : "Inactiva")</td>
-                <td>@r.Cliente</td>
-                <td>@r.Observaciones</td>
-                <td>
-                    @if (r.Estado)
-                    {
-                        <div class="d-flex">
-                            <button class="btn btn-sm btn-outline-danger btn-cancelar me-2" data-id="@r.Id"><span class="text">Cancelar</span></button>
-                            <a href="@Url.Action("Registrar","Reservaciones")" class="btn btn-sm btn-outline-secondary">Ver</a>
-                        </div>
-                    }
-                </td>
-            </tr>
+            <div class="alert alert-info">
+                @TempData["MensajeInfo"]
+            </div>
         }
-    </tbody>
 
-</table>
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
+            </div>
+        }
 
     </div>
+
+    @Html.AntiForgeryToken()
+
+    <section class="reservations-table-section">
+
+        <div class="reservations-table-heading">
+            <h2>Reservaciones registradas</h2>
+            <span>Control de fechas, clientes y estado</span>
+        </div>
+
+        <div class="reservations-table-scroll">
+
+            <table class="reservations-table">
+
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Cliente</th>
+                        <th>Observaciones</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="reservations-id">
+                                    @r.Id
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="reservations-date">
+                                    @r.Fecha.ToString("dd/MM/yyyy HH:mm")
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (r.Estado)
+                                {
+                                    <span class="reservations-status active">
+                                        Activa
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="reservations-status inactive">
+                                        Inactiva
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                <span class="reservations-client">
+                                    @r.Cliente
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="reservations-observations">
+                                    @r.Observaciones
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (r.Estado)
+                                {
+                                    <div class="reservations-actions">
+
+                                        <button class="btn btn-sm btn-outline-danger btn-cancelar reservations-cancel"
+                                                data-id="@r.Id">
+                                            <span class="text">Cancelar</span>
+                                        </button>
+
+                                        <a href="@Url.Action("Registrar","Reservaciones")"
+                                           class="btn btn-sm btn-outline-secondary reservations-view">
+                                            Ver
+                                        </a>
+
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>
 
 @section Scripts {

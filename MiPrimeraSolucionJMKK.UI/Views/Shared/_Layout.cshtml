@@ -2,13 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Gestion PubRock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Gestión PubRock</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Bootstrap (local fallback) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <!-- Project styles (keep existing structure + custom overrides) -->
+
     <link href="~/Content/Styles/variables.css" rel="stylesheet" />
     <link href="~/Content/Styles/layout.css" rel="stylesheet" />
     <link href="~/Content/Styles/components.css" rel="stylesheet" />
@@ -19,534 +18,1175 @@
     <link href="~/Content/Styles/animations.css" rel="stylesheet" />
     <link href="~/Content/Styles/factura.css" rel="stylesheet" />
     <link href="~/Content/site.custom.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet" />
 
-    <!-- ===== Tema visual "Cafecito" (override, no toca los .css originales) ===== -->
     <style>
         :root {
-            --coffee-950: #2b1c14;
-            --coffee-900: #3a271a;
-            --coffee-800: #4a3222;
-            --coffee-700: #5c3f2b;
-            --coffee-600: #7a5136;
-            --coffee-500: #9c6b46;
-            --coffee-400: #c08e5f;
-            --coffee-200: #e7cba8;
-            --coffee-100: #f3e2c8;
-            --cream-50: #fbf6ee;
-            --cream-25: #fdfaf4;
-            --accent: #b5652f;
-            --accent-dark: #96501f;
-            --success: #6f8f53;
-            --text-main: #3a271a;
-            --text-muted: #8a7364;
-            --shadow-sm: 0 1px 2px rgba(43, 28, 20, .06), 0 1px 3px rgba(43, 28, 20, .08);
-            --shadow-md: 0 4px 14px rgba(43, 28, 20, .10);
-            --shadow-lg: 0 12px 32px rgba(43, 28, 20, .14);
-            --radius: 14px;
+            --pub-blue-950: #06142f;
+            --pub-blue-900: #0a1f46;
+            --pub-blue-800: #10376b;
+            --pub-blue-700: #185695;
+            --pub-blue-600: #2878bd;
+            --pub-blue-500: #4298d4;
+            --pub-blue-400: #68a5d8;
+            --pub-blue-300: #9acced;
+            --pub-blue-200: #c9e5f6;
+            --pub-blue-100: #e7f3fb;
+            --pub-blue-50: #f5faff;
+            --pub-white: #ffffff;
+            --pub-background: #f5f8fc;
+            --pub-text: #14263a;
+            --pub-secondary: #50657a;
+            --pub-muted: #718397;
+            --pub-border: #dce9f3;
+            --pub-border-light: #eaf1f7;
+            --pub-success: #2f855a;
+            --pub-warning: #b7791f;
+            --pub-danger: #c53030;
+            --pub-shadow-sm: 0 6px 20px rgba(6, 20, 47, .08);
+            --pub-shadow-md: 0 15px 38px rgba(6, 20, 47, .12);
+            --pub-shadow-lg: 0 25px 65px rgba(6, 20, 47, .18);
+            --header-height: 82px;
         }
 
         * {
             box-sizing: border-box;
         }
 
-        html, body {
+        html {
+            min-height: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100%;
+            margin: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--cream-50);
-            color: var(--text-main);
+            color: var(--pub-text);
+            background: radial-gradient(circle at top right, rgba(104, 165, 216, .09), transparent 30%), var(--pub-background);
+            line-height: 1.5;
         }
 
-        /* ---------- Layout shell ---------- */
-        .app-shell {
-            min-height: 100vh;
+        a {
+            transition: color .18s ease, background-color .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
         }
 
-        /* ---------- Sidebar ---------- */
-        .app-sidebar {
-            width: 250px;
-            min-width: 250px;
-            background: linear-gradient(180deg, var(--coffee-900) 0%, var(--coffee-950) 100%) !important;
-            border: none !important;
-            padding: 22px 16px;
-            display: flex;
-            flex-direction: column;
-            position: sticky;
+        /* =====================================================
+           NAVBAR SUPERIOR
+           ===================================================== */
+
+        .top-navbar {
+            position: fixed;
             top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-        }
-
-            .app-sidebar .logo {
-                padding: 4px 10px 18px;
-                border-bottom: 1px solid rgba(255,255,255,.08);
-                margin-bottom: 18px !important;
-            }
-
-            .app-sidebar .brand {
-                font-weight: 800;
-                font-size: 1.35rem;
-                letter-spacing: .3px;
-                color: var(--cream-25);
-                background: linear-gradient(90deg, var(--coffee-200), var(--coffee-400));
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-        .nav-section-title {
-            font-size: .7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .09em;
-            color: var(--coffee-400);
-            margin: 18px 10px 8px;
-        }
-
-        .sidebar-icons {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .nav-link {
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            min-height: var(--header-height);
+            padding: 0 4%;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            color: var(--coffee-100) !important;
-            font-weight: 500;
-            font-size: .92rem;
-            text-decoration: none !important;
-            transition: background .18s ease, color .18s ease, transform .12s ease;
+            background: rgba(6, 20, 47, .97);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            box-shadow: 0 8px 28px rgba(6, 20, 47, .14);
         }
 
-            .nav-link .nav-icon {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 22px;
-                height: 22px;
-                opacity: .85;
-                flex-shrink: 0;
+        body.client-layout .top-navbar {
+            background: linear-gradient( 180deg, rgba(6, 20, 47, .90), rgba(6, 20, 47, .48), transparent );
+            box-shadow: none;
+        }
+
+            body.client-layout .top-navbar.header-scrolled {
+                background: rgba(6, 20, 47, .95);
+                backdrop-filter: blur(18px);
+                box-shadow: 0 8px 28px rgba(6, 20, 47, .18);
             }
 
-            .nav-link:hover {
-                background: rgba(255, 255, 255, .08);
-                color: #fff !important;
+        .navbar-inner {
+            width: min(1540px, 100%);
+            min-height: var(--header-height);
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 34px;
+        }
+
+        .navbar-logo {
+            position: relative;
+            flex-shrink: 0;
+            padding: 6px 0 10px;
+            color: var(--pub-white) !important;
+            text-decoration: none !important;
+            font-size: 1.45rem;
+            font-weight: 800;
+            letter-spacing: -.045em;
+        }
+
+            .navbar-logo::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 3px;
+                width: 100%;
+                height: 3px;
+                border-radius: 999px;
+                background: var(--pub-blue-400);
+            }
+
+        .navbar-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .navbar-link,
+        .navbar-dropdown-toggle {
+            position: relative;
+            min-height: 42px;
+            padding: 11px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border: 1px solid transparent;
+            border-radius: 9px;
+            color: rgba(255,255,255,.76) !important;
+            background: transparent;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-decoration: none !important;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+            .navbar-link::after,
+            .navbar-dropdown-toggle::after {
+                content: "";
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                bottom: 5px;
+                height: 2px;
+                border-radius: 999px;
+                background: var(--pub-blue-400);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform .2s ease;
+            }
+
+            .navbar-link:hover,
+            .navbar-dropdown-toggle:hover {
+                color: var(--pub-white) !important;
+                background: rgba(255,255,255,.06);
+            }
+
+                .navbar-link:hover::after,
+                .navbar-dropdown-toggle:hover::after {
+                    transform: scaleX(1);
+                }
+
+        .navbar-dropdown {
+            position: relative;
+        }
+
+        .navbar-dropdown-toggle {
+            border: 0;
+            cursor: pointer;
+        }
+
+            .navbar-dropdown-toggle .chevron {
+                width: 7px;
+                height: 7px;
+                border-right: 1.5px solid currentColor;
+                border-bottom: 1.5px solid currentColor;
+                transform: rotate(45deg) translateY(-2px);
+            }
+
+        .navbar-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            z-index: 1070;
+            width: 250px;
+            max-height: 72vh;
+            padding: 9px;
+            margin: 0;
+            display: none;
+            list-style: none;
+            overflow-y: auto;
+            border: 1px solid rgba(201,229,246,.14);
+            border-radius: 14px;
+            background: rgba(6,20,47,.98);
+            backdrop-filter: blur(18px);
+            box-shadow: var(--pub-shadow-lg);
+        }
+
+        .navbar-dropdown.open .navbar-dropdown-menu {
+            display: block;
+        }
+
+        .navbar-dropdown-title {
+            padding: 9px 11px 6px;
+            color: rgba(201,229,246,.50);
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .navbar-dropdown-link {
+            padding: 10px 11px;
+            display: flex;
+            align-items: center;
+            border-radius: 9px;
+            color: rgba(255,255,255,.78) !important;
+            text-decoration: none !important;
+            font-size: .82rem;
+            font-weight: 500;
+        }
+
+            .navbar-dropdown-link:hover {
+                color: var(--pub-white) !important;
+                background: rgba(66,152,212,.15);
                 transform: translateX(2px);
             }
 
-                .nav-link:hover .nav-icon {
-                    opacity: 1;
-                }
-
-            .nav-link.active {
-                background: var(--accent);
-                color: #fff !important;
-                box-shadow: var(--shadow-sm);
-            }
-
-        /* Login partial container in sidebar */
-        .app-sidebar > div[style*="margin-top"] {
-            margin-top: auto !important;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255,255,255,.08);
+        .navbar-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        /* ---------- Topbar ---------- */
-        .app-content {
-            background: var(--cream-50);
-        }
-
-        .navbar.navbar-white {
-            background: var(--cream-25) !important;
-            border: 1px solid var(--coffee-100);
-            border-radius: var(--radius) !important;
-            box-shadow: var(--shadow-sm) !important;
-        }
-
-        .navbar-brand .brand {
-            font-weight: 800;
-            color: var(--coffee-800);
-        }
-
-        .navbar-brand small {
-            color: var(--text-muted) !important;
-        }
-
-        .navbar .text-secondary {
-            color: var(--coffee-700) !important;
+        .navbar-user {
+            max-width: 170px;
+            color: rgba(255,255,255,.65);
+            font-size: .74rem;
             font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .navbar .btn-primary {
-            background: var(--accent) !important;
-            border-color: var(--accent) !important;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: background .15s ease, transform .12s ease;
+        .navbar-session {
+            padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,.48);
+            border-radius: 999px;
+            color: var(--pub-white) !important;
+            background: transparent;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-decoration: none !important;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
-            .navbar .btn-primary:hover {
-                background: var(--accent-dark) !important;
+            .navbar-session:hover {
+                color: var(--pub-blue-950) !important;
+                background: var(--pub-white);
+                border-color: var(--pub-white);
                 transform: translateY(-1px);
             }
 
-        .navbar .btn-outline-secondary {
-            color: var(--coffee-700) !important;
-            border-color: var(--coffee-400) !important;
-            font-weight: 500;
+        .navbar-register {
+            padding: 10px 20px;
+            border: 1px solid var(--pub-blue-500);
             border-radius: 8px;
-            transition: all .15s ease;
+            color: var(--pub-white) !important;
+            background: var(--pub-blue-500);
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-decoration: none !important;
+            text-transform: uppercase;
+            white-space: nowrap;
+            box-shadow: 0 7px 18px rgba(66,152,212,.18);
         }
 
-            .navbar .btn-outline-secondary:hover {
-                background: var(--coffee-700) !important;
-                border-color: var(--coffee-700) !important;
-                color: #fff !important;
+            .navbar-register:hover {
+                background: var(--pub-blue-600);
+                border-color: var(--pub-blue-600);
+                transform: translateY(-1px);
             }
 
-        /* ---------- Content area ---------- */
-        .container-fluid {
-            animation: fadeIn .25s ease;
+        .navbar-mobile-button {
+            display: none;
+            width: 42px;
+            height: 42px;
+            margin-left: auto;
+            padding: 0;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,.28);
+            border-radius: 50%;
+            color: var(--pub-white);
+            background: rgba(255,255,255,.06);
         }
 
-        @@keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(4px);
+            .navbar-mobile-button svg {
+                width: 20px;
+                height: 20px;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* =====================================================
+           CONTENIDO
+           ===================================================== */
+
+        .app-shell {
+            width: 100%;
+            min-height: 100vh;
+            display: block !important;
         }
 
-        .app-footer {
-            font-size: .82rem;
-            color: var(--text-muted);
-            padding-top: 14px;
+        .main-content {
+            width: 100%;
+            min-height: 100vh;
+            display: block !important;
+            overflow-x: hidden;
         }
+
+        body.client-layout .main-content {
+            width: 100%;
+            padding-top: var(--header-height);
+            background: var(--pub-white);
+        }
+
+            body.client-layout .main-content > .container-fluid {
+                width: 100%;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: block !important;
+            }
+
+        .client-footer {
+            width: 100%;
+            clear: both;
+            flex-shrink: 0;
+        }
+
+        .admin-home,
+        .admin-hero,
+        .admin-modules,
+        .available-modules {
+            width: 100%;
+            max-width: none !important;
+        }
+
+        /* =====================================================
+           ESTILOS GENERALES
+           ===================================================== */
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: var(--pub-blue-950);
+            font-weight: 700;
+            letter-spacing: -.025em;
+        }
+
+        h1 {
+            font-weight: 800;
+        }
+
+        .text-muted {
+            color: var(--pub-muted) !important;
+        }
+
+        .btn {
+            border-radius: 9px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            color: var(--pub-white) !important;
+            background: var(--pub-blue-600) !important;
+            border-color: var(--pub-blue-600) !important;
+        }
+
+            .btn-primary:hover {
+                background: var(--pub-blue-700) !important;
+                border-color: var(--pub-blue-700) !important;
+            }
+
+        .btn-outline-secondary {
+            color: var(--pub-blue-700) !important;
+            background: var(--pub-white) !important;
+            border-color: var(--pub-blue-200) !important;
+        }
+
+            .btn-outline-secondary:hover {
+                color: var(--pub-white) !important;
+                background: var(--pub-blue-700) !important;
+                border-color: var(--pub-blue-700) !important;
+            }
+
+        .btn-success {
+            background: var(--pub-success);
+            border-color: var(--pub-success);
+        }
+
+        .btn-danger {
+            background: var(--pub-danger);
+            border-color: var(--pub-danger);
+        }
+
+        .card {
+            border: 1px solid var(--pub-border);
+            border-radius: 18px;
+            background: var(--pub-white);
+            box-shadow: var(--pub-shadow-sm);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 21px;
+            color: var(--pub-blue-950);
+            background: var(--pub-white);
+            border-bottom: 1px solid var(--pub-border-light);
+            font-weight: 700;
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        .card-footer {
+            background: var(--pub-blue-50);
+            border-top: 1px solid var(--pub-border-light);
+        }
+
+        .form-label,
+        label {
+            color: var(--pub-text);
+            font-size: .86rem;
+            font-weight: 600;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 43px;
+            color: var(--pub-text);
+            background: var(--pub-white);
+            border: 1px solid var(--pub-border);
+            border-radius: 9px;
+        }
+
+            .form-control:focus,
+            .form-select:focus {
+                border-color: var(--pub-blue-500);
+                box-shadow: 0 0 0 4px rgba(66,152,212,.12);
+            }
+
+        .table-responsive {
+            border: 1px solid var(--pub-border);
+            border-radius: 12px;
+            background: var(--pub-white);
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+            color: var(--pub-text);
+            vertical-align: middle;
+        }
+
+            .table thead th {
+                padding: 14px 15px;
+                color: var(--pub-blue-800);
+                background: var(--pub-blue-50);
+                border-bottom: 1px solid var(--pub-blue-200);
+                font-size: .73rem;
+                font-weight: 700;
+                letter-spacing: .055em;
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+
+            .table tbody td {
+                padding: 14px 15px;
+                border-color: var(--pub-border-light);
+            }
+
+        .alert {
+            border-radius: 12px;
+        }
+
+        .alert-info,
+        .alert-primary {
+            color: var(--pub-blue-900);
+            background: var(--pub-blue-50);
+            border-color: var(--pub-blue-200);
+        }
+
+        .modal-content {
+            border: 1px solid var(--pub-border);
+            border-radius: 18px;
+            box-shadow: var(--pub-shadow-lg);
+            overflow: hidden;
+        }
+
+        .system-footer {
+            padding: 24px 10px 4px;
+            color: var(--pub-muted);
+            font-size: .77rem;
+            text-align: center;
+        }
+
+        .client-footer {
+            padding: 25px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            color: rgba(255,255,255,.60);
+            background: var(--pub-blue-950);
+            font-size: .76rem;
+        }
+
+        .client-footer-brand {
+            position: relative;
+            padding-bottom: 7px;
+            color: var(--pub-white);
+            font-weight: 800;
+        }
+
+            .client-footer-brand::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 45px;
+                height: 2px;
+                background: var(--pub-blue-400);
+            }
 
         footer {
-            display: none; /* evita el pie de página duplicado visualmente (el de app-footer ya lo muestra) */
+            display: none;
         }
 
-        /* ---------- Scrollbar cafecito ---------- */
-        .app-sidebar::-webkit-scrollbar {
-            width: 6px;
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @@media (max-width: 1100px) {
+            .navbar-inner {
+                gap: 18px;
+            }
+
+            .navbar-link,
+            .navbar-dropdown-toggle {
+                padding-left: 9px;
+                padding-right: 9px;
+                font-size: .66rem;
+            }
         }
 
-        .app-sidebar::-webkit-scrollbar-thumb {
-            background: var(--coffee-600);
-            border-radius: 10px;
-        }
-
-        /* ---------- Responsive ---------- */
         @@media (max-width: 991.98px) {
-            .app-shell {
+            :root {
+                --header-height: 74px;
+            }
+
+            .top-navbar,
+            body.client-layout .top-navbar {
+                padding: 0 21px;
+                background: rgba(6,20,47,.97);
+                backdrop-filter: blur(18px);
+                box-shadow: 0 9px 28px rgba(6,20,47,.18);
+            }
+
+            .navbar-inner {
+                position: relative;
+                flex-wrap: wrap;
+            }
+
+            .navbar-mobile-button {
+                display: inline-flex;
+            }
+
+            .navbar-content {
+                position: absolute;
+                top: var(--header-height);
+                left: -21px;
+                right: -21px;
+                max-height: 0;
+                padding: 0 21px;
+                display: block;
+                background: rgba(6,20,47,.99);
+                backdrop-filter: blur(18px);
+                box-shadow: 0 18px 35px rgba(6,20,47,.20);
+                overflow: hidden;
+                transition: max-height .3s ease, padding .3s ease;
+            }
+
+                .navbar-content.show {
+                    max-height: calc(100vh - var(--header-height));
+                    padding-top: 16px;
+                    padding-bottom: 24px;
+                    overflow-y: auto;
+                }
+
+            .navbar-menu {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 4px;
+            }
+
+            .navbar-link,
+            .navbar-dropdown-toggle {
+                width: 100%;
+                justify-content: space-between;
+                padding: 12px 10px;
+            }
+
+                .navbar-link::after,
+                .navbar-dropdown-toggle::after {
+                    display: none;
+                }
+
+            .navbar-dropdown-menu {
+                position: static;
+                width: 100%;
+                max-height: none;
+                margin-top: 5px;
+                background: rgba(255,255,255,.045);
+                border-color: rgba(255,255,255,.07);
+                box-shadow: none;
+            }
+
+            .navbar-actions {
+                width: 100%;
+                margin-top: 17px;
+                padding-top: 17px;
+                justify-content: space-between;
+                border-top: 1px solid rgba(255,255,255,.10);
+            }
+
+            body.client-layout .main-content {
+                padding-top: var(--header-height);
+            }
+
+            body.system-layout .main-content {
+                padding: calc(var(--header-height) + 16px) 16px 16px;
+            }
+        }
+
+        @@media (max-width: 575.98px) {
+            .top-navbar {
+                padding: 0 16px;
+            }
+
+            .navbar-content {
+                left: -16px;
+                right: -16px;
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .navbar-logo {
+                font-size: 1.2rem;
+            }
+
+            .navbar-actions {
+                align-items: stretch;
                 flex-direction: column;
             }
 
-            .app-sidebar {
+            .navbar-user {
+                max-width: 100%;
+            }
+
+            .navbar-session,
+            .navbar-register {
                 width: 100%;
-                min-width: 100%;
-                height: auto;
-                position: relative;
-                flex-direction: row;
-                flex-wrap: wrap;
-                align-items: center;
+                text-align: center;
             }
 
-                .app-sidebar .logo {
-                    border-bottom: none;
-                    margin-bottom: 0 !important;
-                    padding: 0 10px;
-                }
-
-            .nav-section-title {
-                display: none;
+            body.system-layout .main-content {
+                padding: calc(var(--header-height) + 11px) 11px 11px;
             }
 
-            .sidebar-icons {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-
-            .app-sidebar > div[style*="margin-top"] {
-                margin-top: 0 !important;
-                border-top: none;
-                padding-top: 0;
+            .client-footer {
+                padding: 24px 20px;
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
-<body>
 
-    <div class="app-shell d-flex">
-        <aside class="app-sidebar bg-white border-end">
-            <div class="logo mb-4"><span class="brand">PubRock</span></div>
+@{
+    string claseLayout = User.IsInRole("Cliente")
+        ? "client-layout"
+        : "system-layout";
+}
 
-            @if (User.Identity.IsAuthenticated)
-            {
-                if (User.IsInRole("Administrador"))
-                {
-                    <div class="nav-section-title">Navegación</div>
-                    <div class="sidebar-icons">
-                        <a href="@Url.Action("Index","Home")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 11.5L12 4l9 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M5 12v7a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Inicio</span>
-                        </a>
+<body class="@claseLayout">
 
-                        <div class="nav-section-title">Gestion</div>
+    <header class="top-navbar" id="topNavbar">
 
-                        <a href="@Url.Action("ObtenerTodosLosUsuarios","Usuarios")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Usuarios</span>
-                        </a>
+        <nav class="navbar-inner">
 
-                        <a href="@Url.Action("Index","Inventario")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5" />
-                                    <path d="M7 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Inventario</span>
-                        </a>
+            <a href="@Url.Action("Index", "Home")"
+               class="navbar-logo">
+                PubRock
+            </a>
 
-                        <a href="@Url.Action("Index","OrdenesListado")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M21 15V6a2 2 0 0 0-2-2h-5l-2-2H5a2 2 0 0 0-2 2v11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M7 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Ordenes</span>
-                        </a>
+            <button type="button"
+                    class="navbar-mobile-button"
+                    id="navbarMobileButton"
+                    aria-label="Abrir menú"
+                    aria-expanded="false">
 
-                        <a href="@Url.Action("Index","Marketing")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20 8v6a2 2 0 0 1-2 2H8l-4 2V6a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M7 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Marketing</span>
-                        </a>
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
 
-                        <a href="@Url.Action("Index","Reservaciones")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" />
-                                    <path d="M16 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Reservaciones</span>
-                        </a>
+                    <path d="M4 7h16M4 12h16M4 17h16"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linecap="round" />
+                </svg>
 
-                        <a href="@Url.Action("Index","Ventas")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 3h2l.4 2M7 13h10l3-8H6.4M7 13L5.4 5M7 13l-2 5h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="9" cy="20" r="1" stroke="currentColor" stroke-width="1.5" />
-                                    <circle cx="17" cy="20" r="1" stroke="currentColor" stroke-width="1.5" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Ventas</span>
-                        </a>
+            </button>
 
-                        <a href="@Url.Action("ObtenerTodasLasPromociones","Promocion")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19 5L5 19" stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round" />
-                                    <circle cx="7" cy="7" r="2"
-                                            stroke="currentColor"
-                                            stroke-width="1.5" />
-                                    <circle cx="17" cy="17" r="2"
-                                            stroke="currentColor"
-                                            stroke-width="1.5" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Promociones</span>
-                        </a>
+            <div class="navbar-content"
+                 id="navbarContent">
 
-                        <div class="nav-section-title">Contabilidad</div>
+                <ul class="navbar-menu">
 
-                        <a href="@Url.Action("Index","Egresos")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 10h18M7 15h2M3 6h18v12H3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Egresos</span>
-                        </a>
+                    @if (User.IsInRole("Cliente"))
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", "Home")"
+                               class="navbar-link">
+                                Inicio
+                            </a>
+                        </li>
 
-                        <a href="@Url.Action("Index","CierreCaja")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
-                                    <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Cierre de Caja</span>
-                        </a>
+                        <li>
+                            <a href="@Url.Action("Catalogo", "Inventario")"
+                               class="navbar-link">
+                                Menú
+                            </a>
+                        </li>
 
-                        <a href="@Url.Action("Index","Balance")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 19V9M10 19V5M16 19v-7M20 19H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Balance</span>
-                        </a>
+                        <li>
+                            <a href="@Url.Action("Index", "Eventos")"
+                               class="navbar-link">
+                                Eventos
+                            </a>
+                        </li>
 
-                        <a href="@Url.Action("Index","CuentasPorPagar")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 3h9l5 5v13H6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Cuentas por Pagar</span>
-                        </a>
+                        <li>
+                            <a href="@Url.Action("Index", "Reservaciones")"
+                               class="navbar-link">
+                                Reservaciones
+                            </a>
+                        </li>
 
-                        <a href="@Url.Action("Index","Impuestos")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-                                    <path d="M9 15l6-6M9.5 10a.5.5 0 100-1 .5.5 0 000 1zM14.5 15a.5.5 0 100-1 .5.5 0 000 1z" stroke="currentColor" stroke-width="1.5" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Impuestos</span>
-                        </a>
+                        <li>
+                            <a href="@Url.Action("ObtenerTodasLasPromociones", "Promocion")"
+                               class="navbar-link">
+                                Promociones
+                            </a>
+                        </li>
 
-                        <a href="@Url.Action("Index","BitacoraContable")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5 4h11l3 3v13H5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M9 10h6M9 14h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                </svg>
-                            </span>
-                            <span class="nav-text">Bitácora Contable</span>
-                        </a>
+                        <li>
+                            <a href="@Url.Action("Index", "Home")#contacto"
+                               class="navbar-link">
+                                Contacto
+                            </a>
+                        </li>
+                    }
+                    else if (User.IsInRole("Administrador"))
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", "Home")"
+                               class="navbar-link">
+                                Inicio
+                            </a>
+                        </li>
 
-                    </div>
-                }
-                else if (User.IsInRole("Empleado"))
-                {
-                    <div class="nav-section-title">Navegación</div>
-                    <div class="sidebar-icons">
-                        @Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })
-                        @Html.ActionLink("Reservaciones", "Index", "Reservaciones", null, new { @class = "nav-link" })
-                        @Html.ActionLink("Ventas", "Index", "Ventas", null, new { @class = "nav-link" })
-                    </div>
-                }
+                        <li class="navbar-dropdown">
 
-                else if (User.IsInRole("Cliente"))
-                {
-                    <div class="nav-section-title">Navegación</div>
+                            <button type="button"
+                                    class="navbar-dropdown-toggle">
+                                Gestión
+                                <span class="chevron"></span>
+                            </button>
 
-                    <div class="sidebar-icons">
+                            <ul class="navbar-dropdown-menu">
 
-                        <a href="@Url.Action("Index","Home")" class="nav-link">
-                            <span class="nav-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 11.5L12 4l9 7.5"
-                                          stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round" />
-                                    <path d="M5 12v7a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-7"
-                                          stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round" />
-                                </svg>
-                            </span>
+                                <li class="navbar-dropdown-title">
+                                    Operaciones
+                                </li>
 
-                            <span class="nav-text">Inicio</span>
-                        </a>
+                                <li>
+                                    <a href="@Url.Action("ObtenerTodosLosUsuarios", "Usuarios")"
+                                       class="navbar-dropdown-link">
+                                        Usuarios
+                                    </a>
+                                </li>
 
-                    </div>
-                }
+                                <li>
+                                    <a href="@Url.Action("Index", "Inventario")"
+                                       class="navbar-dropdown-link">
+                                        Inventario
+                                    </a>
+                                </li>
 
-            }
-            else
-            {
-                @Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })
-            }
+                                <li>
+                                    <a href="@Url.Action("Index", "OrdenesListado")"
+                                       class="navbar-dropdown-link">
+                                        Órdenes
+                                    </a>
+                                </li>
 
-            <div style="margin-top:20px">@Html.Partial("_LoginPartial")</div>
-        </aside>
+                                <li>
+                                    <a href="@Url.Action("Index", "Marketing")"
+                                       class="navbar-dropdown-link">
+                                        Marketing
+                                    </a>
+                                </li>
 
-        <main class="app-content flex-grow-1 p-4">
-            <nav class="navbar navbar-expand-lg navbar-white bg-white shadow-sm mb-4 rounded">
-                <div class="container-fluid">
-                    <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index","Home")">
-                        <span class="brand me-2">PubRock</span>
-                        <small class="text-muted">Panel</small>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topbarNav" aria-controls="topbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="topbarNav">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-                            @if (User.Identity.IsAuthenticated)
+                                <li>
+                                    <a href="@Url.Action("Index", "Reservaciones")"
+                                       class="navbar-dropdown-link">
+                                        Reservaciones
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("Index", "Ventas")"
+                                       class="navbar-dropdown-link">
+                                        Ventas
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("ObtenerTodasLasPromociones", "Promocion")"
+                                       class="navbar-dropdown-link">
+                                        Promociones
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        <li class="navbar-dropdown">
+
+                            <button type="button"
+                                    class="navbar-dropdown-toggle">
+                                Contabilidad
+                                <span class="chevron"></span>
+                            </button>
+
+                            <ul class="navbar-dropdown-menu">
+
+                                <li class="navbar-dropdown-title">
+                                    Administración financiera
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("Index", "Egresos")"
+                                       class="navbar-dropdown-link">
+                                        Egresos
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("Index", "CierreCaja")"
+                                       class="navbar-dropdown-link">
+                                        Cierre de Caja
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("Index", "Balance")"
+                                       class="navbar-dropdown-link">
+                                        Balance
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("Index", "CuentasPorPagar")"
+                                       class="navbar-dropdown-link">
+                                        Cuentas por Pagar
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("Index", "Impuestos")"
+                                       class="navbar-dropdown-link">
+                                        Impuestos
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="@Url.Action("Index", "BitacoraContable")"
+                                       class="navbar-dropdown-link">
+                                        Bitácora Contable
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+                    }
+                    else if (User.IsInRole("Empleado"))
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", "Home")"
+                               class="navbar-link">
+                                Inicio
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="@Url.Action("Index", "Reservaciones")"
+                               class="navbar-link">
+                                Reservaciones
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="@Url.Action("Index", "Ventas")"
+                               class="navbar-link">
+                                Ventas
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", "Home")"
+                               class="navbar-link">
+                                Inicio
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+
+                <div class="navbar-actions">
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <span class="navbar-user">
+                            @User.Identity.Name
+                        </span>
+
+                        using (Html.BeginForm(
+                            "LogOff",
+                            "Account",
+                            FormMethod.Post,
+                            new { style = "display:inline;" }
+                        ))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <button type="submit" class="navbar-session">
+                                Cerrar sesión
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        @Html.ActionLink(
+                            "Iniciar sesión",
+                            "Login",
+                            "Account",
+                            null,
+                            new
                             {
-                                <li class="nav-item me-3">
-                                    <span class="text-secondary">@User.Identity.Name</span>
-                                </li>
-                                <li class="nav-item">
-                                    @Html.ActionLink("Cerrar sesión", "Logout", "Account", null, new { @class = "btn btn-outline-secondary btn-sm" })
-                                </li>
+                                @class = "navbar-session"
                             }
-                            else
+                        )
+
+                        @Html.ActionLink(
+                            "Registrar cliente",
+                            "AgregarUsuario",
+                            "Usuarios",
+                            null,
+                            new
                             {
-                                <li class="nav-item">
-                                    @Html.ActionLink("Iniciar sesión", "Login", "Account", null, new { @class = "btn btn-primary btn-sm text-white" })
-                                </li>
+                                @class = "navbar-register"
                             }
-                        </ul>
-                    </div>
+                        )
+                    }
+
                 </div>
-            </nav>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+    <div class="app-shell">
+
+        <main class="main-content">
 
             <div class="container-fluid">
+
                 @RenderBody()
-                <div class="app-footer mt-4 text-center text-muted">© @DateTime.Now.Year - Sistema Gestion PubRock</div>
+
+                @if (!User.IsInRole("Cliente"))
+                {
+                    <div class="system-footer">
+                        © @DateTime.Now.Year - Sistema Gestión PubRock
+                    </div>
+                }
+
             </div>
+
         </main>
+
+        @if (User.IsInRole("Cliente"))
+        {
+            <div class="client-footer">
+
+                <span class="client-footer-brand">
+                    PubRock
+                </span>
+
+                <span>
+                    © @DateTime.Now.Year · Música, gastronomía y experiencias
+                </span>
+
+            </div>
+        }
+
     </div>
 
-    <!-- FOOTER -->
     <footer>
-        © @DateTime.Now.Year - Sistema Gestion de PubRock
+        © @DateTime.Now.Year - Sistema Gestión PubRock
     </footer>
 
     <script src="~/Scripts/jquery-3.7.1.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     <script src="@Url.Content("~/Scripts/SweetAlert/sweetalert2@11.js")"></script>
-    <!-- PDF Generation: html2pdf.js (requires jsPDF + html2canvas) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const header = document.getElementById("topNavbar");
+            const menuButton = document.getElementById("navbarMobileButton");
+            const navbarContent = document.getElementById("navbarContent");
+            const dropdowns = document.querySelectorAll(".navbar-dropdown");
+            const navigationLinks = document.querySelectorAll(
+                ".navbar-content a"
+            );
+
+            function actualizarHeader() {
+                if (!header) {
+                    return;
+                }
+
+                if (window.scrollY > 25) {
+                    header.classList.add("header-scrolled");
+                } else {
+                    header.classList.remove("header-scrolled");
+                }
+            }
+
+            actualizarHeader();
+            window.addEventListener("scroll", actualizarHeader);
+
+            if (menuButton && navbarContent) {
+                menuButton.addEventListener("click", function () {
+                    const estaAbierto =
+                        navbarContent.classList.toggle("show");
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        estaAbierto ? "true" : "false"
+                    );
+                });
+            }
+
+            dropdowns.forEach(function (dropdown) {
+                const toggle =
+                    dropdown.querySelector(".navbar-dropdown-toggle");
+
+                if (!toggle) {
+                    return;
+                }
+
+                toggle.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    dropdowns.forEach(function (otroDropdown) {
+                        if (otroDropdown !== dropdown) {
+                            otroDropdown.classList.remove("open");
+                        }
+                    });
+
+                    dropdown.classList.toggle("open");
+                });
+            });
+
+            document.addEventListener("click", function (event) {
+                dropdowns.forEach(function (dropdown) {
+                    if (!dropdown.contains(event.target)) {
+                        dropdown.classList.remove("open");
+                    }
+                });
+            });
+
+            navigationLinks.forEach(function (link) {
+                link.addEventListener("click", function () {
+                    if (navbarContent) {
+                        navbarContent.classList.remove("show");
+                    }
+
+                    if (menuButton) {
+                        menuButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+                    }
+
+                    dropdowns.forEach(function (dropdown) {
+                        dropdown.classList.remove("open");
+                    });
+                });
+            });
+
+            window.addEventListener("resize", function () {
+                if (window.innerWidth > 991) {
+                    if (navbarContent) {
+                        navbarContent.classList.remove("show");
+                    }
+
+                    if (menuButton) {
+                        menuButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+                    }
+                }
+            });
+        });
+    </script>
+
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

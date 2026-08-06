@@ -1,11 +1,4 @@
-﻿<!--  <div class="alert alert-info">
-    ¿Está autenticado?: @User.Identity.IsAuthenticated |
-    Usuario: @User.Identity.Name |
-    ¿Es Cliente?: @User.IsInRole("Cliente")
-</div>-->
-
-
-@{
+﻿@{
     if (User.IsInRole("Cliente"))
     {
         ViewBag.Title = "Inicio";
@@ -16,421 +9,1456 @@
     }
 }
 
+<style>
+    :root {
+        --pub-blue-950: #06142f;
+        --pub-blue-900: #0a1f46;
+        --pub-blue-800: #10376b;
+        --pub-blue-700: #185695;
+        --pub-blue-600: #2878bd;
+        --pub-blue-500: #4298d4;
+        --pub-blue-400: #68a5d8;
+        --pub-blue-300: #9acced;
+        --pub-blue-200: #c9e5f6;
+        --pub-blue-100: #e7f3fb;
+        --pub-blue-50: #f5faff;
+        --pub-white: #ffffff;
+        --pub-text: #14263a;
+        --pub-muted: #64778a;
+        --pub-border: #dce9f3;
+        --pub-shadow-sm: 0 8px 24px rgba(6, 20, 47, .08);
+        --pub-shadow-md: 0 18px 45px rgba(6, 20, 47, .14);
+        --pub-shadow-lg: 0 30px 70px rgba(6, 20, 47, .20);
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* =====================================================
+       PÁGINA DEL CLIENTE
+       ===================================================== */
+
+    .client-home {
+        width: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: var(--pub-white);
+        color: var(--pub-text);
+    }
+
+    /* =====================================================
+       PORTADA
+       ===================================================== */
+
+    .client-hero {
+        position: relative;
+        min-height: calc(100vh - 118px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 90px 30px;
+        background: linear-gradient( 180deg, rgba(4, 15, 40, .54), rgba(4, 15, 40, .82) ), url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSwCHrVRERCPL7MnwKz9vX3zp7F2rkgkBDLTp90GQJPfPvlVcppSwWCzc&s=10") center center / cover no-repeat;
+        isolation: isolate;
+    }
+
+        .client-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient( circle at 18% 82%, rgba(40, 120, 189, .55), transparent 31% ), radial-gradient( circle at 82% 20%, rgba(66, 152, 212, .35), transparent 32% );
+        }
+
+        .client-hero::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 1px;
+            height: 75px;
+            background: linear-gradient( transparent, rgba(255, 255, 255, .72) );
+        }
+
+    .hero-center {
+        width: min(840px, 100%);
+        margin: auto;
+        text-align: center;
+        color: var(--pub-white);
+    }
+
+    .hero-eyebrow {
+        display: inline-block;
+        margin-bottom: 24px;
+        padding-bottom: 9px;
+        border-bottom: 2px solid var(--pub-blue-400);
+        color: var(--pub-blue-100);
+        font-size: .76rem;
+        font-weight: 700;
+        letter-spacing: .24em;
+        text-transform: uppercase;
+    }
+
+    .hero-center h1 {
+        margin: 0 0 22px;
+        color: var(--pub-white) !important;
+        font-size: clamp(3.4rem, 8vw, 7rem);
+        font-weight: 700;
+        line-height: .94;
+        letter-spacing: -.065em;
+    }
+
+    body.client-layout .client-home {
+        margin-top: calc(var(--header-height) * -1);
+    }
+
+    body.client-layout .main-content > .container-fluid {
+        padding-top: 20px !important;
+    }
+
+    body.client-layout .client-home {
+        margin-top: calc((var(--header-height) + 20px) * -1);
+    }
+
+    .hero-center p {
+        max-width: 660px;
+        margin: 0 auto 36px;
+        color: rgba(255, 255, 255, .84);
+        font-size: clamp(1rem, 2vw, 1.23rem);
+        line-height: 1.75;
+    }
+
+    .hero-actions {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .hero-button {
+        min-width: 174px;
+        padding: 14px 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--pub-blue-500);
+        border-radius: 999px;
+        color: var(--pub-white) !important;
+        background: var(--pub-blue-600);
+        font-size: .86rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-decoration: none !important;
+        transition: transform .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+    }
+
+        .hero-button:hover {
+            color: var(--pub-white) !important;
+            background: var(--pub-blue-700);
+            border-color: var(--pub-blue-700);
+            transform: translateY(-2px);
+        }
+
+    .hero-button-outline {
+        background: transparent;
+        border-color: rgba(255, 255, 255, .58);
+    }
+
+        .hero-button-outline:hover {
+            color: var(--pub-blue-900) !important;
+            background: var(--pub-white);
+            border-color: var(--pub-white);
+        }
+
+    /* =====================================================
+       ESTRUCTURA GENERAL DE SECCIONES
+       ===================================================== */
+
+    .client-section {
+        padding: 105px 7%;
+    }
+
+    .section-inner {
+        width: min(1180px, 100%);
+        margin: auto;
+    }
+
+    .section-label {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--pub-blue-500);
+        color: var(--pub-blue-700);
+        font-size: .72rem;
+        font-weight: 800;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+    }
+
+    .section-title {
+        margin-bottom: 24px;
+        color: var(--pub-blue-950) !important;
+        font-size: clamp(2.25rem, 4vw, 4.4rem);
+        font-weight: 700;
+        line-height: 1.04;
+        letter-spacing: -.055em;
+    }
+
+    .section-copy {
+        margin-bottom: 0;
+        color: var(--pub-muted);
+        font-size: 1.05rem;
+        line-height: 1.85;
+    }
+
+    .section-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 27px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--pub-blue-500);
+        color: var(--pub-blue-700) !important;
+        font-size: .84rem;
+        font-weight: 800;
+        letter-spacing: .07em;
+        text-decoration: none !important;
+        text-transform: uppercase;
+    }
+
+        .section-link::after {
+            content: "→";
+            font-size: 1.08rem;
+            transition: transform .2s ease;
+        }
+
+        .section-link:hover::after {
+            transform: translateX(5px);
+        }
+
+    /* =====================================================
+       NUESTRA ESENCIA
+       ===================================================== */
+
+    .essence-section {
+        background: var(--pub-white);
+    }
+
+    .essence-layout {
+        display: grid;
+        grid-template-columns: .82fr 1.18fr;
+        align-items: center;
+        gap: 78px;
+    }
+
+    .essence-number {
+        color: var(--pub-blue-100);
+        font-size: clamp(7rem, 15vw, 13rem);
+        font-weight: 800;
+        line-height: .8;
+        letter-spacing: -.09em;
+        user-select: none;
+    }
+
+    .essence-text {
+        max-width: 690px;
+    }
+
+    /* =====================================================
+       MENÚ
+       ===================================================== */
+
+    .experience-section {
+        min-height: 600px;
+        display: flex;
+        align-items: center;
+        background: linear-gradient( 90deg, rgba(6, 20, 47, .97) 0%, rgba(6, 20, 47, .88) 48%, rgba(6, 20, 47, .27) 100% ), url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSspBZtt4rqeb7X0MBsOTDK7Xybylzgj1YejR_c2M4toOgTqC7wl8xdHjI&s=10") center center / cover no-repeat;
+    }
+
+    .experience-content {
+        max-width: 620px;
+    }
+
+    .experience-section .section-label {
+        color: var(--pub-blue-300);
+    }
+
+    .experience-section .section-title {
+        color: var(--pub-white) !important;
+    }
+
+    .experience-section .section-copy {
+        color: rgba(255, 255, 255, .75);
+    }
+
+    .experience-section .section-link {
+        color: var(--pub-white) !important;
+    }
+
+    /* =====================================================
+       EVENTOS
+       ===================================================== */
+
+    .events-section {
+        background: var(--pub-blue-50);
+    }
+
+    .events-layout {
+        display: grid;
+        grid-template-columns: 1.1fr .9fr;
+        align-items: stretch;
+        gap: 68px;
+    }
+
+    .events-image {
+        min-height: 510px;
+        background: linear-gradient( rgba(8, 31, 70, .08), rgba(8, 31, 70, .28) ), url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHCy994Ta0M18jdjaD4QNTSqRmgQ5VoJJfwp7r_xiHqsM8XTRracUJqSM&s=10") center center / cover no-repeat;
+        box-shadow: var(--pub-shadow-md);
+    }
+
+    .events-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* =====================================================
+       RESERVACIONES
+       ===================================================== */
+
+    .reservation-section {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        background: radial-gradient( circle at top left, rgba(66, 152, 212, .24), transparent 30% ), radial-gradient( circle at bottom right, rgba(40, 120, 189, .18), transparent 30% ), var(--pub-blue-900);
+        color: var(--pub-white);
+    }
+
+        .reservation-section::before {
+            content: "";
+            position: absolute;
+            width: 340px;
+            height: 340px;
+            top: -190px;
+            right: -130px;
+            border: 60px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .reservation-section .section-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        .reservation-section .section-label {
+            color: var(--pub-blue-300);
+        }
+
+        .reservation-section .section-title {
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--pub-white) !important;
+        }
+
+        .reservation-section .section-copy {
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            color: rgba(255, 255, 255, .75);
+        }
+
+    /* =====================================================
+       CONTACTO
+       ===================================================== */
+
+    .contact-section {
+        padding-bottom: 0;
+        background: var(--pub-white);
+    }
+
+    .contact-heading {
+        max-width: 690px;
+        margin-bottom: 62px;
+    }
+
+    .contact-data {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-top: 1px solid var(--pub-border);
+        border-bottom: 1px solid var(--pub-border);
+    }
+
+    .contact-item {
+        padding: 35px 26px;
+    }
+
+        .contact-item + .contact-item {
+            border-left: 1px solid var(--pub-border);
+        }
+
+        .contact-item small {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--pub-blue-600);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .contact-item strong {
+            color: var(--pub-blue-950);
+            font-weight: 600;
+        }
+
+    /* =====================================================
+       REDES SOCIALES
+       ===================================================== */
+
+    .social-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .social-link {
+        position: relative;
+        min-height: 280px;
+        padding: 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        color: var(--pub-white) !important;
+        text-decoration: none !important;
+        overflow: hidden;
+    }
+
+        .social-link:first-child {
+            background: linear-gradient( 135deg, rgba(10, 31, 70, .97), rgba(40, 120, 189, .85) );
+        }
+
+        .social-link:last-child {
+            background: linear-gradient( 135deg, rgba(16, 55, 107, .97), rgba(66, 152, 212, .84) );
+        }
+
+        .social-link::before {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            right: -95px;
+            bottom: -100px;
+            border: 40px solid rgba(255, 255, 255, .05);
+            border-radius: 50%;
+        }
+
+        .social-link::after {
+            content: "↗";
+            position: absolute;
+            top: 30px;
+            right: 36px;
+            font-size: 2rem;
+            transition: transform .2s ease;
+        }
+
+        .social-link:hover::after {
+            transform: translate(5px, -5px);
+        }
+
+        .social-link small {
+            position: relative;
+            z-index: 2;
+            color: rgba(255, 255, 255, .68);
+            font-size: .75rem;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+        }
+
+        .social-link h3 {
+            position: relative;
+            z-index: 2;
+            margin: 8px 0;
+            color: var(--pub-white) !important;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .social-link p {
+            position: relative;
+            z-index: 2;
+            max-width: 440px;
+            margin: 0;
+            color: rgba(255, 255, 255, .74);
+            line-height: 1.7;
+        }
+
+    /* =====================================================
+       MAPA
+       ===================================================== */
+
+    .map-section {
+        background: var(--pub-white);
+    }
+
+        .map-section iframe {
+            display: block;
+            width: 100%;
+            height: 460px;
+            border: 0;
+            filter: saturate(.78) contrast(1.03);
+        }
+
+    .map-caption {
+        padding: 17px 25px;
+        background: var(--pub-blue-950);
+        color: rgba(255, 255, 255, .72);
+        font-size: .82rem;
+        text-align: center;
+    }
+
+    /* =====================================================
+       ÁREA ADMINISTRATIVA
+       ===================================================== */
+
+    .admin-home {
+        padding: 30px 0;
+    }
+
+    .admin-hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(240px, .5fr);
+        align-items: center;
+        gap: 45px;
+        min-height: 390px;
+        padding: 55px;
+        border-radius: 24px;
+        background: radial-gradient( circle at top right, rgba(66, 152, 212, .26), transparent 34% ), linear-gradient( 135deg, var(--pub-blue-950), var(--pub-blue-800) );
+        box-shadow: var(--pub-shadow-lg);
+        overflow: hidden;
+    }
+
+        .admin-hero::after {
+            content: "";
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            right: -150px;
+            bottom: -180px;
+            border: 55px solid rgba(255, 255, 255, .04);
+            border-radius: 50%;
+        }
+
+    .admin-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .admin-hero h1 {
+        position: relative;
+        max-width: 750px;
+        margin-bottom: 22px;
+        padding-bottom: 18px;
+        color: var(--pub-white) !important;
+        font-size: clamp(2.2rem, 4vw, 4rem);
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -.055em;
+    }
+
+        .admin-hero h1::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 80px;
+            height: 4px;
+            border-radius: 999px;
+            background: var(--pub-blue-400);
+        }
+
+    .admin-hero .lead {
+        max-width: 720px;
+        color: rgba(255, 255, 255, .80);
+        line-height: 1.75;
+    }
+
+    .admin-hero small {
+        color: rgba(255, 255, 255, .68);
+    }
+
+    .admin-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 27px;
+    }
+
+        .admin-actions .btn {
+            border-radius: 999px;
+            font-weight: 700;
+        }
+
+    .btn-white {
+        color: var(--pub-blue-900) !important;
+        background: var(--pub-white) !important;
+        border-color: var(--pub-white) !important;
+    }
+
+        .btn-white:hover {
+            background: var(--pub-blue-50) !important;
+        }
+
+    .btn-pubrock {
+        color: var(--pub-white) !important;
+        background: var(--pub-blue-500) !important;
+        border-color: var(--pub-blue-500) !important;
+    }
+
+        .btn-pubrock:hover {
+            background: var(--pub-blue-600) !important;
+            border-color: var(--pub-blue-600) !important;
+        }
+
+    .admin-stat {
+        position: relative;
+        z-index: 2;
+        padding: 32px;
+        border: 1px solid rgba(255, 255, 255, .16);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, .10);
+        backdrop-filter: blur(12px);
+        color: var(--pub-white);
+        box-shadow: 0 20px 45px rgba(0, 0, 0, .17);
+    }
+
+    .admin-stat-label {
+        font-size: .82rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        opacity: .75;
+    }
+
+    .admin-stat-number {
+        margin-top: 8px;
+        font-size: 2.4rem;
+        font-weight: 800;
+    }
+
+    .admin-stat-change {
+        margin-top: 8px;
+        font-size: .84rem;
+        opacity: .78;
+    }
+
+    /* =====================================================
+       ENLACES DE MÓDULOS ADMINISTRATIVOS
+       ===================================================== */
+
+    .admin-modules {
+        margin-top: 60px;
+        border-top: 1px solid var(--pub-border);
+    }
+
+    .admin-module {
+        display: grid;
+        grid-template-columns: 80px 1fr auto;
+        align-items: center;
+        gap: 24px;
+        padding: 28px 10px;
+        border-bottom: 1px solid var(--pub-border);
+        color: var(--pub-text);
+        text-decoration: none !important;
+        transition: padding-left .2s ease, background-color .2s ease;
+    }
+
+        .admin-module:hover {
+            padding-left: 22px;
+            color: var(--pub-text);
+            background: var(--pub-blue-50);
+        }
+
+    .admin-module-number {
+        color: var(--pub-blue-300);
+        font-size: 2rem;
+        font-weight: 800;
+    }
+
+    .admin-module-title {
+        margin-bottom: 5px;
+        color: var(--pub-blue-950);
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    .admin-module-desc {
+        color: var(--pub-muted);
+        font-size: .9rem;
+    }
+
+    .admin-module-arrow {
+        color: var(--pub-blue-600);
+        font-size: 1.5rem;
+    }
+
+    /* =====================================================
+       MÓDULOS DISPONIBLES
+       ===================================================== */
+
+    .available-modules {
+        margin-top: 60px;
+        padding: 45px;
+        border: 1px solid var(--pub-border);
+        border-radius: 20px;
+        background: var(--pub-white);
+        box-shadow: var(--pub-shadow-sm);
+    }
+
+        .available-modules h3 {
+            position: relative;
+            margin-bottom: 32px;
+            padding-bottom: 13px;
+            color: var(--pub-blue-950);
+            font-weight: 800;
+        }
+
+            .available-modules h3::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 55px;
+                height: 3px;
+                border-radius: 999px;
+                background: var(--pub-blue-500);
+            }
+
+        .available-modules li {
+            color: var(--pub-muted);
+        }
+
+        .available-modules .text-success {
+            color: var(--pub-blue-600) !important;
+        }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .client-home {
+            margin: -16px;
+        }
+
+        .essence-layout,
+        .events-layout {
+            grid-template-columns: 1fr;
+            gap: 42px;
+        }
+
+        .essence-number {
+            font-size: 8rem;
+        }
+
+        .events-image {
+            min-height: 420px;
+            order: 2;
+        }
+
+        .contact-data {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-item + .contact-item {
+            border-left: 0;
+            border-top: 1px solid var(--pub-border);
+        }
+
+        .admin-hero {
+            grid-template-columns: 1fr;
+            padding: 42px;
+        }
+
+        .admin-stat {
+            max-width: 430px;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .client-section {
+            padding: 78px 25px;
+        }
+
+        .client-hero {
+            min-height: 720px;
+            padding: 70px 22px;
+        }
+
+        .social-strip {
+            grid-template-columns: 1fr;
+        }
+
+        .social-link {
+            min-height: 240px;
+            padding: 38px 26px;
+        }
+
+        .experience-section {
+            min-height: 640px;
+            background: linear-gradient( rgba(6, 20, 47, .89), rgba(6, 20, 47, .89) ), url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSspBZtt4rqeb7X0MBsOTDK7Xybylzgj1YejR_c2M4toOgTqC7wl8xdHjI&s=10") center center / cover no-repeat;
+        }
+
+        .map-section iframe {
+            height: 350px;
+        }
+
+        .admin-home {
+            padding: 10px 0;
+        }
+
+        .admin-hero {
+            padding: 34px 24px;
+            border-radius: 18px;
+        }
+
+        .admin-actions {
+            flex-direction: column;
+        }
+
+            .admin-actions .btn {
+                width: 100%;
+            }
+
+        .admin-module {
+            grid-template-columns: 55px 1fr auto;
+            gap: 14px;
+        }
+
+        .admin-module-number {
+            font-size: 1.45rem;
+        }
+
+        .available-modules {
+            padding: 28px 22px;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .client-home {
+            margin: -11px;
+        }
+
+        .hero-center h1 {
+            font-size: 3.5rem;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .hero-button {
+            width: 100%;
+        }
+
+        .client-section {
+            padding: 65px 20px;
+        }
+
+        .section-title {
+            font-size: 2.35rem;
+        }
+
+        .essence-number {
+            font-size: 6.3rem;
+        }
+
+        .events-image {
+            min-height: 330px;
+        }
+
+        .social-link {
+            min-height: 220px;
+        }
+
+        .admin-module {
+            grid-template-columns: 1fr auto;
+        }
+
+        .admin-module-number {
+            display: none;
+        }
+    }
+</style>
+
 @if (User.IsInRole("Cliente"))
 {
+    <div class="client-home">
 
+        <!-- =========================================
+             PORTADA
+             ========================================= -->
+        <section class="client-hero">
 
+            <div class="hero-center">
 
+                <span class="hero-eyebrow">
+                    Música · Gastronomía · Experiencias
+                </span>
 
-    <!-- ESTILOS ADICIONALES -->
-    <style>
-        /* Asegurar que las imágenes del carrusel tengan un buen tamaño sin deformarse */
-        .carousel-item img {
-            height: 70vh; /* Altura: 70% de la ventana */
-            object-fit: cover; /* Recorta la imagen para llenar el espacio */
-        }
+                <h1>PubRock</h1>
 
-        /* Mejora para las cards modernas */
-        .card-modern {
-            transition: transform 0.2s ease, shadow 0.2s ease;
-        }
+                <p>
+                    Un lugar donde la energía del rock se encuentra con el sabor,
+                    la buena compañía y noches que no se olvidan.
+                </p>
 
-            .card-modern:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-            }
-    </style>
+                <div class="hero-actions">
 
-    <!-- =========================================
-         1. CARRUSEL DE BIENVENIDA (Reemplaza al cuadro negro)
-         ========================================= -->
-    <div id="carouselPubRock" class="carousel slide carousel-fade shadow-sm mb-5" data-bs-ride="carousel">
-        <!-- Indicadores (puntos de abajo) -->
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselPubRock" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselPubRock" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselPubRock" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
+                    @Html.ActionLink(
+                        "Explorar menú",
+                        "Catalogo",
+                        "Inventario",
+                        null,
+                        new { @class = "hero-button" }
+                    )
 
-        <!-- Diapositivas / Slides -->
-        <div class="carousel-inner rounded-bottom-4">
-            <!-- Slide 1: General -->
-            <div class="carousel-item active" data-bs-interval="5000">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSwCHrVRERCPL7MnwKz9vX3zp7F2rkgkBDLTp90GQJPfPvlVcppSwWCzc&s=10" class="d-block w-100" alt="Ambiente PubRock">
-                <div class="carousel-caption d-none d-md-block rounded-3 p-3" style="background-color: rgba(0,0,0,0.5);">
-                    <h1 class="display-4 fw-bold text-white">Bienvenido a PubRock</h1>
-                    <p class="lead text-light">Música, Sabor y Leyenda.</p>
+                    <a href="#nuestra-esencia"
+                       class="hero-button hero-button-outline">
+                        Conocer más
+                    </a>
+
                 </div>
-            </div>
-            <!-- Slide 2: Comida -->
-            <div class="carousel-item" data-bs-interval="5000">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSspBZtt4rqeb7X0MBsOTDK7Xybylzgj1YejR_c2M4toOgTqC7wl8xdHjI&s=10" class="d-block w-100" alt="Hamburguesas Artesanales">
-                <div class="carousel-caption d-none d-md-block rounded-3 p-3" style="background-color: rgba(0,0,0,0.5);">
-                    <h2 class="display-5 fw-bold text-white">Las Mejores Hamburguesas</h2>
-                    <p class="lead text-light">Sabor artesanal que hace rockear tu paladar.</p>
-                </div>
-            </div>
-            <!-- Slide 3: Eventos -->
-            <div class="carousel-item" data-bs-interval="5000">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHCy994Ta0M18jdjaD4QNTSqRmgQ5VoJJfwp7r_xiHqsM8XTRracUJqSM&s=10" class="d-block w-100" alt="Concierto en vivo">
-                <div class="carousel-caption d-none d-md-block rounded-3 p-3" style="background-color: rgba(0,0,0,0.5);">
-                    <h2 class="display-5 fw-bold text-white">Música en Vivo</h2>
-                    <p class="lead text-light">Disfruta de las mejores bandas locales cada fin de semana.</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- Controles (Flechas) -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselPubRock" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Anterior</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselPubRock" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Siguiente</span>
-        </button>
+            </div>
+
+        </section>
+
+        <!-- =========================================
+             NUESTRA ESENCIA
+             ========================================= -->
+        <section id="nuestra-esencia"
+                 class="client-section essence-section">
+
+            <div class="section-inner essence-layout">
+
+                <div class="essence-number">
+                    01
+                </div>
+
+                <div class="essence-text">
+
+                    <span class="section-label">
+                        Nuestra esencia
+                    </span>
+
+                    <h2 class="section-title">
+                        Sabor, música y personalidad
+                    </h2>
+
+                    <p class="section-copy">
+                        En <strong>PubRock</strong> fusionamos la energía del rock
+                        and roll con la pasión por la cocina de calidad.
+                        Somos el lugar ideal para desconectar, compartir con amigos
+                        y disfrutar de una hamburguesa legendaria.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================================
+             MENÚ
+             ========================================= -->
+        <section class="client-section experience-section">
+
+            <div class="section-inner">
+
+                <div class="experience-content">
+
+                    <span class="section-label">
+                        Nuestro menú
+                    </span>
+
+                    <h2 class="section-title">
+                        Una experiencia que también se saborea
+                    </h2>
+
+                    <p class="section-copy">
+                        Hamburguesas artesanales, entradas, bebidas y promociones
+                        preparadas para acompañar cada noche de música.
+                    </p>
+
+                    @Html.ActionLink(
+                        "Descubrir el menú",
+                        "Catalogo",
+                        "Inventario",
+                        null,
+                        new { @class = "section-link" }
+                    )
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================================
+             EVENTOS
+             ========================================= -->
+        <section class="client-section events-section">
+
+            <div class="section-inner events-layout">
+
+                <div class="events-image"></div>
+
+                <div class="events-content">
+
+                    <span class="section-label">
+                        Eventos
+                    </span>
+
+                    <h2 class="section-title">
+                        El escenario cobra vida
+                    </h2>
+
+                    <p class="section-copy">
+                        Música en vivo, bandas locales y eventos especiales
+                        forman parte de la esencia de PubRock.
+                        Cada visita puede convertirse en una historia diferente.
+                    </p>
+
+                    @Html.ActionLink(
+                        "Ver próximos eventos",
+                        "Index",
+                        "Eventos",
+                        null,
+                        new { @class = "section-link" }
+                    )
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================================
+             RESERVACIONES
+             ========================================= -->
+        <section class="client-section reservation-section">
+
+            <div class="section-inner">
+
+                <span class="section-label">
+                    Reservaciones
+                </span>
+
+                <h2 class="section-title">
+                    Tu mesa, tu música y una noche inolvidable
+                </h2>
+
+                <p class="section-copy">
+                    Reserva con anticipación y asegura tu lugar para disfrutar
+                    de la experiencia PubRock sin complicaciones.
+                </p>
+
+                @Html.ActionLink(
+                    "Reservar ahora",
+                    "Index",
+                    "Reservaciones",
+                    null,
+                    new { @class = "hero-button mt-4" }
+                )
+
+            </div>
+
+        </section>
+
+        <!-- =========================================
+             CONTACTO
+             ========================================= -->
+        <section id="contacto"
+                 class="client-section contact-section">
+
+            <div class="section-inner">
+
+                <div class="contact-heading">
+
+                    <span class="section-label">
+                        Contacto
+                    </span>
+
+                    <h2 class="section-title">
+                        Ven a vivir la experiencia
+                    </h2>
+
+                    <p class="section-copy">
+                        Escríbenos, llámanos o visítanos.
+                        Siempre hay una mesa y una buena canción esperando.
+                    </p>
+
+                </div>
+
+                <div class="contact-data">
+
+                    <div class="contact-item">
+                        <small>Teléfono / WhatsApp</small>
+                        <strong>+506 7083-5077</strong>
+                    </div>
+
+                    <div class="contact-item">
+                        <small>Correo electrónico</small>
+                        <strong>pubrockcr@hotmail.com</strong>
+                    </div>
+
+                    <div class="contact-item">
+                        <small>Horario</small>
+                        <strong>Martes a domingo · 5 PM – 1 AM</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================================
+             REDES SOCIALES
+             ========================================= -->
+        <section class="social-strip">
+
+            <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.instagram.com%2F%2540pubrock_cr&h=AUBRUX2mW-GaE2B05-DbFFS_NQ1opcHbySK95CHMCyCGPsQoqZ8NyYxmxuLETsePFlB-NSmMlZ9B5znaWjl4NN5D6TM3nocuSSWMrl1-3PCotVcLXvknHsk08QRWo_90_Qi2xzF_9seVyiauUyXd"
+               target="_blank"
+               class="social-link">
+
+                <small>Redes sociales</small>
+
+                <h3>Instagram</h3>
+
+                <p>
+                    Fotos, platos del día y momentos de nuestras noches en vivo.
+                </p>
+
+            </a>
+
+            <a href="https://www.facebook.com/PubRockCR/?locale=es_LA"
+               target="_blank"
+               class="social-link">
+
+                <small>Comunidad</small>
+
+                <h3>Facebook</h3>
+
+                <p>
+                    Eventos, cartelera de bandas y promociones especiales.
+                </p>
+
+            </a>
+
+        </section>
+
+        <!-- =========================================
+             MAPA
+             ========================================= -->
+        <section class="map-section">
+
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.0364073240535!2d-84.06138172496976!3d9.930925990170962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e39b46cc0935%3A0x665ae8e9b44d1b9d!2sPub%20Rock!5e0!3m2!1ses!2scr!4v1784693637395!5m2!1ses!2scr"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin">
+            </iframe>
+
+            <div class="map-caption">
+                PubRock · Cartago, Costa Rica
+            </div>
+
+        </section>
+
     </div>
-
-    <div class="container py-2">
-
-        <!-- =========================================
-             2. SOBRE NOSOTROS (Título en Negro)
-             ========================================= -->
-        <section class="mb-5 text-center px-md-5">
-            <h2 class="fw-bold mb-3 text-dark">Nuestra Esencia</h2> <!-- text-dark asegura negro -->
-            <p class="text-muted fs-5 col-md-10 mx-auto">
-                En **PubRock** fusionamos la energía del rock and roll con la pasión por la cocina de calidad.
-                Somos el lugar ideal para desconectar, disfrutar de una hamburguesa legendaria y escuchar buena música con amigos.
-            </p>
-        </section>
-
-        <!-- =========================================
-             3. ACCESOS RÁPIDOS / CARDS (Manteniendo funcionalidad)
-             ========================================= -->
-        <section class="mb-5">
-            <div class="row g-4">
-                <!-- Menú -->
-                <div class="col-md-4">
-                    <div class="card card-modern p-4 h-100 d-flex flex-column justify-content-between shadow-sm rounded-4 border-0">
-                        <div>
-                            <div class="fs-1 mb-2">🍔</div>
-                            <h4 class="fw-bold text-dark">Nuestro Menú</h4>
-                            <p class="text-muted">
-                                Hamburguesas, entradas, bebidas y promociones.
-                            </p>
-                        </div>
-                        @Html.ActionLink("Ver Menú", "Catalogo", "Inventario", null, new { @class = "btn btn-outline-dark w-100 mt-2 fw-semibold" })
-                    </div>
-                </div>
-
-                <!-- Ambiente -->
-                <div class="col-md-4">
-                    <div class="card card-modern p-4 h-100 d-flex flex-column justify-content-between shadow-sm rounded-4 border-0">
-                        <div>
-                            <div class="fs-1 mb-2">🎸</div>
-                            <h4 class="fw-bold text-dark">Ambiente</h4>
-                            <p class="text-muted">
-                                Música en vivo, eventos especiales y galería.
-                            </p>
-                        </div>
-                        @Html.ActionLink("Ver Eventos", "Index", "Eventos", null, new { @class = "btn btn-outline-dark w-100 mt-3fw-semibold" })
-                    </div>
-                </div>
-
-                <!-- Reservaciones -->
-                <div class="col-md-4">
-                    <div class="card card-modern p-4 h-100 d-flex flex-column justify-content-between shadow-sm rounded-4 border-0" style="background-color: #fff8eb;">
-                        <div>
-                            <div class="fs-1 mb-2">📅</div>
-                            <h4 class="fw-bold text-dark">Reservaciones</h4>
-                            <p class="text-muted">
-                                Reserva tu mesa rápido y asegura tu lugar.
-                            </p>
-                        </div>
-                        @Html.ActionLink("Reservar Ahora", "Index", "Reservaciones", null, new { @class = "btn btn-warning w-100 mt-3 fw-bold shadow-sm" })
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- =========================================
-             4. CONTACTO Y UBICACIÓN CON MAPA
-             ========================================= -->
-        <section id="contacto" class="p-4 p-md-5 rounded-4 bg-light shadow-sm mb-5 border">
-            <h3 class="fw-bold text-center mb-4 text-dark">📍 Visítanos o Contáctanos</h3>
-
-            <!-- Info en Texto (3 columnas en desktop) -->
-            <div class="row g-4 text-center mb-4 pb-3 border-bottom">
-                <div class="col-md-4">
-                    <div class="fs-3 text-warning">📞</div>
-                    <h6 class="fw-bold mb-1 text-dark">Teléfono / WhatsApp</h6>
-                    <small class="text-muted">+506 7083-5077</small>
-                </div>
-                <div class="col-md-4">
-                    <div class="fs-3 text-warning">✉️</div>
-                    <h6 class="fw-bold mb-1 text-dark">Correo</h6>
-                    <small class="text-muted">pubrockcr@hotmail.com</small>
-                </div>
-                <div class="col-md-4">
-                    <div class="fs-3 text-warning">⏰</div>
-                    <h6 class="fw-bold mb-1 text-dark">Horario</h6>
-                    <small class="text-muted">Mar-Dom: 5PM - 1AM</small>
-                </div>
-            </div>
-
-
-            <!-- TARJETAS DE REDES SOCIALES (Estilo Minimalista) -->
-            <div class="row g-4 mb-4">
-                <!-- Instagram Card -->
-                <div class="col-md-6">
-                    <div class="card card-modern p-4 rounded-4 border-0 shadow-sm bg-white h-100 d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="d-flex align-items-center mb-3">
-                                <span class="fs-3 me-3 text-dark">📸</span>
-                                <div>
-                                    <h5 class="fw-bold mb-0 text-dark">Instagram</h5>
-                                    <small class="text-muted">@@pubrock_cr</small>
-                                </div>
-                            </div>
-                            <p class="small text-secondary mb-3">
-                                Mira nuestras fotos, platos del día y ambiente en vivo en nuestras historias.
-                            </p>
-                        </div>
-                        <div>
-                            <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.instagram.com%2F%2540pubrock_cr&h=AUBRUX2mW-GaE2B05-DbFFS_NQ1opcHbySK95CHMCyCGPsQoqZ8NyYxmxuLETsePFlB-NSmMlZ9B5znaWjl4NN5D6TM3nocuSSWMrl1-3PCotVcLXvknHsk08QRWo_90_Qi2xzF_9seVyiauUyXd" target="_blank" class="btn btn-outline-dark btn-sm fw-semibold rounded-pill px-4">
-                                Seguir en Instagram
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Facebook Card -->
-                <div class="col-md-6">
-                    <div class="card card-modern p-4 rounded-4 border-0 shadow-sm bg-white h-100 d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="d-flex align-items-center mb-3">
-                                <span class="fs-3 me-3 text-dark">📘</span>
-                                <div>
-                                    <h5 class="fw-bold mb-0 text-dark">Facebook</h5>
-                                    <small class="text-muted">Pub Rock CR Oficial</small>
-                                </div>
-                            </div>
-                            <p class="small text-secondary mb-3">
-                                Enterate de los próximos eventos, cartelera de bandas y promociones.
-                            </p>
-                        </div>
-                        <div>
-                            <a href="https://www.facebook.com/PubRockCR/?locale=es_LA" target="_blank" class="btn btn-outline-dark btn-sm fw-semibold rounded-pill px-4">
-                                Visitar Facebook
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <!-- El Mapa abajo de la info -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
-                        <!-- MAPA EMBEDIDO DE GOOGLE (Reemplaza la dirección en 'q=') -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
-                                    <!-- Pega aquí directamente el HTML que copiaste de Google Maps -->
-                                    <center>
-                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.0364073240535!2d-84.06138172496976!3d9.930925990170962!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e39b46cc0935%3A0x665ae8e9b44d1b9d!2sPub%20Rock!5e0!3m2!1ses!2scr!4v1784693637395!5m2!1ses!2scr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
-                                            width="100%"
-                                            height="350"
-                                            style="border:0;"
-                                            allowfullscreen=""
-                                            loading="lazy"
-                                            referrerpolicy="no-referrer-when-downgrade">
-                                        </iframe>
-                                    </center>
-                                </div>
-                                <small class="text-muted d-block text-center mt-2">Visítanos en nuestra ubicación principal.</small>
-                            </div>
-                        </div>
-                        <!-- NOTA: Para producción, necesitas una API KEY de Google Maps.
-                Mientras tanto, puedes usar un iframe gratuito generado en google.com/maps -> Compartir -> Insertar mapa -->
-                    </div>
-                    <small class="text-muted d-block text-center mt-2">Av. Principal Rock City, Cartago.</small>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
 }
 else
 {
-    <div class="container py-5">
-        <div class="card-modern p-4">
-            <section class="hero mb-5">
-                <div class="hero-content">
-                    <h1>PubRock — Gestión que impulsa tu negocio</h1>
-                    <p class="lead">Optimiza operaciones, atiende clientes y controla ventas desde una única plataforma diseñada para bares y restaurantes.</p>
+    <div class="container admin-home">
 
-                    <div class="cta">
-                        @if (!Request.IsAuthenticated)
-                        {
-                            @Html.ActionLink("Comenzar — Iniciar sesión", "Login", "Account", null, new { @class = "btn btn-lg btn-white btn-rounded" })
-                            @Html.ActionLink("Registrar cliente", "AgregarUsuario", "Usuarios", null, new { @class = "btn btn-lg btn-pubrock btn-rounded" })
-                        }
-                        else if (User.IsInRole("Administrador"))
-                        {
-                            @Html.ActionLink("Registrar cliente", "AgregarUsuario", "Usuarios", null, new { @class = "btn btn-lg btn-pubrock btn-rounded" })
-                            @Html.ActionLink("Ir al panel", "Index", "Home", null, new { @class = "btn btn-lg btn-outline-light btn-rounded" })
-                        }
-                    </div>
+        <!-- =========================================
+             PORTADA ADMINISTRATIVA
+             ========================================= -->
+        <section class="admin-hero">
 
-                    <div class="mt-3">
-                        <small>Funciones destacadas: Punto de Venta • Inventario en tiempo real • Reservaciones • Marketing</small>
-                    </div>
+            <div class="admin-hero-content">
+
+                <h1>
+                    PubRock — Gestión que impulsa tu negocio
+                </h1>
+
+                <p class="lead">
+                    Optimiza operaciones, atiende clientes y controla ventas
+                    desde una única plataforma diseñada para bares y restaurantes.
+                </p>
+
+                <div class="admin-actions">
+
+                    @if (!Request.IsAuthenticated)
+                    {
+                        @Html.ActionLink(
+                            "Comenzar — Iniciar sesión",
+                            "Login",
+                            "Account",
+                            null,
+                            new { @class = "btn btn-lg btn-white" }
+                        )
+
+                        @Html.ActionLink(
+                            "Registrar cliente",
+                            "AgregarUsuario",
+                            "Usuarios",
+                            null,
+                            new { @class = "btn btn-lg btn-pubrock" }
+                        )
+                    }
+                    else if (User.IsInRole("Administrador"))
+                    {
+                        @Html.ActionLink(
+                            "Registrar cliente",
+                            "AgregarUsuario",
+                            "Usuarios",
+                            null,
+                            new { @class = "btn btn-lg btn-pubrock" }
+                        )
+
+                        @Html.ActionLink(
+                            "Ir al panel",
+                            "Index",
+                            "Home",
+                            null,
+                            new { @class = "btn btn-lg btn-outline-light" }
+                        )
+                    }
+
                 </div>
 
-                <div class="hero-graphic">
-                    <div class="card-cta">
-                        <div style="font-size:1.1rem;font-weight:700">Clientes</div>
-                        <div style="font-size:1.9rem;margin-top:.4rem">1,248</div>
-                        <div style="font-size:.85rem;opacity:.9;margin-top:.4rem">+12% respecto al mes anterior</div>
-                    </div>
+                <div class="mt-4">
+                    <small>
+                        Funciones destacadas:
+                        Punto de Venta · Inventario en tiempo real ·
+                        Reservaciones · Marketing
+                    </small>
                 </div>
-            </section>
 
-            <div class="modules-grid mb-5">
-                <a class="module-card" href="@Url.Action("Index","Inventario")">
-                    <div class="module-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5" />
-                            <path d="M7 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="module-title">Inventario</div>
-                        <div class="module-desc">Administre productos, stock y categorias</div>
-                    </div>
-                </a>
-
-                <a class="module-card" href="@Url.Action("Index","Reservaciones")">
-                    <div class="module-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" />
-                            <path d="M16 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="module-title">Reservaciones</div>
-                        <div class="module-desc">Crear y gestionar reservas de clientes</div>
-                    </div>
-                </a>
-
-                <a class="module-card" href="@Url.Action("Index","OrdenesListado")">
-                    <div class="module-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 15V6a2 2 0 0 0-2-2h-5l-2-2H5a2 2 0 0 0-2 2v11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="module-title">Ordenes</div>
-                        <div class="module-desc">Crear, editar y seguir pedidos</div>
-                    </div>
-                </a>
-
-                <a class="module-card" href="@Url.Action("Index","Usuarios")">
-                    <div class="module-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="module-title">Usuarios</div>
-                        <div class="module-desc">Gestion de usuarios y roles</div>
-                    </div>
-                </a>
-
-                <a class="module-card" href="@Url.Action("Index","Marketing")">
-                    <div class="module-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 8v6a2 2 0 0 1-2 2H8l-4 2V6a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="module-title">Marketing</div>
-                        <div class="module-desc">Publicaciones y promociones</div>
-                    </div>
-                </a>
             </div>
 
-            @if (Request.IsAuthenticated)
-            {
-                <section class="card p-4 mt-4">
-                    <div class="card-body">
-                        <h3 class="h4 fw-bold mb-4">
-                            <i class="bi bi-grid-3x3-gap-fill me-2"></i>
-                            Modulos Disponibles
-                        </h3>
+            <div class="admin-stat">
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <ul class="list-unstyled">
-                                    <li class="mb-2">
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        Punto de Venta
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        Gestión de Órdenes
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        Inventario en Tiempo Real
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        Usuarios y Roles
-                                    </li>
-                                </ul>
-                            </div>
+                <div class="admin-stat-label">
+                    Clientes
+                </div>
 
-                            <div class="col-md-6">
-                                <ul class="list-unstyled">
-                                    <li class="mb-2">
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        Contabilidad y Cierre de Caja
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        Promociones Automáticas
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        Reservaciones
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                        Reportes y Marketing
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                <div class="admin-stat-number">
+                    1,248
+                </div>
+
+                <div class="admin-stat-change">
+                    +12% respecto al mes anterior
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================================
+             MÓDULOS ADMINISTRATIVOS
+             ========================================= -->
+        <section class="admin-modules">
+
+            <a class="admin-module"
+               href="@Url.Action("Index", "Inventario")">
+
+                <div class="admin-module-number">
+                    01
+                </div>
+
+                <div>
+                    <div class="admin-module-title">
+                        Inventario
                     </div>
-                </section>
-            }
-        </div>
+
+                    <div class="admin-module-desc">
+                        Administre productos, existencias y categorías.
+                    </div>
+                </div>
+
+                <div class="admin-module-arrow">
+                    →
+                </div>
+
+            </a>
+
+            <a class="admin-module"
+               href="@Url.Action("Index", "Reservaciones")">
+
+                <div class="admin-module-number">
+                    02
+                </div>
+
+                <div>
+                    <div class="admin-module-title">
+                        Reservaciones
+                    </div>
+
+                    <div class="admin-module-desc">
+                        Cree y gestione las reservaciones de sus clientes.
+                    </div>
+                </div>
+
+                <div class="admin-module-arrow">
+                    →
+                </div>
+
+            </a>
+
+            <a class="admin-module"
+               href="@Url.Action("Index", "OrdenesListado")">
+
+                <div class="admin-module-number">
+                    03
+                </div>
+
+                <div>
+                    <div class="admin-module-title">
+                        Órdenes
+                    </div>
+
+                    <div class="admin-module-desc">
+                        Cree, edite y dé seguimiento a los pedidos.
+                    </div>
+                </div>
+
+                <div class="admin-module-arrow">
+                    →
+                </div>
+
+            </a>
+
+            <a class="admin-module"
+               href="@Url.Action("Index", "Usuarios")">
+
+                <div class="admin-module-number">
+                    04
+                </div>
+
+                <div>
+                    <div class="admin-module-title">
+                        Usuarios
+                    </div>
+
+                    <div class="admin-module-desc">
+                        Gestione usuarios, permisos y roles del sistema.
+                    </div>
+                </div>
+
+                <div class="admin-module-arrow">
+                    →
+                </div>
+
+            </a>
+
+            <a class="admin-module"
+               href="@Url.Action("Index", "Marketing")">
+
+                <div class="admin-module-number">
+                    05
+                </div>
+
+                <div>
+                    <div class="admin-module-title">
+                        Marketing
+                    </div>
+
+                    <div class="admin-module-desc">
+                        Administre publicaciones, campañas y promociones.
+                    </div>
+                </div>
+
+                <div class="admin-module-arrow">
+                    →
+                </div>
+
+            </a>
+
+        </section>
+
+        @if (Request.IsAuthenticated)
+        {
+            <section class="available-modules">
+
+                <h3>
+                    Módulos disponibles
+                </h3>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <ul class="list-unstyled mb-0">
+
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Punto de Venta
+                            </li>
+
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Gestión de Órdenes
+                            </li>
+
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Inventario en Tiempo Real
+                            </li>
+
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Usuarios y Roles
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <ul class="list-unstyled mb-0">
+
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Contabilidad y Cierre de Caja
+                            </li>
+
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Promociones Automáticas
+                            </li>
+
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Reservaciones
+                            </li>
+
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Reportes y Marketing
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </section>
+        }
+
     </div>
 }

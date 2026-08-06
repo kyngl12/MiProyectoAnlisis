@@ -4,146 +4,672 @@
     ViewBag.Title = "Registrarse";
 }
 
-<main class="d-flex justify-content-center align-items-center vh-100">
+<style>
+    :root {
+        --register-blue-950: #06142f;
+        --register-blue-900: #0a1f46;
+        --register-blue-800: #10376b;
+        --register-blue-700: #185695;
+        --register-blue-600: #2878bd;
+        --register-blue-500: #4298d4;
+        --register-blue-400: #68a5d8;
+        --register-blue-300: #9acced;
+        --register-blue-200: #c9e5f6;
+        --register-blue-100: #e7f3fb;
+        --register-blue-50: #f5faff;
+        --register-white: #ffffff;
+        --register-text: #14263a;
+        --register-muted: #718397;
+        --register-border: #dce9f3;
+        --register-shadow: 0 28px 70px rgba(6, 20, 47, .20);
+    }
 
-    
-    <div class="card-ui login-card">
+    .register-page {
+        position: relative;
+        min-height: calc(100vh - 82px);
+        padding: 70px 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient( circle at 15% 20%, rgba(104, 165, 216, .22), transparent 30% ), radial-gradient( circle at 85% 80%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--register-blue-950) 0%, var(--register-blue-900) 45%, var(--register-blue-800) 100% );
+        overflow: hidden;
+    }
 
-        <div class="text-center mb-4">
-
-            <i class="bi bi-person-plus fs-1"></i>
-
-            <h2 class="fw-bold mt-3">
-                Registrar Usuario
-            </h2>
-
-            <p class="text-muted">
-                Crear una nueva cuenta
-            </p>
-
-        </div>
-
-        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-
-            @Html.ValidationSummary("", new { @class = "text-danger mb-3" })
-
-            <div class="form-group mb-3">
-
-                @Html.LabelFor(
-                    m => m.Email,
-                    new { @class = "form-label" })
-
-                @Html.TextBoxFor(
-                    m => m.Email,
-                    new
-                    {
-                        @class = "form-control",
-                        placeholder = "Correo electrónico"
-                    })
-
-            </div>
-
-            <div class="form-group mb-3">
-
-                @Html.LabelFor(
-                    m => m.Password,
-                    new { @class = "form-label" })
-
-                @Html.PasswordFor(
-                    m => m.Password,
-                    new
-                    {
-                        @class = "form-control",
-                        placeholder = "Contraseña"
-                    })
-
-            </div>
-
-            <div class="form-group mb-3">
-
-                @Html.LabelFor(
-                    m => m.ConfirmPassword,
-                    new { @class = "form-label" })
-
-                @Html.PasswordFor(
-                    m => m.ConfirmPassword,
-                    new
-                    {
-                        @class = "form-control",
-                        placeholder = "Confirmar contraseña"
-                    })
-
-            </div>
-
-            <div class="form-group mb-4">
-
-                @Html.LabelFor(
-                    m => m.Rol,
-                    new { @class = "form-label d-block" })
-
-                <div class="form-check form-check-inline">
-
-                    @Html.RadioButtonFor(
-                        m => m.Rol,
-                        "Administrador",
-                        new { @class = "form-check-input" })
-
-                    <label class="form-check-label">
-                        Administrador
-                    </label>
-
-                </div>
-
-                <div class="form-check form-check-inline">
-
-                    @Html.RadioButtonFor(
-                        m => m.Rol,
-                        "Empleado",
-                        new { @class = "form-check-input" })
-
-                    <label class="form-check-label">
-                        Empleado
-                    </label>
-
-                </div>
-
-                @Html.ValidationMessageFor(
-                    m => m.Rol,
-                    "",
-                    new { @class = "text-danger d-block mt-1" })
-
-            </div>
-
-            <div class="d-grid">
-
-                <input type="submit"
-                       value="Registrarse"
-                       class="btn btn-pubrock btn-lg" />
-
-            </div>
-
-            <div class="text-center mt-4">
-
-                @Html.ActionLink(
-                    "Volver al inicio de sesión",
-                    "Login",
-                    null,
-                    new
-                    {
-                        @class = "text-decoration-none fw-semibold link-acento"
-                    })
-
-            </div>
+        .register-page::before {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            right: -220px;
+            top: -180px;
+            border-radius: 50%;
+            background: radial-gradient( circle, rgba(104, 165, 216, .11), rgba(104, 165, 216, .025) 58%, transparent 70% );
+            filter: blur(4px);
         }
 
+        .register-page::after {
+            content: "";
+            position: absolute;
+            width: 440px;
+            height: 440px;
+            left: -190px;
+            bottom: -190px;
+            border: 58px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+    .register-shell {
+        position: relative;
+        z-index: 2;
+        width: min(1080px, 100%);
+        display: grid;
+        grid-template-columns: .92fr 1.08fr;
+        background: var(--register-white);
+        border: 1px solid rgba(255, 255, 255, .20);
+        border-radius: 26px;
+        box-shadow: var(--register-shadow);
+        overflow: hidden;
+    }
+
+    /* =====================================================
+       LADO VISUAL SIN IMÁGENES
+       ===================================================== */
+
+    .register-visual {
+        position: relative;
+        min-height: 690px;
+        padding: 55px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: var(--register-white);
+        background: radial-gradient( circle at 78% 18%, rgba(104, 165, 216, .28), transparent 27% ), radial-gradient( circle at 22% 85%, rgba(66, 152, 212, .18), transparent 34% ), linear-gradient( 145deg, #07172f 0%, #0a244a 50%, #123e72 100% );
+        overflow: hidden;
+    }
+
+        .register-visual::before {
+            content: "";
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            top: -150px;
+            right: -130px;
+            border: 55px solid rgba(255, 255, 255, .045);
+            border-radius: 50%;
+        }
+
+        .register-visual::after {
+            content: "PUBROCK";
+            position: absolute;
+            left: 38px;
+            bottom: 82px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(5rem, 9vw, 8.5rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .register-decor-line {
+        position: absolute;
+        left: 55px;
+        right: 55px;
+        top: 50%;
+        height: 1px;
+        background: linear-gradient( 90deg, rgba(255,255,255,.02), rgba(104,165,216,.34), rgba(255,255,255,.02) );
+        transform: rotate(-14deg);
+    }
+
+    .register-decor-dot {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border: 2px solid rgba(154, 204, 237, .50);
+        border-radius: 50%;
+    }
+
+        .register-decor-dot.dot-one {
+            top: 28%;
+            left: 18%;
+        }
+
+        .register-decor-dot.dot-two {
+            top: 42%;
+            right: 17%;
+            width: 18px;
+            height: 18px;
+        }
+
+        .register-decor-dot.dot-three {
+            bottom: 20%;
+            left: 28%;
+            width: 8px;
+            height: 8px;
+        }
+
+    .register-brand,
+    .register-visual-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .register-brand {
+        display: inline-block;
+        align-self: flex-start;
+        padding-bottom: 9px;
+        color: var(--register-white);
+        font-size: 1.45rem;
+        font-weight: 800;
+        letter-spacing: -.045em;
+    }
+
+        .register-brand::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            margin-top: 7px;
+            border-radius: 999px;
+            background: var(--register-blue-400);
+        }
+
+    .register-eyebrow {
+        display: inline-block;
+        margin-bottom: 18px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--register-blue-400);
+        color: var(--register-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .register-visual h1 {
+        margin-bottom: 20px;
+        color: var(--register-white) !important;
+        font-size: clamp(2.4rem, 4vw, 4rem);
+        font-weight: 800;
+        line-height: 1.04;
+        letter-spacing: -.055em;
+    }
+
+    .register-visual p {
+        margin-bottom: 0;
+        color: rgba(255, 255, 255, .76);
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
+    /* =====================================================
+       FORMULARIO
+       ===================================================== */
+
+    .register-form-panel {
+        padding: 50px 52px;
+        display: flex;
+        align-items: center;
+        background: linear-gradient( 180deg, var(--register-white), var(--register-blue-50) );
+    }
+
+    .register-form-inner {
+        width: 100%;
+        max-width: 470px;
+        margin: auto;
+    }
+
+    .register-form-header {
+        margin-bottom: 28px;
+    }
+
+        .register-form-header .section-label {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding-bottom: 7px;
+            border-bottom: 2px solid var(--register-blue-500);
+            color: var(--register-blue-700);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+        }
+
+        .register-form-header h2 {
+            margin-bottom: 10px;
+            color: var(--register-blue-950) !important;
+            font-size: 2.15rem;
+            font-weight: 800;
+            letter-spacing: -.045em;
+        }
+
+        .register-form-header p {
+            margin-bottom: 0;
+            color: var(--register-muted);
+            line-height: 1.65;
+        }
+
+    .register-form-panel .form-group {
+        margin-bottom: 18px !important;
+    }
+
+    .register-form-panel .form-label {
+        margin-bottom: 8px;
+        color: var(--register-text);
+        font-size: .82rem;
+        font-weight: 700;
+    }
+
+    .register-form-panel .form-control {
+        min-height: 50px;
+        padding: 12px 15px;
+        color: var(--register-text);
+        background: var(--register-white);
+        border: 1px solid var(--register-border);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+        transition: border-color .16s ease, box-shadow .16s ease;
+    }
+
+        .register-form-panel .form-control::placeholder {
+            color: #9aabba;
+        }
+
+        .register-form-panel .form-control:hover {
+            border-color: var(--register-blue-300);
+        }
+
+        .register-form-panel .form-control:focus {
+            border-color: var(--register-blue-500);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+        }
+
+    /* =====================================================
+       ROLES
+       ===================================================== */
+
+    .register-role-group {
+        margin-bottom: 24px !important;
+    }
+
+    .register-role-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .register-role-option {
+        min-height: 54px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--register-border);
+        border-radius: 11px;
+        background: var(--register-white);
+        transition: border-color .16s ease, background-color .16s ease, box-shadow .16s ease;
+    }
+
+        .register-role-option:hover {
+            border-color: var(--register-blue-300);
+            background: var(--register-blue-50);
+        }
+
+        .register-role-option .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin-top: 0;
+            border-color: var(--register-blue-300);
+            cursor: pointer;
+        }
+
+            .register-role-option .form-check-input:checked {
+                background-color: var(--register-blue-600);
+                border-color: var(--register-blue-600);
+            }
+
+        .register-role-option .form-check-label {
+            margin: 0;
+            color: var(--register-text);
+            font-size: .84rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+    /* =====================================================
+       BOTÓN Y ENLACE
+       ===================================================== */
+
+    .register-submit {
+        min-height: 52px;
+        border: 1px solid var(--register-blue-600) !important;
+        border-radius: 10px !important;
+        color: var(--register-white) !important;
+        background: linear-gradient( 135deg, var(--register-blue-600), var(--register-blue-700) ) !important;
+        font-size: .9rem;
+        font-weight: 800;
+        letter-spacing: .02em;
+        box-shadow: 0 9px 22px rgba(40, 120, 189, .22);
+        transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+
+        .register-submit:hover {
+            color: var(--register-white) !important;
+            background: linear-gradient( 135deg, var(--register-blue-700), var(--register-blue-800) ) !important;
+            box-shadow: 0 13px 28px rgba(40, 120, 189, .28);
+            transform: translateY(-2px);
+        }
+
+    .register-login-link {
+        position: relative;
+        color: var(--register-blue-700) !important;
+        font-size: .84rem;
+        font-weight: 700;
+        text-decoration: none !important;
+    }
+
+        .register-login-link::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -4px;
+            height: 2px;
+            border-radius: 999px;
+            background: var(--register-blue-400);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .18s ease;
+        }
+
+        .register-login-link:hover::after {
+            transform: scaleX(1);
+        }
+
+    /* =====================================================
+       VALIDACIONES
+       ===================================================== */
+
+    .register-form-panel .validation-summary-errors {
+        margin-bottom: 18px;
+        padding: 12px 14px;
+        border: 1px solid #f3c5ca;
+        border-radius: 10px;
+        color: #842029;
+        background: #fff2f3;
+        font-size: .82rem;
+    }
+
+        .register-form-panel .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+    .register-form-panel .text-danger {
+        display: block;
+        margin-top: 6px;
+        font-size: .78rem;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .register-page {
+            min-height: auto;
+            padding: 110px 22px 50px;
+        }
+
+        .register-shell {
+            grid-template-columns: 1fr;
+            max-width: 680px;
+        }
+
+        .register-visual {
+            min-height: 360px;
+            padding: 38px;
+        }
+
+        .register-form-panel {
+            padding: 48px 40px;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .register-page {
+            padding: 95px 15px 35px;
+        }
+
+        .register-shell {
+            border-radius: 18px;
+        }
+
+        .register-visual {
+            min-height: 310px;
+            padding: 30px 24px;
+        }
+
+            .register-visual h1 {
+                font-size: 2.3rem;
+            }
+
+        .register-form-panel {
+            padding: 36px 24px;
+        }
+
+        .register-form-header h2 {
+            font-size: 1.9rem;
+        }
+
+        .register-role-options {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<main class="register-page">
+
+    <div class="register-shell">
+
+        <section class="register-visual">
+
+            <div class="register-decor-line"></div>
+            <span class="register-decor-dot dot-one"></span>
+            <span class="register-decor-dot dot-two"></span>
+            <span class="register-decor-dot dot-three"></span>
+
+            <div class="register-brand">
+                PubRock
+            </div>
+
+            <div class="register-visual-content">
+
+                <span class="register-eyebrow">
+                    Nueva cuenta
+                </span>
+
+                <h1>
+                    Forma parte del sistema PubRock
+                </h1>
+
+                <p>
+                    Registra una nueva cuenta y asigna el rol correspondiente
+                    para comenzar a utilizar las funciones del sistema.
+                </p>
+
+            </div>
+
+        </section>
+
+        <section class="register-form-panel">
+
+            <div class="register-form-inner">
+
+                <div class="register-form-header">
+
+                    <span class="section-label">
+                        Registro
+                    </span>
+
+                    <h2>
+                        Registrar usuario
+                    </h2>
+
+                    <p>
+                        Complete la información para crear una nueva cuenta.
+                    </p>
+
+                </div>
+
+                @using (Html.BeginForm(
+                    "Register",
+                    "Account",
+                    FormMethod.Post,
+                    new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(
+                        "",
+                        new { @class = "text-danger mb-3" })
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.Email,
+                            new { @class = "form-label" })
+
+                        @Html.TextBoxFor(
+                            m => m.Email,
+                            new
+                            {
+                                @class = "form-control",
+                                placeholder = "Correo electrónico"
+                            })
+
+                    </div>
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.Password,
+                            new { @class = "form-label" })
+
+                        @Html.PasswordFor(
+                            m => m.Password,
+                            new
+                            {
+                                @class = "form-control",
+                                placeholder = "Contraseña"
+                            })
+
+                    </div>
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.ConfirmPassword,
+                            new { @class = "form-label" })
+
+                        @Html.PasswordFor(
+                            m => m.ConfirmPassword,
+                            new
+                            {
+                                @class = "form-control",
+                                placeholder = "Confirmar contraseña"
+                            })
+
+                    </div>
+
+                    <div class="form-group register-role-group">
+
+                        @Html.LabelFor(
+                            m => m.Rol,
+                            new { @class = "form-label d-block" })
+
+                        <div class="register-role-options">
+
+                            <div class="register-role-option">
+
+                                @Html.RadioButtonFor(
+                                    m => m.Rol,
+                                    "Administrador",
+                                    new
+                                    {
+                                        @class = "form-check-input",
+                                        id = "rolAdministrador"
+                                    })
+
+                                <label class="form-check-label"
+                                       for="rolAdministrador">
+                                    Administrador
+                                </label>
+
+                            </div>
+
+                            <div class="register-role-option">
+
+                                @Html.RadioButtonFor(
+                                    m => m.Rol,
+                                    "Empleado",
+                                    new
+                                    {
+                                        @class = "form-check-input",
+                                        id = "rolEmpleado"
+                                    })
+
+                                <label class="form-check-label"
+                                       for="rolEmpleado">
+                                    Empleado
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            m => m.Rol,
+                            "",
+                            new
+                            {
+                                @class = "text-danger d-block mt-1"
+                            })
+
+                    </div>
+
+                    <div class="d-grid">
+
+                        <input type="submit"
+                               value="Registrarse"
+                               class="btn btn-pubrock btn-lg register-submit" />
+
+                    </div>
+
+                    <div class="text-center mt-4">
+
+                        @Html.ActionLink(
+                            "Volver al inicio de sesión",
+                            "Login",
+                            null,
+                            new
+                            {
+                                @class = "register-login-link"
+                            })
+
+                    </div>
+                }
+
+            </div>
+
+        </section>
+
     </div>
-    
 
 </main>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-

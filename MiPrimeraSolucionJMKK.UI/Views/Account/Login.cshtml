@@ -2,144 +2,592 @@
 @model LoginViewModel
 
 @{
-    ViewBag.Title = "Iniciar sesion";
+    ViewBag.Title = "Iniciar sesión";
 }
 
-<main class="d-flex justify-content-center align-items-center min-vh-75 py-5">
-    <div class="container">
-        <div class="card-modern mx-auto" style="max-width:520px">
-            <div class="card-ui login-card">
+<style>
+    :root {
+        --login-blue-950: #06142f;
+        --login-blue-900: #0a1f46;
+        --login-blue-800: #10376b;
+        --login-blue-700: #185695;
+        --login-blue-600: #2878bd;
+        --login-blue-500: #4298d4;
+        --login-blue-400: #68a5d8;
+        --login-blue-300: #9acced;
+        --login-blue-200: #c9e5f6;
+        --login-blue-100: #e7f3fb;
+        --login-blue-50: #f5faff;
+        --login-white: #ffffff;
+        --login-text: #14263a;
+        --login-muted: #718397;
+        --login-border: #dce9f3;
+        --login-shadow: 0 28px 70px rgba(6, 20, 47, .20);
+    }
 
-        <div class="text-center mb-4">
+    .login-page {
+        position: relative;
+        min-height: calc(100vh - 82px);
+        padding: 70px 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at 15% 20%, rgba(104, 165, 216, .22), transparent 30%), radial-gradient(circle at 85% 80%, rgba(40, 120, 189, .20), transparent 32%), linear-gradient(135deg, var(--login-blue-950) 0%, var(--login-blue-900) 45%, var(--login-blue-800) 100%);
+        overflow: hidden;
+    }
 
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNeCydP6t55kpMgzA9Fqq_a7LFUIkLcTUeOQ&s"
-                 alt="Logo PubRock"
-                 class="img-fluid mb-3"
-                 style="max-width:120px;" />
-
-            <h2 class="fw-bold mt-3">
-                PubRock
-            </h2>
-
-            @if (TempData["MensajeError"] != null)
-            {
-                <div class="alert alert-danger mt-3">@TempData["MensajeError"]</div>
-            }
-
-            @if (TempData["MensajeExito"] != null)
-            {
-                <div class="alert alert-success mt-3">@TempData["MensajeExito"]</div>
-            }
-
-            <p class="text-muted">
-                Sistema de Gestion Administrativa y Operativa
-            </p>
-
-        </div>
-
-        @using (Html.BeginForm(
-            "Login",
-            "Account",
-            new { ReturnUrl = ViewBag.ReturnUrl },
-            FormMethod.Post,
-            new { role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-
-            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
-
-            <div class="form-group mb-3">
-
-                @Html.LabelFor(
-                    m => m.Email,
-                    new { @class = "form-label" })
-
-                @Html.TextBoxFor(
-                    m => m.Email,
-                    new
-                    {
-                        @class = "form-control input form-control-large",
-                        placeholder = "Correo electronico"
-                    })
-
-                @Html.ValidationMessageFor(
-                    m => m.Email,
-                    "",
-                    new { @class = "text-danger" })
-
-            </div>
-
-            <div class="form-group mb-3">
-
-                @Html.LabelFor(
-                    m => m.Password,
-                    new { @class = "form-label" })
-
-                @Html.PasswordFor(
-                    m => m.Password,
-                    new
-                    {
-                        @class = "form-control input form-control-large",
-                        placeholder = "Contrasena"
-                    })
-
-                @Html.ValidationMessageFor(
-                    m => m.Password,
-                    "",
-                    new { @class = "text-danger" })
-
-            </div>
-
-            <div class="form-group mb-3 d-flex align-items-center">
-
-                @Html.CheckBoxFor(
-                    m => m.RememberMe,
-                    new { @class = "form-check-input me-2" })
-
-                @Html.LabelFor(
-                    m => m.RememberMe,
-                    new { @class = "form-check-label" })
-
-            </div>
-
-            <div class="d-grid">
-
-                <input type="submit"
-                       value="Iniciar sesion"
-                       class="btn btn-pubrock btn-primary btn-lg" />
-
-            </div>
-
-            <div class="text-center mt-3">
-
-                @Html.ActionLink(
-                    "¿Olvido su contrasena?",
-                    "ForgotPassword",
-                    "Account",
-                    null,
-                    new
-                    {
-                        @class = "text-decoration-none fw-semibold link-acento"
-                    })
-
-            </div>
-
-            <div class="text-center mt-4">
-
-                @Html.ActionLink(
-                    "Registrarse como usuario nuevo",
-                    "Register",
-                    null,
-                    new
-                    {
-                        @class = "text-decoration-none fw-semibold link-acento"
-                    })
-
-            </div>
+        .login-page::before {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            right: -220px;
+            top: -180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(104, 165, 216, .11), rgba(104, 165, 216, .025) 58%, transparent 70%);
+            filter: blur(4px);
         }
 
+        .login-page::after {
+            content: "";
+            position: absolute;
+            width: 440px;
+            height: 440px;
+            left: -190px;
+            bottom: -190px;
+            border: 58px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+    .login-shell {
+        position: relative;
+        z-index: 2;
+        width: min(1050px, 100%);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--login-white);
+        border: 1px solid rgba(255, 255, 255, .20);
+        border-radius: 26px;
+        box-shadow: var(--login-shadow);
+        overflow: hidden;
+    }
+
+    .login-visual {
+        position: relative;
+        min-height: 640px;
+        padding: 55px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: var(--login-white);
+        background: radial-gradient(circle at 78% 18%, rgba(104, 165, 216, .28), transparent 27%), radial-gradient(circle at 22% 85%, rgba(66, 152, 212, .18), transparent 34%), linear-gradient(145deg, #07172f 0%, #0a244a 50%, #123e72 100%);
+        overflow: hidden;
+    }
+
+        .login-visual::before {
+            content: "";
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            top: -150px;
+            right: -130px;
+            border: 55px solid rgba(255, 255, 255, .045);
+            border-radius: 50%;
+        }
+
+        .login-visual::after {
+            content: "PUBROCK";
+            position: absolute;
+            left: 38px;
+            bottom: 82px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(5rem, 9vw, 8.5rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .login-decor-line {
+        position: absolute;
+        left: 55px;
+        right: 55px;
+        top: 50%;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(255,255,255,.02), rgba(104,165,216,.34), rgba(255,255,255,.02));
+        transform: rotate(-14deg);
+    }
+
+    .login-decor-dot {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border: 2px solid rgba(154, 204, 237, .50);
+        border-radius: 50%;
+    }
+
+        .login-decor-dot.dot-one {
+            top: 28%;
+            left: 18%;
+        }
+
+        .login-decor-dot.dot-two {
+            top: 42%;
+            right: 17%;
+            width: 18px;
+            height: 18px;
+        }
+
+        .login-decor-dot.dot-three {
+            bottom: 20%;
+            left: 28%;
+            width: 8px;
+            height: 8px;
+        }
+
+    .login-brand,
+    .login-visual-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .login-brand {
+        display: inline-block;
+        align-self: flex-start;
+        padding-bottom: 9px;
+        color: var(--login-white);
+        font-size: 1.45rem;
+        font-weight: 800;
+        letter-spacing: -.045em;
+    }
+
+        .login-brand::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            margin-top: 7px;
+            border-radius: 999px;
+            background: var(--login-blue-400);
+        }
+
+    .login-eyebrow {
+        display: inline-block;
+        margin-bottom: 18px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--login-blue-400);
+        color: var(--login-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .login-visual h1 {
+        margin-bottom: 20px;
+        color: var(--login-white) !important;
+        font-size: clamp(2.4rem, 4vw, 4rem);
+        font-weight: 800;
+        line-height: 1.04;
+        letter-spacing: -.055em;
+    }
+
+    .login-visual p {
+        margin-bottom: 0;
+        color: rgba(255, 255, 255, .76);
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
+    .login-form-panel {
+        padding: 58px 52px;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(180deg, var(--login-white), var(--login-blue-50));
+    }
+
+    .login-form-inner {
+        width: 100%;
+        max-width: 430px;
+        margin: auto;
+    }
+
+    .login-form-header {
+        margin-bottom: 32px;
+    }
+
+        .login-form-header .section-label {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding-bottom: 7px;
+            border-bottom: 2px solid var(--login-blue-500);
+            color: var(--login-blue-700);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+        }
+
+        .login-form-header h2 {
+            margin-bottom: 10px;
+            color: var(--login-blue-950) !important;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -.045em;
+        }
+
+        .login-form-header p {
+            margin-bottom: 0;
+            color: var(--login-muted);
+            line-height: 1.65;
+        }
+
+    .login-form-panel .form-group {
+        margin-bottom: 20px !important;
+    }
+
+    .login-form-panel .form-label {
+        margin-bottom: 8px;
+        color: var(--login-text);
+        font-size: .82rem;
+        font-weight: 700;
+    }
+
+    .login-form-panel .form-control {
+        min-height: 50px;
+        padding: 12px 15px;
+        color: var(--login-text);
+        background: var(--login-white);
+        border: 1px solid var(--login-border);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+    }
+
+        .login-form-panel .form-control::placeholder {
+            color: #9aabba;
+        }
+
+        .login-form-panel .form-control:hover {
+            border-color: var(--login-blue-300);
+        }
+
+        .login-form-panel .form-control:focus {
+            border-color: var(--login-blue-500);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+        }
+
+    .login-check-row {
+        margin: 4px 0 23px;
+        display: flex;
+        align-items: center;
+    }
+
+        .login-check-row .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin-top: 0;
+            border-color: var(--login-blue-300);
+            cursor: pointer;
+        }
+
+            .login-check-row .form-check-input:checked {
+                background-color: var(--login-blue-600);
+                border-color: var(--login-blue-600);
+            }
+
+        .login-check-row .form-check-label {
+            color: var(--login-muted);
+            font-size: .84rem;
+            cursor: pointer;
+        }
+
+    .login-submit {
+        min-height: 52px;
+        border: 1px solid var(--login-blue-600) !important;
+        border-radius: 10px !important;
+        color: var(--login-white) !important;
+        background: linear-gradient(135deg, var(--login-blue-600), var(--login-blue-700)) !important;
+        font-size: .9rem;
+        font-weight: 800;
+        letter-spacing: .02em;
+        box-shadow: 0 9px 22px rgba(40, 120, 189, .22);
+    }
+
+        .login-submit:hover {
+            color: var(--login-white) !important;
+            background: linear-gradient(135deg, var(--login-blue-700), var(--login-blue-800)) !important;
+            box-shadow: 0 13px 28px rgba(40, 120, 189, .28);
+            transform: translateY(-2px);
+        }
+
+    .login-links {
+        margin-top: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 13px;
+    }
+
+        .login-links .link-acento {
+            position: relative;
+            color: var(--login-blue-700) !important;
+            font-size: .84rem;
+            font-weight: 700;
+            text-decoration: none !important;
+        }
+
+            .login-links .link-acento::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: -4px;
+                height: 2px;
+                border-radius: 999px;
+                background: var(--login-blue-400);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform .18s ease;
+            }
+
+            .login-links .link-acento:hover::after {
+                transform: scaleX(1);
+            }
+
+    .login-form-panel .alert {
+        margin-bottom: 18px;
+        border-radius: 10px;
+        font-size: .84rem;
+    }
+
+    .login-form-panel .alert-danger {
+        color: #842029;
+        background: #fff2f3;
+        border-color: #f3c5ca;
+    }
+
+    .login-form-panel .alert-success {
+        color: #1f6942;
+        background: #effaf4;
+        border-color: #bfe7cf;
+    }
+
+    .login-form-panel .text-danger {
+        display: block;
+        margin-top: 6px;
+        font-size: .78rem;
+    }
+
+    .login-form-panel .validation-summary-errors {
+        padding: 12px 14px;
+        border: 1px solid #f3c5ca;
+        border-radius: 10px;
+        background: #fff2f3;
+    }
+
+        .login-form-panel .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+    @@media (max-width: 991.98px) {
+        .login-page {
+            min-height: auto;
+            padding: 110px 22px 50px;
+        }
+
+        .login-shell {
+            grid-template-columns: 1fr;
+            max-width: 650px;
+        }
+
+        .login-visual {
+            min-height: 350px;
+            padding: 38px;
+        }
+
+        .login-form-panel {
+            padding: 48px 40px;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .login-page {
+            padding: 95px 15px 35px;
+        }
+
+        .login-shell {
+            border-radius: 18px;
+        }
+
+        .login-visual {
+            min-height: 300px;
+            padding: 30px 24px;
+        }
+
+            .login-visual h1 {
+                font-size: 2.35rem;
+            }
+
+        .login-form-panel {
+            padding: 36px 24px;
+        }
+
+        .login-form-header h2 {
+            font-size: 1.9rem;
+        }
+    }
+</style>
+
+<main class="login-page">
+    <div class="login-shell">
+
+        <section class="login-visual">
+            <div class="login-decor-line"></div>
+            <span class="login-decor-dot dot-one"></span>
+            <span class="login-decor-dot dot-two"></span>
+            <span class="login-decor-dot dot-three"></span>
+
+            <div class="login-brand">
+                PubRock
             </div>
-        </div>
+
+            <div class="login-visual-content">
+                <span class="login-eyebrow">
+                    Acceso al sistema
+                </span>
+
+                <h1>
+                    Gestiona PubRock desde un solo lugar
+                </h1>
+
+                <p>
+                    Accede al sistema administrativo y operativo para gestionar
+                    ventas, inventario, reservaciones y clientes.
+                </p>
+            </div>
+        </section>
+
+        <section class="login-form-panel">
+            <div class="login-form-inner">
+
+                <div class="login-form-header">
+                    <span class="section-label">
+                        Bienvenido
+                    </span>
+
+                    <h2>
+                        Iniciar sesión
+                    </h2>
+
+                    <p>
+                        Ingresa tus credenciales para continuar.
+                    </p>
+                </div>
+
+                @if (TempData["MensajeError"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["MensajeError"]
+                    </div>
+                }
+
+                @if (TempData["MensajeExito"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["MensajeExito"]
+                    </div>
+                }
+
+                @using (Html.BeginForm(
+                    "Login",
+                    "Account",
+                    new { ReturnUrl = ViewBag.ReturnUrl },
+                    FormMethod.Post,
+                    new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(
+                        true,
+                        "",
+                        new { @class = "text-danger mb-3" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(
+                            m => m.Email,
+                            new { @class = "form-label" })
+
+                        @Html.TextBoxFor(
+                            m => m.Email,
+                            new
+                            {
+                                @class = "form-control input form-control-large",
+                                placeholder = "Correo electrónico"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            m => m.Email,
+                            "",
+                            new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(
+                            m => m.Password,
+                            new { @class = "form-label" })
+
+                        @Html.PasswordFor(
+                            m => m.Password,
+                            new
+                            {
+                                @class = "form-control input form-control-large",
+                                placeholder = "Contraseña"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            m => m.Password,
+                            "",
+                            new { @class = "text-danger" })
+                    </div>
+
+                    <div class="login-check-row">
+                        @Html.CheckBoxFor(
+                            m => m.RememberMe,
+                            new { @class = "form-check-input me-2" })
+
+                        @Html.LabelFor(
+                            m => m.RememberMe,
+                            new { @class = "form-check-label" })
+                    </div>
+
+                    <div class="d-grid">
+                        <input type="submit"
+                               value="Iniciar sesión"
+                               class="btn btn-pubrock btn-primary btn-lg login-submit" />
+                    </div>
+
+                    <div class="login-links">
+                        @Html.ActionLink(
+                            "¿Olvidó su contraseña?",
+                            "ForgotPassword",
+                            "Account",
+                            null,
+                            new { @class = "link-acento" })
+
+                        @Html.ActionLink(
+                            "Registrarse como usuario nuevo",
+                            "Register",
+                            null,
+                            new { @class = "link-acento" })
+                    </div>
+                }
+
+            </div>
+        </section>
+
     </div>
 </main>
 

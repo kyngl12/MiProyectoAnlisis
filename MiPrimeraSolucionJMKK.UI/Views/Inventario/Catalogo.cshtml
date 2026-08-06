@@ -1,116 +1,703 @@
 @model List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Productos.ProductoDto>
 
 @{
-    ViewBag.Title = "Nuestro Menu - PubRock";
+    ViewBag.Title = "Nuestro Menú - PubRock";
 }
 
 <style>
-    .menu-card {
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-        border: 1px solid rgba(0, 0, 0, 0.08);
+    :root {
+        --menu-blue-950: #06142f;
+        --menu-blue-900: #0a1f46;
+        --menu-blue-800: #10376b;
+        --menu-blue-700: #185695;
+        --menu-blue-600: #2878bd;
+        --menu-blue-500: #4298d4;
+        --menu-blue-400: #68a5d8;
+        --menu-blue-300: #9acced;
+        --menu-blue-200: #c9e5f6;
+        --menu-blue-100: #e7f3fb;
+        --menu-blue-50: #f5faff;
+        --menu-white: #ffffff;
+        --menu-text: #14263a;
+        --menu-secondary: #50657a;
+        --menu-muted: #718397;
+        --menu-border: #dce9f3;
+        --menu-border-light: #eaf1f7;
+        --menu-success: #2f855a;
+        --menu-danger: #b24545;
+        --menu-shadow-sm: 0 8px 24px rgba(6, 20, 47, .07);
+        --menu-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
     }
 
-        .menu-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
+    .catalog-page {
+        min-height: 100vh;
+        margin-top: -82px;
+        background: var(--menu-white);
+        color: var(--menu-text);
+    }
+
+    /* =====================================================
+       PORTADA
+       ===================================================== */
+
+    .catalog-hero {
+        position: relative;
+        min-height: 530px;
+        padding: 155px 7% 90px;
+        display: flex;
+        align-items: flex-end;
+        background: radial-gradient( circle at 80% 18%, rgba(104, 165, 216, .24), transparent 30% ), radial-gradient( circle at 12% 85%, rgba(40, 120, 189, .18), transparent 34% ), linear-gradient( 135deg, var(--menu-blue-950), var(--menu-blue-800) );
+        color: var(--menu-white);
+        overflow: hidden;
+    }
+
+        .catalog-hero::before {
+            content: "MENÚ";
+            position: absolute;
+            right: 5%;
+            bottom: 25px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(7rem, 18vw, 15rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .catalog-hero::after {
+            content: "";
+            position: absolute;
+            width: 430px;
+            height: 430px;
+            right: -190px;
+            top: -170px;
+            border: 62px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+    .catalog-hero-inner {
+        position: relative;
+        z-index: 2;
+        width: min(1180px, 100%);
+        margin: auto;
+    }
+
+    .catalog-eyebrow {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--menu-blue-400);
+        color: var(--menu-blue-100);
+        font-size: .72rem;
+        font-weight: 800;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+    }
+
+    .catalog-hero h1 {
+        max-width: 760px;
+        margin-bottom: 20px;
+        color: var(--menu-white) !important;
+        font-size: clamp(3rem, 7vw, 6.2rem);
+        font-weight: 800;
+        line-height: .95;
+        letter-spacing: -.065em;
+    }
+
+    .catalog-hero p {
+        max-width: 690px;
+        margin-bottom: 0;
+        color: rgba(255, 255, 255, .76);
+        font-size: 1.08rem;
+        line-height: 1.8;
+    }
+
+    /* =====================================================
+       FILTRO
+       ===================================================== */
+
+    .catalog-filter-section {
+        position: relative;
+        z-index: 3;
+        padding: 0 7%;
+        margin-top: -38px;
+    }
+
+    .catalog-filter-inner {
+        width: min(1180px, 100%);
+        margin: auto;
+    }
+
+    .catalog-filter-bar {
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        border: 1px solid var(--menu-border);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, .97);
+        backdrop-filter: blur(16px);
+        box-shadow: var(--menu-shadow-md);
+    }
+
+    .catalog-filter-title {
+        flex-shrink: 0;
+        padding-right: 18px;
+        border-right: 1px solid var(--menu-border);
+        color: var(--menu-blue-900);
+        font-size: .74rem;
+        font-weight: 800;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+    }
+
+    .catalog-filter-form {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .catalog-filter-form .form-select {
+            min-height: 48px;
+            flex: 1;
+            color: var(--menu-text);
+            background-color: var(--menu-white);
+            border: 1px solid var(--menu-border);
+            border-radius: 10px;
+            box-shadow: none !important;
+        }
+
+            .catalog-filter-form .form-select:focus {
+                border-color: var(--menu-blue-500);
+                box-shadow: 0 0 0 4px rgba(66, 152, 212, .12) !important;
+            }
+
+    .catalog-filter-button {
+        min-height: 48px;
+        padding: 0 28px;
+        border: 1px solid var(--menu-blue-600) !important;
+        border-radius: 10px !important;
+        color: var(--menu-white) !important;
+        background: linear-gradient( 135deg, var(--menu-blue-600), var(--menu-blue-700) ) !important;
+        font-size: .8rem;
+        font-weight: 800;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        box-shadow: 0 8px 20px rgba(40, 120, 189, .20);
+        transition: transform .16s ease, box-shadow .16s ease;
+    }
+
+        .catalog-filter-button:hover {
+            color: var(--menu-white) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(40, 120, 189, .27);
+        }
+
+    /* =====================================================
+       CONTENIDO DEL MENÚ
+       ===================================================== */
+
+    .catalog-content {
+        padding: 95px 7% 110px;
+        background: var(--menu-white);
+    }
+
+    .catalog-content-inner {
+        width: min(1180px, 100%);
+        margin: auto;
+    }
+
+    .catalog-section-header {
+        max-width: 720px;
+        margin-bottom: 58px;
+    }
+
+    .catalog-section-label {
+        display: inline-block;
+        margin-bottom: 13px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--menu-blue-500);
+        color: var(--menu-blue-700);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .catalog-section-header h2 {
+        margin-bottom: 16px;
+        color: var(--menu-blue-950) !important;
+        font-size: clamp(2.2rem, 4vw, 4rem);
+        font-weight: 800;
+        line-height: 1.04;
+        letter-spacing: -.055em;
+    }
+
+    .catalog-section-header p {
+        margin-bottom: 0;
+        color: var(--menu-muted);
+        line-height: 1.75;
+    }
+
+    /* =====================================================
+       PRODUCTOS COMO FILAS EDITORIALES
+       ===================================================== */
+
+    .menu-list {
+        border-top: 1px solid var(--menu-border);
+    }
+
+    .menu-item {
+        position: relative;
+        display: grid;
+        grid-template-columns: 135px 1fr auto;
+        align-items: center;
+        gap: 34px;
+        min-height: 170px;
+        padding: 30px 8px;
+        border-bottom: 1px solid var(--menu-border);
+        transition: padding-left .2s ease, background-color .2s ease;
+    }
+
+        .menu-item:hover {
+            padding-left: 20px;
+            background: var(--menu-blue-50);
+        }
+
+    .menu-item-number {
+        color: var(--menu-blue-200);
+        font-size: 3.4rem;
+        font-weight: 800;
+        letter-spacing: -.07em;
+    }
+
+    .menu-item-content {
+        min-width: 0;
+    }
+
+    .menu-item-meta {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .menu-category {
+        padding-bottom: 5px;
+        border-bottom: 2px solid var(--menu-blue-400);
+        color: var(--menu-blue-700);
+        font-size: .68rem;
+        font-weight: 800;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+    }
+
+    .menu-status {
+        padding: 5px 9px;
+        border-radius: 999px;
+        font-size: .67rem;
+        font-weight: 700;
+    }
+
+        .menu-status.available {
+            color: var(--menu-success);
+            background: rgba(47, 133, 90, .09);
+        }
+
+        .menu-status.sold-out {
+            color: var(--menu-danger);
+            background: rgba(178, 69, 69, .09);
+        }
+
+    .menu-item h3 {
+        margin-bottom: 8px;
+        color: var(--menu-blue-950) !important;
+        font-size: 1.45rem;
+        font-weight: 800;
+        letter-spacing: -.035em;
+    }
+
+    .menu-item-description {
+        max-width: 660px;
+        margin-bottom: 0;
+        color: var(--menu-muted);
+        font-size: .9rem;
+        line-height: 1.65;
+    }
+
+    .menu-item-price {
+        min-width: 150px;
+        padding-left: 25px;
+        border-left: 1px solid var(--menu-border);
+        text-align: right;
+    }
+
+        .menu-item-price small {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--menu-muted);
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .11em;
+            text-transform: uppercase;
         }
 
     .price-tag {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #212529;
+        color: var(--menu-blue-900);
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -.035em;
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       ALERTA
+       ===================================================== */
+
+    .catalog-alert {
+        width: min(1180px, 100%);
+        margin: 30px auto 0;
+        padding: 15px 18px;
+        border: 1px solid var(--menu-blue-200);
+        border-radius: 12px;
+        color: var(--menu-blue-900);
+        background: var(--menu-blue-50);
+        font-size: .86rem;
+        text-align: center;
+        box-shadow: var(--menu-shadow-sm);
+    }
+
+    /* =====================================================
+       ESTADO VACÍO
+       ===================================================== */
+
+    .catalog-empty {
+        padding: 90px 30px;
+        border-top: 1px solid var(--menu-border);
+        border-bottom: 1px solid var(--menu-border);
+        text-align: center;
+    }
+
+    .catalog-empty-number {
+        margin-bottom: 18px;
+        color: var(--menu-blue-100);
+        font-size: 6rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .catalog-empty h3 {
+        margin-bottom: 12px;
+        color: var(--menu-blue-950) !important;
+        font-size: 1.65rem;
+        font-weight: 800;
+    }
+
+    .catalog-empty p {
+        margin-bottom: 0;
+        color: var(--menu-muted);
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .catalog-page {
+            margin-top: 0;
+        }
+
+        .catalog-hero {
+            min-height: 500px;
+            padding: 125px 30px 80px;
+        }
+
+        .catalog-filter-section {
+            padding: 0 30px;
+        }
+
+        .catalog-content {
+            padding: 85px 30px 95px;
+        }
+
+        .menu-item {
+            grid-template-columns: 90px 1fr auto;
+            gap: 24px;
+        }
+
+        .menu-item-number {
+            font-size: 2.7rem;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .catalog-filter-bar {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .catalog-filter-title {
+            padding-right: 0;
+            padding-bottom: 12px;
+            border-right: 0;
+            border-bottom: 1px solid var(--menu-border);
+        }
+
+        .catalog-filter-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .catalog-filter-button {
+            width: 100%;
+        }
+
+        .menu-item {
+            grid-template-columns: 65px 1fr;
+        }
+
+        .menu-item-price {
+            grid-column: 2;
+            min-width: 0;
+            padding: 16px 0 0;
+            border-top: 1px solid var(--menu-border);
+            border-left: 0;
+            text-align: left;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .catalog-hero {
+            min-height: 470px;
+            padding: 115px 20px 70px;
+        }
+
+            .catalog-hero h1 {
+                font-size: 3.2rem;
+            }
+
+        .catalog-filter-section {
+            padding: 0 18px;
+        }
+
+        .catalog-content {
+            padding: 75px 20px 85px;
+        }
+
+        .catalog-section-header {
+            margin-bottom: 42px;
+        }
+
+        .menu-item {
+            grid-template-columns: 1fr;
+            gap: 10px;
+            padding: 27px 5px;
+        }
+
+            .menu-item:hover {
+                padding-left: 10px;
+            }
+
+        .menu-item-number {
+            font-size: 2rem;
+        }
+
+        .menu-item-price {
+            grid-column: 1;
+        }
     }
 </style>
 
-<div class="container py-4">
+<div class="catalog-page">
 
-    <!-- ENCABEZADO -->
-    <div class="text-center mb-4">
-        <h1 class="display-5 fw-bold text-dark mb-2">Nuestro Menu</h1>
-        <p class="text-muted fs-5">
-            Sabor artesanal, ingredientes frescos y la mejor combinacion para mejorar al mil tu experiencia.
-        </p>
-    </div>
+    <!-- =====================================================
+         PORTADA
+         ===================================================== -->
+    <section class="catalog-hero">
+
+        <div class="catalog-hero-inner">
+
+            <span class="catalog-eyebrow">
+                Gastronomía PubRock
+            </span>
+
+            <h1>
+                Nuestro menú
+            </h1>
+
+            <p>
+                Sabor artesanal, ingredientes frescos y combinaciones pensadas
+                para acompañar cada experiencia dentro de PubRock.
+            </p>
+
+        </div>
+
+    </section>
 
     @if (TempData["MensajeInfo"] != null)
     {
-        <div class="alert alert-info rounded-3 text-center shadow-sm mb-4">
+        <div class="catalog-alert">
             @TempData["MensajeInfo"]
         </div>
     }
 
-    <!-- FILTRO POR CATEGORIA -->
-    <div class="row justify-content-center mb-5">
-        <div class="col-md-6 col-lg-5">
-            @using (Html.BeginForm("Catalogo", "Inventario", FormMethod.Post, new { @class = "d-flex gap-2 shadow-sm p-2 bg-white rounded-pill border" }))
-            {
-                @Html.DropDownList(
-                    "categoria",
-                    ViewBag.Categorias as SelectList,
-                    "-- Todas las categorias --",
-                    new { @class = "form-select border-0 shadow-none bg-transparent ps-3" })
+    <!-- =====================================================
+         FILTRO POR CATEGORÍA
+         ===================================================== -->
+    <section class="catalog-filter-section">
 
-                <button type="submit" class="btn btn-dark rounded-pill px-4 fw-semibold">
-                    Filtrar
-                </button>
-            }
+        <div class="catalog-filter-inner">
+
+            <div class="catalog-filter-bar">
+
+                <div class="catalog-filter-title">
+                    Explorar menú
+                </div>
+
+                @using (Html.BeginForm(
+                    "Catalogo",
+                    "Inventario",
+                    FormMethod.Post,
+                    new { @class = "catalog-filter-form" }))
+                {
+                    @Html.DropDownList(
+                        "categoria",
+                        ViewBag.Categorias as SelectList,
+                        "-- Todas las categorías --",
+                        new
+                        {
+                            @class = "form-select"
+                        })
+
+                    <button type="submit"
+                            class="btn catalog-filter-button">
+                        Filtrar
+                    </button>
+                }
+
+            </div>
+
         </div>
-    </div>
 
-    <!-- CUADRICULA DEL MENU -->
-    @if (Model != null && Model.Any())
-    {
-        <div class="row g-4">
-            @foreach (var p in Model)
+    </section>
+
+    <!-- =====================================================
+         PRODUCTOS
+         ===================================================== -->
+    <section class="catalog-content">
+
+        <div class="catalog-content-inner">
+
+            <div class="catalog-section-header">
+
+                <span class="catalog-section-label">
+                    Selección de la casa
+                </span>
+
+                <h2>
+                    Sabores que forman parte de la experiencia
+                </h2>
+
+                <p>
+                    Descubre nuestros productos disponibles y encuentra el
+                    acompañamiento perfecto para tu próxima visita.
+                </p>
+
+            </div>
+
+            @if (Model != null && Model.Any())
             {
-                <div class="col-sm-6 col-lg-4">
-                    <div class="card menu-card h-100 rounded-4 shadow-sm bg-white p-3 d-flex flex-column justify-content-between">
+                <div class="menu-list">
 
-                        <div>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-light text-dark border fw-normal px-2 py-1 rounded-pill">
-                                    @p.Categoria
-                                </span>
+                    @{
+                        int numeroProducto = 1;
+                    }
 
-                                @if (p.Cantidad <= 0)
-                                {
-                                    <span class="badge bg-secondary text-white rounded-pill">Agotado</span>
-                                }
+                    @foreach (var p in Model)
+                    {
+                        <article class="menu-item">
+
+                            <div class="menu-item-number">
+                                @numeroProducto.ToString("00")
                             </div>
 
-                            <h4 class="fw-bold text-dark mb-2">@p.Nombre</h4>
+                            <div class="menu-item-content">
 
-                            <p class="text-muted small mb-3">
-                                Preparado al instante con la receta especial de la casa.
-                            </p>
-                        </div>
+                                <div class="menu-item-meta">
 
-                        <div class="pt-3 border-top d-flex align-items-center justify-content-between mt-auto">
-                            <div>
-                                <small class="text-muted d-block lh-1">Precio</small>
-                                <span class="price-tag">&#8353; @p.PrecioUnitario.ToString("N0")</span>
+                                    <span class="menu-category">
+                                        @p.Categoria
+                                    </span>
+
+                                    @if (p.Cantidad > 0)
+                                    {
+                                        <span class="menu-status available">
+                                            Disponible
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="menu-status sold-out">
+                                            Agotado
+                                        </span>
+                                    }
+
+                                </div>
+
+                                <h3>
+                                    @p.Nombre
+                                </h3>
+
+                                <p class="menu-item-description">
+                                    Preparado al instante con la receta especial
+                                    de la casa.
+                                </p>
+
                             </div>
 
-                            @if (p.Cantidad > 0)
-                            {
-                                <span class="text-success fw-semibold small">
-                                    Disponible
-                                </span>
-                            }
-                        </div>
+                            <div class="menu-item-price">
 
-                    </div>
+                                <small>
+                                    Precio
+                                </small>
+
+                                <span class="price-tag">
+                                    &#8353; @p.PrecioUnitario.ToString("N0")
+                                </span>
+
+                            </div>
+
+                        </article>
+
+                        numeroProducto++;
+                    }
+
                 </div>
             }
+            else
+            {
+                <div class="catalog-empty">
+
+                    <div class="catalog-empty-number">
+                        00
+                    </div>
+
+                    <h3>
+                        No hay productos en esta categoría
+                    </h3>
+
+                    <p>
+                        Intenta seleccionando otra categoría o regresa más tarde.
+                    </p>
+
+                </div>
+            }
+
         </div>
-    }
-    else
-    {
-        <!-- MENSAJE SIN PRODUCTOS -->
-        <div class="text-center py-5 rounded-4 bg-light border">
-            <h4 class="fw-bold text-dark">No hay productos en esta categoria</h4>
-            <p class="text-muted mb-0">Intenta seleccionando otra categoria o regresa mas tarde.</p>
-        </div>
-    }
+
+    </section>
 
 </div>

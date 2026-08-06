@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace GestionPubRock.UI.Controllers
 {
-    {
+    
     [Authorize(Roles = "Administrador")]
     public class ReporteController : Controller
     {

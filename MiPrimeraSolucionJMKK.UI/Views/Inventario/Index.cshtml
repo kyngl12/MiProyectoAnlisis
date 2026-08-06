@@ -4,114 +4,898 @@
     ViewBag.Title = "Inventario";
 }
 
-<div class="container py-3">
-    <div class="card-modern">
-        <h2>Inventario de Productos</h2>
+<style>
+    :root {
+        --inventory-blue-950: #06142f;
+        --inventory-blue-900: #0a1f46;
+        --inventory-blue-800: #10376b;
+        --inventory-blue-700: #185695;
+        --inventory-blue-600: #2878bd;
+        --inventory-blue-500: #4298d4;
+        --inventory-blue-400: #68a5d8;
+        --inventory-blue-300: #9acced;
+        --inventory-blue-200: #c9e5f6;
+        --inventory-blue-100: #e7f3fb;
+        --inventory-blue-50: #f5faff;
+        --inventory-white: #ffffff;
+        --inventory-text: #14263a;
+        --inventory-muted: #718397;
+        --inventory-border: #dce9f3;
+        --inventory-border-light: #eaf1f7;
+        --inventory-success: #2f855a;
+        --inventory-warning: #b7791f;
+        --inventory-danger: #c53030;
+        --inventory-shadow-sm: 0 6px 20px rgba(6, 20, 47, .07);
+        --inventory-shadow-md: 0 16px 38px rgba(6, 20, 47, .11);
+        --inventory-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-@if (TempData["MensajeInfo"] != null)
-{
-    <div class="alert alert-info">@TempData["MensajeInfo"]</div>
-}
+    .inventory-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
-@if (TempData["MensajeExito"] != null)
-{
-    <div class="alert alert-success">@TempData["MensajeExito"]</div>
-}
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
 
-@if (TempData["MensajeError"] != null)
-{
-    <div class="alert alert-danger">@TempData["MensajeError"]</div>
-}
+    .inventory-header {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 35px;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--inventory-blue-950), var(--inventory-blue-800) );
+        box-shadow: var(--inventory-shadow-lg);
+        overflow: hidden;
+    }
 
-@if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
-{
-    <p>
-        <a class="btn btn-pubrock btn-rounded" href="@Url.Action("AgregarProducto", "Inventario")">
-            Agregar Producto
-        </a>
-    </p>
-}
+        .inventory-header::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
 
-<form method="post" action="@Url.Action("Buscar", "Inventario")" class="mb-3">
-    <div class="input-group rounded-pill overflow-hidden" style="max-width:540px">
-        <input type="text" name="termino" class="form-control form-control-sm" placeholder="Buscar por nombre o codigo" />
-        <button class="btn btn-outline-secondary btn-sm" type="submit">Buscar</button>
-    </div>
-</form>
+        .inventory-header::after {
+            content: "INVENTARIO";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
 
-<table class="table-modern">
-    <thead>
-        <tr>
-            <th>Codigo</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
+    .inventory-heading,
+    .inventory-header-actions {
+        position: relative;
+        z-index: 2;
+    }
 
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            foreach (var p in Model)
-            {
-                <tr>
-                    <td>@p.Codigo</td>
-                    <td>@p.Nombre</td>
-                    <td>@p.Categoria</td>
+    .inventory-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--inventory-blue-400);
+        color: var(--inventory-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
 
-                    <td>
-                        @p.Cantidad
+    .inventory-heading h1 {
+        margin: 0 0 13px;
+        color: var(--inventory-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
 
-                        @if (p.Cantidad <= 5)
-                        {
-                            <span class="badge bg-danger ms-2">Stock Bajo</span>
-                        }
-                    </td>
+    .inventory-heading p {
+        max-width: 650px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
 
-                    <td>@p.PrecioUnitario</td>
+    .inventory-add-button {
+        min-width: 180px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, .52);
+        border-radius: 999px;
+        color: var(--inventory-blue-950) !important;
+        background: var(--inventory-white);
+        font-size: .8rem;
+        font-weight: 800;
+        letter-spacing: .04em;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, .14);
+        transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
 
-                    <td>
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
-                        {
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="btn-group" role="group">
-                                    @Html.ActionLink("Editar", "EditarProducto", new { id = p.IdProducto }, new { @class = "btn btn-sm btn-outline-warning" })
-                                    @using (Html.BeginForm("EliminarProducto", "Inventario", FormMethod.Post, new { @class = "m-0 p-0" }))
-                                    {
-                                        @Html.Hidden("id", p.IdProducto)
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar este producto?');">Eliminar</button>
-                                    }
-                                </div>
+        .inventory-add-button:hover {
+            color: var(--inventory-white) !important;
+            background: var(--inventory-blue-500);
+            border-color: var(--inventory-blue-500);
+            box-shadow: 0 14px 32px rgba(40, 120, 189, .30);
+            transform: translateY(-2px);
+        }
 
-                                <div>
-                                    @using (Html.BeginForm("RegistrarMovimiento", "Inventario", FormMethod.Post, new { @class = "d-flex gap-1 align-items-center m-0" }))
-                                    {
-                                        @Html.Hidden("idProducto", p.IdProducto)
-                                        <input type="number" name="cantidad" class="form-control form-control-sm" placeholder="Cant" required style="width:80px" />
-                                        <select name="tipo" class="form-select form-select-sm" style="width:110px">
-                                            <option value="ENTRADA">Entrada</option>
-                                            <option value="SALIDA">Salida</option>
-                                        </select>
-                                        <input type="text" name="motivo" class="form-control form-control-sm" placeholder="Motivo" style="width:140px" />
-                                        <button type="submit" class="btn btn-sm btn-pubrock">OK</button>
-                                    }
-                                </div>
-                            </div>
-                        }
-                    </td>
-                </tr>
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .inventory-alerts {
+        margin-top: 25px;
+    }
+
+        .inventory-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .inventory-alerts .alert-info {
+            color: var(--inventory-blue-900);
+            background: var(--inventory-blue-50);
+            border-color: var(--inventory-blue-200);
+        }
+
+        .inventory-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .inventory-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    /* =====================================================
+       HERRAMIENTAS
+       ===================================================== */
+
+    .inventory-toolbar {
+        margin-top: 28px;
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border: 1px solid var(--inventory-border);
+        border-radius: 17px;
+        background: linear-gradient( 180deg, var(--inventory-white), var(--inventory-blue-50) );
+        box-shadow: var(--inventory-shadow-sm);
+    }
+
+    .inventory-toolbar-copy {
+        min-width: 210px;
+    }
+
+    .inventory-toolbar-title {
+        margin-bottom: 4px;
+        color: var(--inventory-blue-950);
+        font-size: .95rem;
+        font-weight: 800;
+    }
+
+    .inventory-toolbar-subtitle {
+        color: var(--inventory-muted);
+        font-size: .8rem;
+    }
+
+    .inventory-search-form {
+        width: min(520px, 100%);
+        margin: 0 !important;
+    }
+
+    .inventory-search {
+        display: flex;
+        border: 1px solid var(--inventory-border);
+        border-radius: 999px;
+        background: var(--inventory-white);
+        box-shadow: 0 3px 10px rgba(6, 20, 47, .045);
+        overflow: hidden;
+        transition: border-color .16s ease, box-shadow .16s ease;
+    }
+
+        .inventory-search:focus-within {
+            border-color: var(--inventory-blue-400);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .10);
+        }
+
+        .inventory-search .form-control {
+            min-height: 46px;
+            padding: 11px 18px;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+            .inventory-search .form-control::placeholder {
+                color: #97a9b8;
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="6" class="text-center">No hay productos registrados</td>
-            </tr>
-        }
-    </tbody>
 
-</table>
+        .inventory-search .btn {
+            min-width: 110px;
+            border: 0 !important;
+            border-radius: 999px !important;
+            color: var(--inventory-white) !important;
+            background: var(--inventory-blue-700) !important;
+            font-size: .8rem;
+            font-weight: 800;
+        }
+
+            .inventory-search .btn:hover {
+                background: var(--inventory-blue-800) !important;
+            }
+
+    /* =====================================================
+       CONTENEDOR DE TABLA
+       ===================================================== */
+
+    .inventory-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--inventory-border);
+        border-radius: 20px;
+        background: var(--inventory-white);
+        box-shadow: var(--inventory-shadow-md);
+        overflow: hidden;
+    }
+
+    .inventory-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--inventory-border-light);
+        background: var(--inventory-white);
+    }
+
+        .inventory-table-heading h2 {
+            margin: 0;
+            color: var(--inventory-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .inventory-table-heading span {
+            color: var(--inventory-muted);
+            font-size: .78rem;
+        }
+
+    .inventory-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .inventory-table {
+        width: 100%;
+        min-width: 1050px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--inventory-text);
+    }
+
+        .inventory-table thead th {
+            padding: 15px 17px;
+            color: var(--inventory-blue-800);
+            background: var(--inventory-blue-50);
+            border-bottom: 1px solid var(--inventory-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .inventory-table tbody td {
+            padding: 16px 17px;
+            border-bottom: 1px solid var(--inventory-border-light);
+            font-size: .86rem;
+            vertical-align: middle;
+        }
+
+        .inventory-table tbody tr {
+            transition: background-color .15s ease;
+        }
+
+            .inventory-table tbody tr:hover {
+                background: #f9fcff;
+            }
+
+            .inventory-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+    .inventory-product-code {
+        display: inline-flex;
+        align-items: center;
+        min-height: 29px;
+        padding: 5px 10px;
+        border: 1px solid var(--inventory-blue-100);
+        border-radius: 999px;
+        color: var(--inventory-blue-700);
+        background: var(--inventory-blue-50);
+        font-size: .75rem;
+        font-weight: 800;
+    }
+
+    .inventory-product-name {
+        color: var(--inventory-blue-950);
+        font-weight: 700;
+    }
+
+    .inventory-category {
+        color: var(--inventory-muted);
+    }
+
+    .inventory-stock {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+
+    .inventory-stock-number {
+        color: var(--inventory-text);
+        font-weight: 700;
+    }
+
+    .inventory-low-stock {
+        padding: 5px 9px !important;
+        border: 1px solid #f0b8be;
+        color: #9a2531 !important;
+        background: #fff0f2 !important;
+        font-size: .67rem !important;
+        font-weight: 800 !important;
+    }
+
+    .inventory-price {
+        color: var(--inventory-blue-800);
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       ACCIONES
+       ===================================================== */
+
+    .inventory-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .inventory-actions-main {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .inventory-action-button {
+        min-height: 34px;
+        padding: 7px 12px !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px !important;
+        font-size: .73rem !important;
+        font-weight: 800 !important;
+        text-decoration: none !important;
+        transition: transform .15s ease, background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+        .inventory-action-button:hover {
+            transform: translateY(-1px);
+        }
+
+    .inventory-edit {
+        color: #966500 !important;
+        background: #fff9e8 !important;
+        border-color: #edd68d !important;
+    }
+
+        .inventory-edit:hover {
+            color: #725000 !important;
+            background: #fff1c5 !important;
+            border-color: #dfbd52 !important;
+        }
+
+    .inventory-delete {
+        color: #9a2531 !important;
+        background: #fff1f2 !important;
+        border-color: #efbdc2 !important;
+    }
+
+        .inventory-delete:hover {
+            color: #7c1923 !important;
+            background: #ffe1e4 !important;
+            border-color: #e1939c !important;
+        }
+
+    /* =====================================================
+       MOVIMIENTO DE INVENTARIO
+       ===================================================== */
+
+    .inventory-movement-form {
+        display: grid !important;
+        grid-template-columns: 82px 115px minmax(130px, 1fr) 46px;
+        align-items: center;
+        gap: 7px !important;
+        margin: 0 !important;
+    }
+
+        .inventory-movement-form .form-control,
+        .inventory-movement-form .form-select {
+            min-height: 34px;
+            padding: 6px 9px;
+            border: 1px solid var(--inventory-border);
+            border-radius: 8px;
+            background: var(--inventory-white);
+            font-size: .75rem;
+            box-shadow: none;
+        }
+
+            .inventory-movement-form .form-control:focus,
+            .inventory-movement-form .form-select:focus {
+                border-color: var(--inventory-blue-400);
+                box-shadow: 0 0 0 3px rgba(66, 152, 212, .10);
+            }
+
+    .inventory-movement-submit {
+        width: 42px;
+        min-height: 34px;
+        padding: 6px !important;
+        border: 1px solid var(--inventory-blue-600) !important;
+        border-radius: 8px !important;
+        color: var(--inventory-white) !important;
+        background: var(--inventory-blue-600) !important;
+        font-size: .72rem !important;
+        font-weight: 800 !important;
+    }
+
+        .inventory-movement-submit:hover {
+            background: var(--inventory-blue-700) !important;
+            border-color: var(--inventory-blue-700) !important;
+        }
+
+    /* =====================================================
+       ESTADO VACÍO
+       ===================================================== */
+
+    .inventory-empty-state {
+        padding: 60px 25px !important;
+        color: var(--inventory-muted);
+        font-size: .95rem !important;
+        text-align: center;
+    }
+
+        .inventory-empty-state::before {
+            content: "—";
+            display: block;
+            margin-bottom: 8px;
+            color: var(--inventory-blue-300);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .inventory-page {
+            padding-top: 10px;
+        }
+
+        .inventory-header {
+            min-height: 290px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .inventory-header-actions {
+            width: 100%;
+        }
+
+        .inventory-add-button {
+            width: 100%;
+        }
+
+        .inventory-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .inventory-search-form {
+            width: 100%;
+            max-width: none;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .inventory-header {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .inventory-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .inventory-toolbar {
+            padding: 18px;
+            border-radius: 14px;
+        }
+
+        .inventory-search {
+            border-radius: 12px;
+            flex-direction: column;
+            overflow: visible;
+            background: transparent;
+            border: 0;
+            box-shadow: none;
+        }
+
+            .inventory-search .form-control {
+                margin-bottom: 8px;
+                border: 1px solid var(--inventory-border) !important;
+                border-radius: 10px !important;
+                background: var(--inventory-white) !important;
+            }
+
+            .inventory-search .btn {
+                width: 100%;
+                min-height: 43px;
+                border-radius: 10px !important;
+            }
+
+        .inventory-table-section {
+            border-radius: 16px;
+        }
+
+        .inventory-table-heading {
+            padding: 18px;
+        }
+    }
+</style>
+
+<div class="inventory-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="inventory-header">
+
+        <div class="inventory-heading">
+
+            <span class="inventory-eyebrow">
+                Gestión de productos
+            </span>
+
+            <h1>
+                Inventario
+            </h1>
+
+            <p>
+                Administra productos, existencias, precios y movimientos
+                desde un solo espacio.
+            </p>
+
+        </div>
+
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
+        {
+            <div class="inventory-header-actions">
+
+                <a class="inventory-add-button"
+                   href="@Url.Action("AgregarProducto", "Inventario")">
+                    Agregar producto
+                </a>
+
+            </div>
+        }
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="inventory-alerts">
+
+        @if (TempData["MensajeInfo"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["MensajeInfo"]
+            </div>
+        }
+
+        @if (TempData["MensajeExito"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["MensajeExito"]
+            </div>
+        }
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
+            </div>
+        }
+
     </div>
+
+    <!-- =====================================================
+         BÚSQUEDA
+         ===================================================== -->
+    <section class="inventory-toolbar">
+
+        <div class="inventory-toolbar-copy">
+
+            <div class="inventory-toolbar-title">
+                Buscar productos
+            </div>
+
+            <div class="inventory-toolbar-subtitle">
+                Filtra por nombre o código.
+            </div>
+
+        </div>
+
+        <form method="post"
+              action="@Url.Action("Buscar", "Inventario")"
+              class="inventory-search-form">
+
+            <div class="inventory-search">
+
+                <input type="text"
+                       name="termino"
+                       class="form-control form-control-sm"
+                       placeholder="Buscar por nombre o código" />
+
+                <button class="btn btn-outline-secondary btn-sm"
+                        type="submit">
+                    Buscar
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+    <section class="inventory-table-section">
+
+        <div class="inventory-table-heading">
+
+            <h2>
+                Productos registrados
+            </h2>
+
+            <span>
+                Control de existencias y movimientos
+            </span>
+
+        </div>
+
+        <div class="inventory-table-scroll">
+
+            <table class="inventory-table">
+
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var p in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <span class="inventory-product-code">
+                                        @p.Codigo
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-product-name">
+                                        @p.Nombre
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-category">
+                                        @p.Categoria
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="inventory-stock">
+
+                                        <span class="inventory-stock-number">
+                                            @p.Cantidad
+                                        </span>
+
+                                        @if (p.Cantidad <= 5)
+                                        {
+                                            <span class="badge bg-danger inventory-low-stock">
+                                                Stock bajo
+                                            </span>
+                                        }
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-price">
+                                        @p.PrecioUnitario
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
+                                    {
+                                        <div class="inventory-actions">
+
+                                            <div class="inventory-actions-main">
+
+                                                @Html.ActionLink(
+    "Editar",
+    "EditarProducto",
+    "Inventario",
+    new
+    {
+        id = p.IdProducto
+    },
+    new
+    {
+        @class = "btn btn-sm btn-outline-warning inventory-action-button inventory-edit"
+    }
+)
+
+                                                @using (Html.BeginForm(
+                                                    "EliminarProducto",
+                                                    "Inventario",
+                                                    FormMethod.Post,
+                                                    new
+                                                    {
+                                                        @class = "m-0 p-0"
+                                                    }))
+                                                {
+                                                    @Html.Hidden(
+                                                        "id",
+                                                        p.IdProducto
+                                                    )
+
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-outline-danger inventory-action-button inventory-delete"
+                                                            onclick="return confirm('¿Eliminar este producto?');">
+                                                        Eliminar
+                                                    </button>
+                                                }
+
+                                            </div>
+
+                                            <div>
+
+                                                @using (Html.BeginForm(
+                                                    "RegistrarMovimiento",
+                                                    "Inventario",
+                                                    FormMethod.Post,
+                                                    new
+                                                    {
+                                                        @class = "inventory-movement-form"
+                                                    }))
+                                                {
+                                                    @Html.Hidden(
+                                                        "idProducto",
+                                                        p.IdProducto
+                                                    )
+
+                                                    <input type="number"
+                                                           name="cantidad"
+                                                           class="form-control form-control-sm"
+                                                           placeholder="Cant"
+                                                           required />
+
+                                                    <select name="tipo"
+                                                            class="form-select form-select-sm">
+
+                                                        <option value="ENTRADA">
+                                                            Entrada
+                                                        </option>
+
+                                                        <option value="SALIDA">
+                                                            Salida
+                                                        </option>
+
+                                                    </select>
+
+                                                    <input type="text"
+                                                           name="motivo"
+                                                           class="form-control form-control-sm"
+                                                           placeholder="Motivo" />
+
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-pubrock inventory-movement-submit">
+                                                        OK
+                                                    </button>
+                                                }
+
+                                            </div>
+
+                                        </div>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6"
+                                class="inventory-empty-state">
+                                No hay productos registrados
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>
