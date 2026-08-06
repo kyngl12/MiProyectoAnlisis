@@ -9,6 +9,10 @@ namespace MiPrimeraSolucionJMKK.Abstracciones.AccesoADatos.Promocion
 {
     public interface IObtenerTodasLasPromocionesAD
     {
-        List<PromocionDto> Obtener(string criterio = "");
+        List<PromocionDto> Obtener(
+            string criterio = "",
+            int? idEstado = null
+        );
     }
 }
+

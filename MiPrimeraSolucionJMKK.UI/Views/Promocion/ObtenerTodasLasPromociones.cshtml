@@ -19,17 +19,66 @@
             )
         </div>
 
-        <form method="post" action="@Url.Action("Buscar", "Promocion")" class="mb-3">
-            <div class="input-group rounded-pill overflow-hidden" style="max-width:540px">
-                <input type="text"
-                       name="criterio"
-                       class="form-control form-control-sm"
-                       placeholder="Buscar por nombre de promocion o producto" />
+        <form method="post"
+              action="@Url.Action("Buscar", "Promocion")"
+              class="mb-4">
 
-                <button class="btn btn-outline-secondary btn-sm" type="submit">
-                    Consultar
-                </button>
+            @Html.AntiForgeryToken()
+
+            <div class="row g-2 align-items-end">
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Promoción o producto
+                    </label>
+
+                    <input type="text"
+                           name="criterio"
+                           value="@ViewBag.Criterio"
+                           class="form-control"
+                           placeholder="Buscar por nombre de promoción o producto" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label fw-semibold">
+                        Estado
+                    </label>
+
+                    <select name="idEstado"
+                            class="form-select">
+
+                        <option value="">
+                            Todos los estados
+                        </option>
+
+                        <option value="1"
+                                @(Convert.ToString(ViewBag.IdEstado) == "1" ? "selected" : "")>
+                            Activa
+                        </option>
+
+                        <option value="2"
+                                @(Convert.ToString(ViewBag.IdEstado) == "2" ? "selected" : "")>
+                            Inactiva
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <button class="btn btn-primary w-100"
+                            type="submit">
+                        Consultar
+                    </button>
+
+                </div>
+
             </div>
+
         </form>
 
         @if (TempData["MensajeExito"] != null)

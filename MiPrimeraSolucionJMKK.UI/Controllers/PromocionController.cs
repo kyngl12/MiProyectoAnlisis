@@ -114,17 +114,27 @@ namespace GestionPubRock.UI.Controllers
                 return View(promocion);
             }
         }
-
         [HttpPost]
-        public ActionResult Buscar(string criterio)
+        [ValidateAntiForgeryToken]
+        public ActionResult Buscar(string criterio, int? idEstado)
         {
             try
             {
-                var lista = _obtenerTodasLasPromocionesLN.Obtener(criterio);
+                var lista = _obtenerTodasLasPromocionesLN.Obtener(criterio, idEstado);
+
+                ViewBag.Criterio = criterio;
+                ViewBag.IdEstado = idEstado;
 
                 if (lista == null || !lista.Any())
                 {
-                    TempData["MensajeInfo"] = "No se encontraron promociones con el criterio ingresado.";
+                    if (idEstado.HasValue)
+                    {
+                        TempData["MensajeInfo"] = "No existen promociones con el estado seleccionado";
+                    }
+                    else
+                    {
+                        TempData["MensajeInfo"] = "No se encontraron promociones con el criterio ingresado.";
+                    }
                 }
 
                 return View("ObtenerTodasLasPromociones", lista);

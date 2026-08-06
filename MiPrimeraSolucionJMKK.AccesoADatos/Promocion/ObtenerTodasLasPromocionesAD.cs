@@ -17,7 +17,10 @@ namespace GestionPubRock.AccesoADatos.Promocion
             _elContexto = new Contexto();
         }
 
-        public List<PromocionDto> Obtener(string criterio = "")
+        public List<PromocionDto> Obtener(
+            string criterio = "",
+            int? idEstado = null
+        )
         {
             try
             {
@@ -35,24 +38,39 @@ namespace GestionPubRock.AccesoADatos.Promocion
 
                 if (!string.IsNullOrWhiteSpace(criterio))
                 {
-                    criterio = criterio.ToLower();
+                    criterio = criterio.Trim().ToLower();
 
                     consulta = consulta.Where(x =>
-                        x.Promocion.NombrePromocion.ToLower().Contains(criterio) ||
-                        x.Producto.NombreProducto.ToLower().Contains(criterio));
+                        x.Promocion.NombrePromocion
+                            .ToLower()
+                            .Contains(criterio) ||
+                        x.Producto.NombreProducto
+                            .ToLower()
+                            .Contains(criterio)
+                    );
                 }
 
-                return consulta.Select(x => new PromocionDto
+                if (idEstado.HasValue)
                 {
-                    IdPromocion = x.Promocion.IdPromocion,
-                    NombrePromocion = x.Promocion.NombrePromocion,
-                    Descripcion = x.Promocion.Descripcion,
-                    PorcentajeDescuento = x.Promocion.PorcentajeDescuento,
-                    FechaInicio = x.Promocion.FechaInicio,
-                    FechaFin = x.Promocion.FechaFin,
-                    IdEstado = x.Promocion.IdEstado,
-                    IdProducto = x.Producto.IdProducto
-                }).ToList();
+                    consulta = consulta.Where(x =>
+                        x.Promocion.IdEstado == idEstado.Value
+                    );
+                }
+
+                return consulta
+                    .Select(x => new PromocionDto
+                    {
+                        IdPromocion = x.Promocion.IdPromocion,
+                        NombrePromocion = x.Promocion.NombrePromocion,
+                        Descripcion = x.Promocion.Descripcion,
+                        PorcentajeDescuento =
+                            x.Promocion.PorcentajeDescuento,
+                        FechaInicio = x.Promocion.FechaInicio,
+                        FechaFin = x.Promocion.FechaFin,
+                        IdEstado = x.Promocion.IdEstado,
+                        IdProducto = x.Producto.IdProducto
+                    })
+                    .ToList();
             }
             catch
             {
