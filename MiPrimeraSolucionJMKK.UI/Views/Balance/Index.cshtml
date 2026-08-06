@@ -2,99 +2,796 @@
 
 @{
     ViewBag.Title = "Balance de Pérdidas y Ganancias";
-    var inicio = Model != null && Model.FechaInicio != default(DateTime) ? Model.FechaInicio : DateTime.Now.AddMonths(-1);
-    var fin = Model != null && Model.FechaFin != default(DateTime) ? Model.FechaFin : DateTime.Now;
+
+    var inicio = Model != null && Model.FechaInicio != default(DateTime)
+        ? Model.FechaInicio
+        : DateTime.Now.AddMonths(-1);
+
+    var fin = Model != null && Model.FechaFin != default(DateTime)
+        ? Model.FechaFin
+        : DateTime.Now;
 }
 
-<div class="container py-5">
-    <div class="card-modern p-4">
+<style>
+    :root {
+        --balance-blue-950: #06142f;
+        --balance-blue-900: #0a1f46;
+        --balance-blue-800: #10376b;
+        --balance-blue-700: #185695;
+        --balance-blue-600: #2878bd;
+        --balance-blue-500: #4298d4;
+        --balance-blue-400: #68a5d8;
+        --balance-blue-300: #9acced;
+        --balance-blue-200: #c9e5f6;
+        --balance-blue-100: #e7f3fb;
+        --balance-blue-50: #f5faff;
+        --balance-white: #ffffff;
+        --balance-text: #14263a;
+        --balance-muted: #718397;
+        --balance-border: #dce9f3;
+        --balance-border-light: #eaf1f7;
+        --balance-success: #2f855a;
+        --balance-danger: #c53030;
+        --balance-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --balance-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --balance-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-        <h2 class="mb-4"><i class="bi bi-graph-up-arrow me-2"></i>Balance de Pérdidas y Ganancias</h2>
+    .balance-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
+
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
+
+    .balance-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--balance-blue-950), var(--balance-blue-800) );
+        box-shadow: var(--balance-shadow-lg);
+        overflow: hidden;
+    }
+
+        .balance-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .balance-hero::after {
+            content: "BALANCE";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .balance-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 760px;
+    }
+
+    .balance-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--balance-blue-400);
+        color: var(--balance-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .balance-heading h1 {
+        margin: 0 0 13px;
+        color: var(--balance-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .balance-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .balance-alerts {
+        margin-top: 25px;
+    }
+
+        .balance-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .balance-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    /* =====================================================
+       FILTROS
+       ===================================================== */
+
+    .balance-filter-panel {
+        margin-top: 25px;
+        padding: 28px;
+        border: 1px solid var(--balance-border);
+        border-radius: 20px;
+        background: linear-gradient( 180deg, var(--balance-white), var(--balance-blue-50) );
+        box-shadow: var(--balance-shadow-md);
+    }
+
+    .balance-filter-header {
+        margin-bottom: 22px;
+        padding-bottom: 17px;
+        border-bottom: 1px solid var(--balance-border-light);
+    }
+
+        .balance-filter-header h2 {
+            margin: 0 0 6px;
+            color: var(--balance-blue-950);
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .balance-filter-header p {
+            margin: 0;
+            color: var(--balance-muted);
+            font-size: .84rem;
+        }
+
+    .balance-filter-form {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 220px;
+        gap: 18px !important;
+        margin: 0 !important;
+    }
+
+    .balance-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--balance-text);
+        font-size: .82rem;
+        font-weight: 700;
+    }
+
+    .balance-field .form-control {
+        min-height: 50px;
+        padding: 12px 15px;
+        color: var(--balance-text);
+        background: var(--balance-white);
+        border: 1px solid var(--balance-border);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+    }
+
+        .balance-field .form-control:hover {
+            border-color: var(--balance-blue-300);
+        }
+
+        .balance-field .form-control:focus {
+            border-color: var(--balance-blue-500);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+        }
+
+    .balance-generate-button {
+        min-height: 50px;
+        border: 1px solid var(--balance-blue-600) !important;
+        border-radius: 10px !important;
+        color: var(--balance-white) !important;
+        background: linear-gradient( 135deg, var(--balance-blue-600), var(--balance-blue-800) ) !important;
+        font-size: .84rem;
+        font-weight: 800;
+        box-shadow: 0 9px 22px rgba(40, 120, 189, .22);
+    }
+
+        .balance-generate-button:hover {
+            color: var(--balance-white) !important;
+            background: linear-gradient( 135deg, var(--balance-blue-700), var(--balance-blue-950) ) !important;
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       RESUMEN
+       ===================================================== */
+
+    .balance-results {
+        margin-top: 25px;
+    }
+
+    .balance-period {
+        margin-bottom: 20px;
+        padding: 18px 21px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border: 1px solid var(--balance-border);
+        border-radius: 16px;
+        background: var(--balance-white);
+        box-shadow: var(--balance-shadow-sm);
+    }
+
+    .balance-period-title {
+        color: var(--balance-blue-950);
+        font-size: .92rem;
+        font-weight: 800;
+    }
+
+    .balance-period-dates {
+        color: var(--balance-muted);
+        font-size: .8rem;
+        font-weight: 600;
+    }
+
+    .balance-summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .balance-summary-item {
+        position: relative;
+        min-height: 155px;
+        padding: 24px;
+        border: 1px solid var(--balance-border);
+        border-radius: 18px;
+        background: var(--balance-white);
+        box-shadow: var(--balance-shadow-sm);
+        overflow: hidden;
+    }
+
+        .balance-summary-item::after {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            right: -55px;
+            top: -55px;
+            border-radius: 50%;
+            background: rgba(66, 152, 212, .06);
+        }
+
+    .balance-summary-label {
+        margin-bottom: 13px;
+        color: var(--balance-muted);
+        font-size: .72rem;
+        font-weight: 800;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+    }
+
+    .balance-summary-value {
+        color: var(--balance-blue-950);
+        font-size: 1.65rem;
+        font-weight: 800;
+        letter-spacing: -.035em;
+    }
+
+    .balance-summary-item.income {
+        border-top: 4px solid var(--balance-success);
+    }
+
+        .balance-summary-item.income .balance-summary-value {
+            color: var(--balance-success);
+        }
+
+    .balance-summary-item.expenses {
+        border-top: 4px solid var(--balance-danger);
+    }
+
+        .balance-summary-item.expenses .balance-summary-value {
+            color: var(--balance-danger);
+        }
+
+    .balance-summary-item.result {
+        border-top: 4px solid var(--balance-blue-600);
+        background: radial-gradient( circle at top right, rgba(104, 165, 216, .12), transparent 38% ), var(--balance-white);
+    }
+
+        .balance-summary-item.result.loss {
+            border-top-color: var(--balance-danger);
+        }
+
+        .balance-summary-item.result.profit {
+            border-top-color: var(--balance-success);
+        }
+
+        .balance-summary-item.result.loss .balance-summary-value {
+            color: var(--balance-danger);
+        }
+
+        .balance-summary-item.result.profit .balance-summary-value {
+            color: var(--balance-success);
+        }
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    .balance-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--balance-border);
+        border-radius: 20px;
+        background: var(--balance-white);
+        box-shadow: var(--balance-shadow-md);
+        overflow: hidden;
+    }
+
+    .balance-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--balance-border-light);
+    }
+
+        .balance-table-heading h2 {
+            margin: 0;
+            color: var(--balance-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .balance-table-heading span {
+            color: var(--balance-muted);
+            font-size: .78rem;
+        }
+
+    .balance-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .balance-table {
+        width: 100%;
+        min-width: 720px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--balance-text);
+    }
+
+        .balance-table thead th {
+            padding: 15px 17px;
+            color: var(--balance-blue-800);
+            background: var(--balance-blue-50);
+            border-bottom: 1px solid var(--balance-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .balance-table tbody td {
+            padding: 17px;
+            border-bottom: 1px solid var(--balance-border-light);
+            font-size: .86rem;
+            vertical-align: middle;
+        }
+
+        .balance-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+        .balance-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+    .balance-type {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 11px;
+        border: 1px solid var(--balance-blue-100);
+        border-radius: 999px;
+        color: var(--balance-blue-700);
+        background: var(--balance-blue-50);
+        font-size: .74rem;
+        font-weight: 800;
+    }
+
+    .balance-category {
+        color: var(--balance-text);
+        font-weight: 700;
+    }
+
+    .balance-amount {
+        color: var(--balance-blue-900);
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       DESCARGA
+       ===================================================== */
+
+    .balance-download {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .balance-download-button {
+        min-height: 46px;
+        padding: 11px 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--balance-blue-200) !important;
+        border-radius: 10px !important;
+        color: var(--balance-blue-700) !important;
+        background: var(--balance-white) !important;
+        font-size: .82rem;
+        font-weight: 800;
+        text-decoration: none !important;
+    }
+
+        .balance-download-button:hover {
+            color: var(--balance-white) !important;
+            background: var(--balance-blue-700) !important;
+            border-color: var(--balance-blue-700) !important;
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .balance-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+        }
+
+        .balance-filter-form {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .balance-filter-button-column {
+            grid-column: 1 / -1;
+        }
+
+        .balance-summary {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .balance-filter-form {
+            grid-template-columns: 1fr;
+        }
+
+        .balance-filter-button-column {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .balance-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .balance-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .balance-filter-panel {
+            padding: 22px 19px;
+            border-radius: 16px;
+        }
+
+        .balance-period {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .balance-table-section {
+            border-radius: 16px;
+        }
+
+        .balance-table-heading {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .balance-download-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="balance-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="balance-hero">
+
+        <div class="balance-heading">
+
+            <span class="balance-eyebrow">
+                Gestión contable
+            </span>
+
+            <h1>
+                Balance de pérdidas y ganancias
+            </h1>
+
+            <p>
+                Selecciona un período para consultar ingresos, egresos,
+                utilidad neta y el desglose por categoría.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="balance-alerts">
 
         @if (TempData["MensajeError"] != null)
         {
-            <div class="alert alert-danger">@TempData["MensajeError"]</div>
-        }
-
-        @using (Html.BeginForm("Generar", "Balance", FormMethod.Post, new { @class = "row g-3 mb-4" }))
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="col-md-4">
-                <label class="form-label">Fecha de Inicio</label>
-                <input type="date" name="fechaInicio" class="form-control" value="@inicio.ToString("yyyy-MM-dd")" required />
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label">Fecha de Finalización</label>
-                <input type="date" name="fechaFin" class="form-control" value="@fin.ToString("yyyy-MM-dd")" required />
-            </div>
-
-            <div class="col-md-4 d-flex align-items-end">
-                <button type="submit" class="btn btn-pubrock w-100">
-                    <i class="bi bi-calculator me-1"></i>Generar Balance
-                </button>
-            </div>
-        }
-
-        @if (Model != null && Model.FechaInicio != default(DateTime))
-        {
-            <hr />
-
-            <div class="row text-center mb-4">
-                <div class="col-md-4">
-                    <div class="p-3 border rounded">
-                        <div class="text-muted small">Ingresos Totales</div>
-                        <div class="fs-4 text-success">@Model.TotalIngresos.ToString("C2")</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 border rounded">
-                        <div class="text-muted small">Egresos Totales</div>
-                        <div class="fs-4 text-danger">@Model.TotalEgresos.ToString("C2")</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 border rounded">
-                        <div class="text-muted small">@(Model.EsPerdida ? "Pérdida del Período" : "Utilidad Neta")</div>
-                        <div class="fs-4" style="color:@(Model.EsPerdida ? "red" : "green")">
-                            @Model.UtilidadNeta.ToString("C2")
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h5>Desglose por Categoría</h5>
-            <table class="table table-hover table-bordered">
-                <thead style="background-color:#1f6f8b; color:white;">
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Categoría</th>
-                        <th>Monto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var fila in Model.Desglose)
-                    {
-                        <tr>
-                            <td>@fila.Tipo</td>
-                            <td>@fila.Categoria</td>
-                            <td>@((fila.Monto ?? 0m).ToString("C2"))</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-            <div class="d-flex justify-content-end">
-                @Html.ActionLink(
-                    "Descargar PDF",
-                    "DescargarPdf",
-                    "Balance",
-                    new { fechaInicio = Model.FechaInicio.ToString("yyyy-MM-dd"), fechaFin = Model.FechaFin.ToString("yyyy-MM-dd") },
-                    new { @class = "btn btn-outline-secondary" }
-                )
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
             </div>
         }
 
     </div>
+
+    <!-- =====================================================
+         FILTROS
+         ===================================================== -->
+    <section class="balance-filter-panel">
+
+        <div class="balance-filter-header">
+
+            <h2>
+                Generar balance
+            </h2>
+
+            <p>
+                Selecciona la fecha inicial y final del período.
+            </p>
+
+        </div>
+
+        @using (Html.BeginForm(
+            "Generar",
+            "Balance",
+            FormMethod.Post,
+            new { @class = "balance-filter-form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="balance-field">
+
+                <label class="form-label">
+                    Fecha de Inicio
+                </label>
+
+                <input type="date"
+                       name="fechaInicio"
+                       class="form-control"
+                       value="@inicio.ToString("yyyy-MM-dd")"
+                       required />
+
+            </div>
+
+            <div class="balance-field">
+
+                <label class="form-label">
+                    Fecha de Finalización
+                </label>
+
+                <input type="date"
+                       name="fechaFin"
+                       class="form-control"
+                       value="@fin.ToString("yyyy-MM-dd")"
+                       required />
+
+            </div>
+
+            <div class="d-flex align-items-end balance-filter-button-column">
+
+                <button type="submit"
+                        class="btn btn-pubrock w-100 balance-generate-button">
+
+                    <i class="bi bi-calculator me-1"></i>
+
+                    Generar Balance
+
+                </button>
+
+            </div>
+        }
+
+    </section>
+
+    @if (Model != null && Model.FechaInicio != default(DateTime))
+    {
+        <section class="balance-results">
+
+            <!-- Período -->
+            <div class="balance-period">
+
+                <div class="balance-period-title">
+                    Resultado del período
+                </div>
+
+                <div class="balance-period-dates">
+                    @Model.FechaInicio.ToString("dd/MM/yyyy")
+                    al
+                    @Model.FechaFin.ToString("dd/MM/yyyy")
+                </div>
+
+            </div>
+
+            <!-- Resumen -->
+            <div class="balance-summary">
+
+                <div class="balance-summary-item income">
+
+                    <div class="balance-summary-label">
+                        Ingresos Totales
+                    </div>
+
+                    <div class="balance-summary-value">
+                        @Model.TotalIngresos.ToString("C2")
+                    </div>
+
+                </div>
+
+                <div class="balance-summary-item expenses">
+
+                    <div class="balance-summary-label">
+                        Egresos Totales
+                    </div>
+
+                    <div class="balance-summary-value">
+                        @Model.TotalEgresos.ToString("C2")
+                    </div>
+
+                </div>
+
+                <div class="balance-summary-item result @(Model.EsPerdida ? "loss" : "profit")">
+
+                    <div class="balance-summary-label">
+                        @(Model.EsPerdida
+                            ? "Pérdida del Período"
+                            : "Utilidad Neta")
+                    </div>
+
+                    <div class="balance-summary-value">
+                        @Model.UtilidadNeta.ToString("C2")
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Desglose -->
+            <section class="balance-table-section">
+
+                <div class="balance-table-heading">
+
+                    <h2>
+                        Desglose por categoría
+                    </h2>
+
+                    <span>
+                        Detalle financiero del período
+                    </span>
+
+                </div>
+
+                <div class="balance-table-scroll">
+
+                    <table class="balance-table">
+
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Categoría</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var fila in Model.Desglose)
+                            {
+                                <tr>
+
+                                    <td>
+                                        <span class="balance-type">
+                                            @fila.Tipo
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="balance-category">
+                                            @fila.Categoria
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="balance-amount">
+                                            @((fila.Monto ?? 0m).ToString("C2"))
+                                        </span>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <!-- Descargar -->
+            <div class="balance-download">
+
+                @Html.ActionLink(
+                    "Descargar PDF",
+                    "DescargarPdf",
+                    "Balance",
+                    new
+                    {
+                        fechaInicio = Model.FechaInicio.ToString("yyyy-MM-dd"),
+                        fechaFin = Model.FechaFin.ToString("yyyy-MM-dd")
+                    },
+                    new
+                    {
+                        @class = "btn btn-outline-secondary balance-download-button"
+                    }
+                )
+
+            </div>
+
+        </section>
+    }
+
 </div>

@@ -4,111 +4,837 @@
     ViewBag.Title = "Configuración de Impuestos";
 }
 
-<div class="container py-5">
-    <div class="card-modern p-4 mb-4">
+<style>
+    :root {
+        --tax-blue-950: #06142f;
+        --tax-blue-900: #0a1f46;
+        --tax-blue-800: #10376b;
+        --tax-blue-700: #185695;
+        --tax-blue-600: #2878bd;
+        --tax-blue-500: #4298d4;
+        --tax-blue-400: #68a5d8;
+        --tax-blue-300: #9acced;
+        --tax-blue-200: #c9e5f6;
+        --tax-blue-100: #e7f3fb;
+        --tax-blue-50: #f5faff;
+        --tax-white: #ffffff;
+        --tax-text: #14263a;
+        --tax-muted: #718397;
+        --tax-border: #dce9f3;
+        --tax-border-light: #eaf1f7;
+        --tax-success: #2f855a;
+        --tax-danger: #c53030;
+        --tax-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --tax-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --tax-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-        <h2 class="mb-4"><i class="bi bi-percent me-2"></i>Configuración de Impuestos de Ley</h2>
+    .tax-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
+
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
+
+    .tax-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--tax-blue-950), var(--tax-blue-800) );
+        box-shadow: var(--tax-shadow-lg);
+        overflow: hidden;
+    }
+
+        .tax-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .tax-hero::after {
+            content: "IMPUESTOS";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .tax-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 760px;
+    }
+
+    .tax-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--tax-blue-400);
+        color: var(--tax-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .tax-heading h1 {
+        margin: 0 0 13px;
+        color: var(--tax-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .tax-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .tax-alerts {
+        margin-top: 25px;
+    }
+
+        .tax-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .tax-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .tax-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    /* =====================================================
+       TABLA DE IMPUESTOS
+       ===================================================== */
+
+    .tax-table-section {
+        margin-top: 25px;
+        border: 1px solid var(--tax-border);
+        border-radius: 20px;
+        background: var(--tax-white);
+        box-shadow: var(--tax-shadow-md);
+        overflow: hidden;
+    }
+
+    .tax-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--tax-border-light);
+    }
+
+        .tax-table-heading h2 {
+            margin: 0;
+            color: var(--tax-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .tax-table-heading span {
+            color: var(--tax-muted);
+            font-size: .78rem;
+        }
+
+    .tax-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .tax-table {
+        width: 100%;
+        min-width: 780px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--tax-text);
+    }
+
+        .tax-table thead th {
+            padding: 15px 17px;
+            color: var(--tax-blue-800);
+            background: var(--tax-blue-50);
+            border-bottom: 1px solid var(--tax-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .tax-table tbody td {
+            padding: 17px;
+            border-bottom: 1px solid var(--tax-border-light);
+            font-size: .86rem;
+            vertical-align: middle;
+        }
+
+        .tax-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+        .tax-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+    .tax-name {
+        color: var(--tax-blue-950);
+        font-weight: 800;
+    }
+
+    .tax-percentage {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 72px;
+        padding: 7px 12px;
+        border: 1px solid var(--tax-blue-200);
+        border-radius: 999px;
+        color: var(--tax-blue-800);
+        background: var(--tax-blue-100);
+        font-size: .8rem;
+        font-weight: 800;
+    }
+
+    .tax-update-form {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0;
+    }
+
+        .tax-update-form .form-control {
+            width: 145px;
+            min-height: 38px;
+            padding: 7px 11px;
+            border: 1px solid var(--tax-border);
+            border-radius: 8px;
+            color: var(--tax-text);
+            background: var(--tax-white);
+            box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+        }
+
+            .tax-update-form .form-control:focus {
+                border-color: var(--tax-blue-500);
+                box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+            }
+
+    .tax-save-button {
+        min-height: 38px;
+        padding: 8px 14px;
+        border: 1px solid var(--tax-blue-200) !important;
+        border-radius: 8px !important;
+        color: var(--tax-blue-700) !important;
+        background: var(--tax-blue-50) !important;
+        font-size: .72rem;
+        font-weight: 800;
+    }
+
+        .tax-save-button:hover {
+            color: var(--tax-white) !important;
+            background: var(--tax-blue-700) !important;
+            border-color: var(--tax-blue-700) !important;
+            transform: translateY(-1px);
+        }
+
+    /* =====================================================
+       CALCULADORA
+       ===================================================== */
+
+    .tax-calculator {
+        margin-top: 25px;
+        padding: 30px;
+        border: 1px solid var(--tax-border);
+        border-radius: 20px;
+        background: radial-gradient( circle at top right, rgba(104, 165, 216, .12), transparent 34% ), linear-gradient( 180deg, var(--tax-white), var(--tax-blue-50) );
+        box-shadow: var(--tax-shadow-md);
+    }
+
+    .tax-calculator-header {
+        margin-bottom: 25px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--tax-border-light);
+    }
+
+        .tax-calculator-header h2 {
+            margin: 0 0 7px;
+            color: var(--tax-blue-950);
+            font-size: 1.35rem;
+            font-weight: 800;
+        }
+
+        .tax-calculator-header p {
+            max-width: 760px;
+            margin: 0;
+            color: var(--tax-muted);
+            font-size: .86rem;
+            line-height: 1.65;
+        }
+
+    .tax-calculator-grid {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) minmax(190px, .7fr) 180px;
+        gap: 18px;
+        align-items: end;
+    }
+
+    .tax-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--tax-text);
+        font-size: .82rem;
+        font-weight: 700;
+    }
+
+    .tax-field .form-control {
+        min-height: 50px;
+        padding: 12px 15px;
+        color: var(--tax-text);
+        background: var(--tax-white);
+        border: 1px solid var(--tax-border);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+    }
+
+        .tax-field .form-control:hover {
+            border-color: var(--tax-blue-300);
+        }
+
+        .tax-field .form-control:focus {
+            border-color: var(--tax-blue-500);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+        }
+
+    .tax-exempt-box {
+        min-height: 50px;
+        padding: 12px 15px;
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--tax-border);
+        border-radius: 10px;
+        background: var(--tax-white);
+    }
+
+        .tax-exempt-box .form-check {
+            margin: 0;
+        }
+
+        .tax-exempt-box .form-check-input {
+            width: 1.08rem;
+            height: 1.08rem;
+            margin-top: .12rem;
+            border-color: var(--tax-blue-300);
+        }
+
+            .tax-exempt-box .form-check-input:checked {
+                background-color: var(--tax-blue-700);
+                border-color: var(--tax-blue-700);
+            }
+
+        .tax-exempt-box .form-check-label {
+            color: var(--tax-text);
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+    .tax-calculate-button {
+        min-height: 50px;
+        border: 1px solid var(--tax-blue-600) !important;
+        border-radius: 10px !important;
+        color: var(--tax-white) !important;
+        background: linear-gradient( 135deg, var(--tax-blue-600), var(--tax-blue-800) ) !important;
+        font-size: .84rem;
+        font-weight: 800;
+        box-shadow: 0 9px 22px rgba(40, 120, 189, .22);
+    }
+
+        .tax-calculate-button:hover {
+            color: var(--tax-white) !important;
+            background: linear-gradient( 135deg, var(--tax-blue-700), var(--tax-blue-950) ) !important;
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       RESULTADO
+       ===================================================== */
+
+    .tax-result {
+        margin-top: 24px;
+        padding: 20px;
+        border: 1px solid var(--tax-border);
+        border-radius: 16px;
+        background: var(--tax-white);
+        box-shadow: var(--tax-shadow-sm);
+    }
+
+    .tax-result-table {
+        width: 100%;
+        margin: 0;
+        border-collapse: collapse;
+    }
+
+        .tax-result-table td {
+            padding: 11px 12px;
+            color: var(--tax-text);
+            border-bottom: 1px solid var(--tax-border-light);
+            font-size: .84rem;
+        }
+
+        .tax-result-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .tax-result-table td:last-child {
+            color: var(--tax-blue-900);
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .tax-result-table .tax-total-row td {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            color: var(--tax-white);
+            background: linear-gradient( 135deg, var(--tax-blue-700), var(--tax-blue-900) );
+            border-bottom: 0;
+            font-size: .95rem;
+            font-weight: 800;
+        }
+
+            .tax-result-table .tax-total-row td:first-child {
+                border-radius: 10px 0 0 10px;
+            }
+
+            .tax-result-table .tax-total-row td:last-child {
+                color: var(--tax-white);
+                border-radius: 0 10px 10px 0;
+            }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .tax-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+        }
+
+        .tax-calculator-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .tax-calculator-button-column {
+            grid-column: 1 / -1;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .tax-calculator-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .tax-calculator-button-column {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .tax-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .tax-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .tax-table-section,
+        .tax-calculator {
+            border-radius: 16px;
+        }
+
+        .tax-table-heading {
+            padding: 18px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .tax-calculator {
+            padding: 23px 19px;
+        }
+
+        .tax-update-form {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+            .tax-update-form .form-control,
+            .tax-save-button {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="tax-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="tax-hero">
+
+        <div class="tax-heading">
+
+            <span class="tax-eyebrow">
+                Gestión contable
+            </span>
+
+            <h1>
+                Configuración de impuestos
+            </h1>
+
+            <p>
+                Consulta y actualiza los porcentajes de ley,
+                además de simular los cargos aplicados a una orden.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="tax-alerts">
 
         @if (TempData["MensajeExito"] != null)
         {
-            <div class="alert alert-success">@TempData["MensajeExito"]</div>
+            <div class="alert alert-success">
+                @TempData["MensajeExito"]
+            </div>
         }
 
         @if (TempData["MensajeError"] != null)
         {
-            <div class="alert alert-danger">@TempData["MensajeError"]</div>
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
+            </div>
         }
 
-        <table class="table table-hover table-bordered">
-            <thead style="background-color:#1f6f8b; color:white;">
-                <tr>
-                    <th>Impuesto</th>
-                    <th>Porcentaje Actual</th>
-                    <th style="width:280px;">Actualizar</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var item in Model)
+    </div>
+
+    <!-- =====================================================
+         IMPUESTOS
+         ===================================================== -->
+    <section class="tax-table-section">
+
+        <div class="tax-table-heading">
+
+            <h2>
+                Impuestos configurados
+            </h2>
+
+            <span>
+                Porcentajes actualmente aplicados
+            </span>
+
+        </div>
+
+        <div class="tax-table-scroll">
+
+            <table class="tax-table">
+
+                <thead>
+                    <tr>
+                        <th>Impuesto</th>
+                        <th>Porcentaje Actual</th>
+                        <th>Actualizar</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
                     {
-                        <tr>
-                            <td>@item.NombreImpuesto</td>
-                            <td>@item.Porcentaje %</td>
-                            <td>
-                                @using (Html.BeginForm("Actualizar", "Impuestos", FormMethod.Post, new { @class = "d-flex gap-2 m-0" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.Hidden("IdImpuesto", item.IdImpuesto)
-                                    @Html.Hidden("NombreImpuesto", item.NombreImpuesto)
-                                    <input type="number" step="0.01" min="0" max="100" name="Porcentaje" value="@item.Porcentaje" class="form-control form-control-sm" />
-                                    <button type="submit" class="btn btn-sm btn-outline-primary">Guardar</button>
-                                }
-                            </td>
-                        </tr>
+                        foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <span class="tax-name">
+                                        @item.NombreImpuesto
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="tax-percentage">
+                                        @item.Porcentaje %
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    @using (
+                                        Html.BeginForm(
+                                            "Actualizar",
+                                            "Impuestos",
+                                            FormMethod.Post,
+                                            new
+                                            {
+                                                @class = "tax-update-form"
+                                            }
+                                        )
+                                    )
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        @Html.Hidden(
+                                            "IdImpuesto",
+                                            item.IdImpuesto
+                                        )
+
+                                        @Html.Hidden(
+                                            "NombreImpuesto",
+                                            item.NombreImpuesto
+                                        )
+
+                                        <input type="number"
+                                               step="0.01"
+                                               min="0"
+                                               max="100"
+                                               name="Porcentaje"
+                                               value="@item.Porcentaje"
+                                               class="form-control form-control-sm" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-primary tax-save-button">
+                                            Guardar
+                                        </button>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
-    </div>
 
-    <div class="card-modern p-4">
-        <h4 class="mb-3"><i class="bi bi-calculator me-2"></i>Calculadora de Impuestos</h4>
-        <p class="text-muted small">Simula el desglose de IVA y cargo por servicio aplicado automáticamente al subtotal de una orden.</p>
+                </tbody>
 
-        <div class="row g-3 align-items-end mb-3">
-            <div class="col-md-4">
-                <label class="form-label">Subtotal de la orden</label>
-                <input type="number" id="subtotalOrden" step="0.01" min="0" class="form-control" value="0" />
-            </div>
-            <div class="col-md-3">
-                <div class="form-check mt-4">
-                    <input class="form-check-input" type="checkbox" id="exentoOrden" />
-                    <label class="form-check-label" for="exentoOrden">Exento de impuestos</label>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <button type="button" id="btnCalcular" class="btn btn-pubrock w-100">Calcular</button>
-            </div>
-        </div>
-
-        <div id="resultadoCalculo" class="d-none">
-            <table class="table table-sm table-borderless mb-0">
-                <tr><td>Subtotal</td><td id="resSubtotal" class="text-end"></td></tr>
-                <tr><td id="resIvaLabel">IVA</td><td id="resIva" class="text-end"></td></tr>
-                <tr><td id="resServicioLabel">Servicio</td><td id="resServicio" class="text-end"></td></tr>
-                <tr class="border-top"><td><strong>Total</strong></td><td id="resTotal" class="text-end"><strong></strong></td></tr>
             </table>
+
         </div>
-    </div>
+
+    </section>
+
+    <!-- =====================================================
+         CALCULADORA
+         ===================================================== -->
+    <section class="tax-calculator">
+
+        <div class="tax-calculator-header">
+
+            <h2>
+                Calculadora de impuestos
+            </h2>
+
+            <p>
+                Simula el desglose de IVA y cargo por servicio aplicado
+                automáticamente al subtotal de una orden.
+            </p>
+
+        </div>
+
+        <div class="tax-calculator-grid">
+
+            <div class="tax-field">
+
+                <label class="form-label">
+                    Subtotal de la orden
+                </label>
+
+                <input type="number"
+                       id="subtotalOrden"
+                       step="0.01"
+                       min="0"
+                       class="form-control"
+                       value="0" />
+
+            </div>
+
+            <div class="tax-exempt-box">
+
+                <div class="form-check">
+
+                    <input class="form-check-input"
+                           type="checkbox"
+                           id="exentoOrden" />
+
+                    <label class="form-check-label"
+                           for="exentoOrden">
+                        Exento de impuestos
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="tax-calculator-button-column">
+
+                <button type="button"
+                        id="btnCalcular"
+                        class="btn btn-pubrock w-100 tax-calculate-button">
+                    Calcular
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="resultadoCalculo"
+             class="tax-result d-none">
+
+            <table class="tax-result-table">
+
+                <tr>
+                    <td>Subtotal</td>
+                    <td id="resSubtotal"></td>
+                </tr>
+
+                <tr>
+                    <td id="resIvaLabel">IVA</td>
+                    <td id="resIva"></td>
+                </tr>
+
+                <tr>
+                    <td id="resServicioLabel">Servicio</td>
+                    <td id="resServicio"></td>
+                </tr>
+
+                <tr class="tax-total-row">
+                    <td>Total</td>
+                    <td id="resTotal"></td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>
 
 @section scripts {
+
     <script>
         $(function () {
+
             $('#btnCalcular').on('click', function () {
-                var subtotal = parseFloat($('#subtotalOrden').val()) || 0;
-                var exento = $('#exentoOrden').is(':checked');
 
-                $.post('@Url.Action("Calcular", "Impuestos")', { subtotal: subtotal, exento: exento })
-                    .done(function (data) {
-                        if (!data.success) {
-                            Swal.fire('Error', data.message, 'error');
-                            return;
-                        }
+                var subtotal =
+                    parseFloat($('#subtotalOrden').val()) || 0;
 
-                        $('#resSubtotal').text(data.subtotal.toFixed(2));
-                        $('#resIvaLabel').text('IVA (' + data.porcentajeIva + '%)');
-                        $('#resServicioLabel').text('Servicio (' + data.porcentajeServicio + '%)');
-                        $('#resIva').text(data.montoIva.toFixed(2));
-                        $('#resServicio').text(data.montoServicio.toFixed(2));
-                        $('#resTotal').text(data.total.toFixed(2));
-                        $('#resultadoCalculo').removeClass('d-none');
-                    })
-                    .fail(function () {
-                        Swal.fire('Error', 'Error en el sistema. Favor intente de nuevo.', 'error');
-                    });
+                var exento =
+                    $('#exentoOrden').is(':checked');
+
+                $.post(
+                    '@Url.Action("Calcular", "Impuestos")',
+                    {
+                        subtotal: subtotal,
+                        exento: exento
+                    }
+                )
+                .done(function (data) {
+
+                    if (!data.success) {
+                        Swal.fire(
+                            'Error',
+                            data.message,
+                            'error'
+                        );
+
+                        return;
+                    }
+
+                    $('#resSubtotal')
+                        .text(data.subtotal.toFixed(2));
+
+                    $('#resIvaLabel')
+                        .text(
+                            'IVA (' +
+                            data.porcentajeIva +
+                            '%)'
+                        );
+
+                    $('#resServicioLabel')
+                        .text(
+                            'Servicio (' +
+                            data.porcentajeServicio +
+                            '%)'
+                        );
+
+                    $('#resIva')
+                        .text(data.montoIva.toFixed(2));
+
+                    $('#resServicio')
+                        .text(data.montoServicio.toFixed(2));
+
+                    $('#resTotal')
+                        .text(data.total.toFixed(2));
+
+                    $('#resultadoCalculo')
+                        .removeClass('d-none');
+                })
+                .fail(function () {
+
+                    Swal.fire(
+                        'Error',
+                        'Error en el sistema. Favor intente de nuevo.',
+                        'error'
+                    );
+
+                });
+
             });
+
         });
     </script>
+
 }

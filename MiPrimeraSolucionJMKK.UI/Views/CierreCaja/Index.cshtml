@@ -4,64 +4,603 @@
     ViewBag.Title = "Cierre de Caja";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card-modern">
-                <div class="card-body p-4">
+<style>
+    :root {
+        --cash-blue-950: #06142f;
+        --cash-blue-900: #0a1f46;
+        --cash-blue-800: #10376b;
+        --cash-blue-700: #185695;
+        --cash-blue-600: #2878bd;
+        --cash-blue-500: #4298d4;
+        --cash-blue-400: #68a5d8;
+        --cash-blue-300: #9acced;
+        --cash-blue-200: #c9e5f6;
+        --cash-blue-100: #e7f3fb;
+        --cash-blue-50: #f5faff;
+        --cash-white: #ffffff;
+        --cash-text: #14263a;
+        --cash-muted: #718397;
+        --cash-border: #dce9f3;
+        --cash-border-light: #eaf1f7;
+        --cash-success: #2f855a;
+        --cash-danger: #c53030;
+        --cash-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --cash-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --cash-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-                    <h2 class="mb-4"><i class="bi bi-safe me-2"></i>Cierre de Caja del Día</h2>
-                    <p class="text-muted">Jornada del @DateTime.Now.ToString("dd/MM/yyyy")</p>
+    .cash-close-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
-                    @if (TempData["MensajeExito"] != null)
-                    {
-                        <div class="alert alert-success">@TempData["MensajeExito"]</div>
-                    }
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
 
-                    @if (TempData["MensajeError"] != null)
-                    {
-                        <div class="alert alert-danger">@TempData["MensajeError"]</div>
-                    }
+    .cash-close-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--cash-blue-950), var(--cash-blue-800) );
+        box-shadow: var(--cash-shadow-lg);
+        overflow: hidden;
+    }
 
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <th>Total de Ventas del Sistema</th>
-                                <td>@Model.TotalVentas.ToString("C2")</td>
-                            </tr>
-                            <tr>
-                                <th>Otros Ingresos</th>
-                                <td>@Model.TotalIngresos.ToString("C2")</td>
-                            </tr>
-                            <tr>
-                                <th>Egresos del Día</th>
-                                <td>@Model.TotalEgresos.ToString("C2")</td>
-                            </tr>
-                            <tr class="table-secondary">
-                                <th>Balance Esperado por el Sistema</th>
-                                <td><strong>@Model.BalanceFinal.ToString("C2")</strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
+        .cash-close-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
 
-                    @using (Html.BeginForm("Cerrar", "CierreCaja", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
+        .cash-close-hero::after {
+            content: "CIERRE";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
 
-                        <div class="mb-3">
-                            <label class="form-label">Monto Contado Físicamente</label>
-                            <input type="number" step="0.01" min="0" name="montoContado" class="form-control" placeholder="Ingrese el monto contado en caja" required />
-                        </div>
+    .cash-close-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 720px;
+    }
 
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-pubrock" onclick="return confirm('¿Confirma el cierre de jornada? Esta acción bloqueará el registro de nuevas ventas para hoy.');">
-                                <i class="bi bi-lock-fill me-1"></i>Cerrar Jornada
-                            </button>
-                        </div>
-                    }
+    .cash-close-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--cash-blue-400);
+        color: var(--cash-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .cash-close-heading h1 {
+        margin: 0 0 13px;
+        color: var(--cash-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .cash-close-heading p {
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .cash-close-alerts {
+        margin-top: 25px;
+    }
+
+        .cash-close-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .cash-close-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .cash-close-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    /* =====================================================
+       DISTRIBUCIÓN PRINCIPAL
+       ===================================================== */
+
+    .cash-close-shell {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr);
+        gap: 24px;
+        align-items: start;
+    }
+
+    .cash-close-panel {
+        padding: 32px;
+        border: 1px solid var(--cash-border);
+        border-radius: 20px;
+        background: linear-gradient( 180deg, var(--cash-white), var(--cash-blue-50) );
+        box-shadow: var(--cash-shadow-md);
+    }
+
+    .cash-close-panel-header {
+        margin-bottom: 25px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--cash-border-light);
+    }
+
+        .cash-close-panel-header h2 {
+            margin: 0 0 7px;
+            color: var(--cash-blue-950);
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .cash-close-panel-header p {
+            margin: 0;
+            color: var(--cash-muted);
+            font-size: .86rem;
+            line-height: 1.6;
+        }
+
+    /* =====================================================
+       RESUMEN FINANCIERO
+       ===================================================== */
+
+    .cash-summary {
+        border: 1px solid var(--cash-border);
+        border-radius: 16px;
+        background: var(--cash-white);
+        overflow: hidden;
+        box-shadow: var(--cash-shadow-sm);
+    }
+
+    .cash-summary-row {
+        min-height: 65px;
+        padding: 15px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--cash-border-light);
+    }
+
+        .cash-summary-row:last-child {
+            border-bottom: 0;
+        }
+
+    .cash-summary-label {
+        color: var(--cash-text);
+        font-size: .85rem;
+        font-weight: 700;
+    }
+
+    .cash-summary-value {
+        color: var(--cash-blue-900);
+        font-size: .92rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .cash-summary-row.sales {
+        border-left: 4px solid var(--cash-blue-500);
+    }
+
+    .cash-summary-row.income {
+        border-left: 4px solid var(--cash-success);
+    }
+
+    .cash-summary-row.expenses {
+        border-left: 4px solid var(--cash-danger);
+    }
+
+    .cash-summary-row.balance {
+        min-height: 76px;
+        border-left: 4px solid var(--cash-blue-800);
+        background: linear-gradient( 135deg, var(--cash-blue-950), var(--cash-blue-800) );
+    }
+
+        .cash-summary-row.balance .cash-summary-label,
+        .cash-summary-row.balance .cash-summary-value {
+            color: var(--cash-white);
+        }
+
+        .cash-summary-row.balance .cash-summary-value {
+            font-size: 1.15rem;
+        }
+
+    /* =====================================================
+       FORMULARIO
+       ===================================================== */
+
+    .cash-close-form {
+        margin-top: 25px;
+        padding-top: 24px;
+        border-top: 1px solid var(--cash-border-light);
+    }
+
+    .cash-close-field {
+        margin-bottom: 20px;
+    }
+
+        .cash-close-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cash-text);
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .cash-close-field .form-control {
+            min-height: 52px;
+            padding: 12px 15px;
+            color: var(--cash-text);
+            background: var(--cash-white);
+            border: 1px solid var(--cash-border);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+            transition: border-color .16s ease, box-shadow .16s ease;
+        }
+
+            .cash-close-field .form-control:hover {
+                border-color: var(--cash-blue-300);
+            }
+
+            .cash-close-field .form-control:focus {
+                border-color: var(--cash-blue-500);
+                box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+            }
+
+            .cash-close-field .form-control::placeholder {
+                color: #97a9b8;
+            }
+
+    /* =====================================================
+       BOTÓN
+       ===================================================== */
+
+    .cash-close-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .cash-close-button {
+        min-height: 52px;
+        padding: 13px 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--cash-blue-600) !important;
+        border-radius: 10px !important;
+        color: var(--cash-white) !important;
+        background: linear-gradient( 135deg, var(--cash-blue-600), var(--cash-blue-800) ) !important;
+        font-size: .86rem;
+        font-weight: 800;
+        box-shadow: 0 9px 22px rgba(40, 120, 189, .22);
+        transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+    }
+
+        .cash-close-button:hover {
+            color: var(--cash-white) !important;
+            background: linear-gradient( 135deg, var(--cash-blue-700), var(--cash-blue-950) ) !important;
+            box-shadow: 0 13px 28px rgba(40, 120, 189, .28);
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       PANEL LATERAL
+       ===================================================== */
+
+    .cash-close-aside {
+        padding: 30px;
+        border: 1px solid var(--cash-border);
+        border-radius: 20px;
+        background: radial-gradient( circle at top right, rgba(104, 165, 216, .13), transparent 35% ), var(--cash-white);
+        box-shadow: var(--cash-shadow-sm);
+    }
+
+    .cash-close-aside-number {
+        margin-bottom: 20px;
+        color: var(--cash-blue-100);
+        font-size: 5.2rem;
+        font-weight: 800;
+        letter-spacing: -.08em;
+        line-height: .85;
+    }
+
+    .cash-close-aside h3 {
+        margin-bottom: 12px;
+        color: var(--cash-blue-950);
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .cash-close-aside p {
+        margin-bottom: 18px;
+        color: var(--cash-muted);
+        font-size: .88rem;
+        line-height: 1.7;
+    }
+
+    .cash-close-warning {
+        padding: 14px;
+        border: 1px solid #f0d7a0;
+        border-radius: 12px;
+        color: #74531a;
+        background: #fff9ea;
+        font-size: .78rem;
+        font-weight: 600;
+        line-height: 1.55;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .cash-close-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+        }
+
+        .cash-close-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .cash-close-aside {
+            order: -1;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .cash-close-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .cash-close-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .cash-close-panel,
+        .cash-close-aside {
+            padding: 24px 20px;
+            border-radius: 16px;
+        }
+
+        .cash-summary-row {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .cash-close-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="cash-close-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="cash-close-hero">
+
+        <div class="cash-close-heading">
+
+            <span class="cash-close-eyebrow">
+                Gestión contable
+            </span>
+
+            <h1>
+                Cierre de caja
+            </h1>
+
+            <p>
+                Revisa el resumen financiero del día y registra
+                el monto contado físicamente para cerrar la jornada.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="cash-close-alerts">
+
+        @if (TempData["MensajeExito"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["MensajeExito"]
+            </div>
+        }
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
+            </div>
+        }
+
+    </div>
+
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
+    <div class="cash-close-shell">
+
+        <section class="cash-close-panel">
+
+            <div class="cash-close-panel-header">
+
+                <h2>
+                    Cierre de caja del día
+                </h2>
+
+                <p>
+                    Jornada del @DateTime.Now.ToString("dd/MM/yyyy")
+                </p>
+
+            </div>
+
+            <!-- Resumen -->
+            <div class="cash-summary">
+
+                <div class="cash-summary-row sales">
+
+                    <span class="cash-summary-label">
+                        Total de ventas del sistema
+                    </span>
+
+                    <span class="cash-summary-value">
+                        @Model.TotalVentas.ToString("C2")
+                    </span>
 
                 </div>
+
+                <div class="cash-summary-row income">
+
+                    <span class="cash-summary-label">
+                        Otros ingresos
+                    </span>
+
+                    <span class="cash-summary-value">
+                        @Model.TotalIngresos.ToString("C2")
+                    </span>
+
+                </div>
+
+                <div class="cash-summary-row expenses">
+
+                    <span class="cash-summary-label">
+                        Egresos del día
+                    </span>
+
+                    <span class="cash-summary-value">
+                        @Model.TotalEgresos.ToString("C2")
+                    </span>
+
+                </div>
+
+                <div class="cash-summary-row balance">
+
+                    <span class="cash-summary-label">
+                        Balance esperado por el sistema
+                    </span>
+
+                    <span class="cash-summary-value">
+                        @Model.BalanceFinal.ToString("C2")
+                    </span>
+
+                </div>
+
             </div>
-        </div>
+
+            <!-- Formulario -->
+            @using (Html.BeginForm("Cerrar", "CierreCaja", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="cash-close-form">
+
+                    <div class="cash-close-field">
+
+                        <label class="form-label">
+                            Monto Contado Físicamente
+                        </label>
+
+                        <input type="number"
+                               step="0.01"
+                               min="0"
+                               name="montoContado"
+                               class="form-control"
+                               placeholder="Ingrese el monto contado en caja"
+                               required />
+
+                    </div>
+
+                    <div class="cash-close-actions">
+
+                        <button type="submit"
+                                class="btn btn-pubrock cash-close-button"
+                                onclick="return confirm('¿Confirma el cierre de jornada? Esta acción bloqueará el registro de nuevas ventas para hoy.');">
+
+                            <i class="bi bi-lock-fill me-1"></i>
+
+                            Cerrar Jornada
+
+                        </button>
+
+                    </div>
+
+                </div>
+            }
+
+        </section>
+
+        <!-- Panel lateral -->
+        <aside class="cash-close-aside">
+
+            <div class="cash-close-aside-number">
+                01
+            </div>
+
+            <h3>
+                Verificación de jornada
+            </h3>
+
+            <p>
+                Compara el balance esperado por el sistema con el monto
+                contado físicamente antes de realizar el cierre.
+            </p>
+
+            <div class="cash-close-warning">
+                El cierre bloqueará el registro de nuevas ventas durante
+                la jornada actual.
+            </div>
+
+        </aside>
+
     </div>
+
 </div>

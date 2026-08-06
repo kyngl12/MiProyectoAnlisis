@@ -4,67 +4,745 @@
     ViewBag.Title = "Bitácora Contable";
 }
 
-<div class="container py-5">
-    <div class="card-modern p-3">
+<style>
+    :root {
+        --log-blue-950: #06142f;
+        --log-blue-900: #0a1f46;
+        --log-blue-800: #10376b;
+        --log-blue-700: #185695;
+        --log-blue-600: #2878bd;
+        --log-blue-500: #4298d4;
+        --log-blue-400: #68a5d8;
+        --log-blue-300: #9acced;
+        --log-blue-200: #c9e5f6;
+        --log-blue-100: #e7f3fb;
+        --log-blue-50: #f5faff;
+        --log-white: #ffffff;
+        --log-text: #14263a;
+        --log-muted: #718397;
+        --log-border: #dce9f3;
+        --log-border-light: #eaf1f7;
+        --log-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --log-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --log-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-        <h2 class="mb-4"><i class="bi bi-journal-text me-2"></i>Bitácora Contable</h2>
+    .accounting-log-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
+
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
+
+    .accounting-log-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--log-blue-950), var(--log-blue-800) );
+        box-shadow: var(--log-shadow-lg);
+        overflow: hidden;
+    }
+
+        .accounting-log-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .accounting-log-hero::after {
+            content: "BITÁCORA";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .accounting-log-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 760px;
+    }
+
+    .accounting-log-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--log-blue-400);
+        color: var(--log-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .accounting-log-heading h1 {
+        margin: 0 0 13px;
+        color: var(--log-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .accounting-log-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .accounting-log-alerts {
+        margin-top: 25px;
+    }
+
+        .accounting-log-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .accounting-log-alerts .alert-info {
+            color: var(--log-blue-900);
+            background: var(--log-blue-50);
+            border-color: var(--log-blue-200);
+        }
+
+    /* =====================================================
+       FILTROS
+       ===================================================== */
+
+    .accounting-log-filter-panel {
+        margin-top: 25px;
+        padding: 28px;
+        border: 1px solid var(--log-border);
+        border-radius: 20px;
+        background: linear-gradient( 180deg, var(--log-white), var(--log-blue-50) );
+        box-shadow: var(--log-shadow-md);
+    }
+
+    .accounting-log-filter-header {
+        margin-bottom: 22px;
+        padding-bottom: 17px;
+        border-bottom: 1px solid var(--log-border-light);
+    }
+
+        .accounting-log-filter-header h2 {
+            margin: 0 0 6px;
+            color: var(--log-blue-950);
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .accounting-log-filter-header p {
+            margin: 0;
+            color: var(--log-muted);
+            font-size: .84rem;
+        }
+
+    .accounting-log-filter-form {
+        display: grid !important;
+        grid-template-columns: minmax(180px, 1fr) minmax(170px, 1fr) minmax(170px, 1fr) minmax(240px, auto);
+        gap: 16px !important;
+        margin: 0 !important;
+    }
+
+    .accounting-log-field .form-control {
+        min-height: 48px;
+        padding: 11px 14px;
+        color: var(--log-text);
+        background: var(--log-white);
+        border: 1px solid var(--log-border);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+    }
+
+        .accounting-log-field .form-control:hover {
+            border-color: var(--log-blue-300);
+        }
+
+        .accounting-log-field .form-control:focus {
+            border-color: var(--log-blue-500);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+        }
+
+        .accounting-log-field .form-control::placeholder {
+            color: #97a9b8;
+        }
+
+    .accounting-log-filter-actions {
+        display: flex;
+        align-items: stretch;
+        gap: 9px;
+    }
+
+    .accounting-log-filter-button,
+    .accounting-log-pdf-button {
+        min-height: 48px;
+        padding: 11px 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px !important;
+        font-size: .78rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        white-space: nowrap;
+    }
+
+    .accounting-log-filter-button {
+        color: var(--log-white) !important;
+        background: linear-gradient( 135deg, var(--log-blue-600), var(--log-blue-800) ) !important;
+        border: 1px solid var(--log-blue-600) !important;
+        box-shadow: 0 8px 18px rgba(40, 120, 189, .18);
+    }
+
+        .accounting-log-filter-button:hover {
+            color: var(--log-white) !important;
+            background: linear-gradient( 135deg, var(--log-blue-700), var(--log-blue-950) ) !important;
+            transform: translateY(-1px);
+        }
+
+    .accounting-log-pdf-button {
+        color: var(--log-blue-700) !important;
+        background: var(--log-white) !important;
+        border: 1px solid var(--log-blue-200) !important;
+    }
+
+        .accounting-log-pdf-button:hover {
+            color: var(--log-white) !important;
+            background: var(--log-blue-700) !important;
+            border-color: var(--log-blue-700) !important;
+            transform: translateY(-1px);
+        }
+
+    /* =====================================================
+       RESUMEN
+       ===================================================== */
+
+    .accounting-log-summary {
+        margin-top: 25px;
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border: 1px solid var(--log-border);
+        border-radius: 17px;
+        background: var(--log-white);
+        box-shadow: var(--log-shadow-sm);
+    }
+
+    .accounting-log-summary-title {
+        margin-bottom: 4px;
+        color: var(--log-blue-950);
+        font-size: .95rem;
+        font-weight: 800;
+    }
+
+    .accounting-log-summary-subtitle {
+        color: var(--log-muted);
+        font-size: .8rem;
+    }
+
+    .accounting-log-summary-data {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .accounting-log-summary-number {
+        min-width: 50px;
+        min-height: 42px;
+        padding: 9px 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--log-blue-200);
+        border-radius: 999px;
+        color: var(--log-blue-800);
+        background: var(--log-blue-100);
+        font-size: .9rem;
+        font-weight: 800;
+    }
+
+    .accounting-log-summary-label {
+        color: var(--log-muted);
+        font-size: .77rem;
+        font-weight: 600;
+    }
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    .accounting-log-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--log-border);
+        border-radius: 20px;
+        background: var(--log-white);
+        box-shadow: var(--log-shadow-md);
+        overflow: hidden;
+    }
+
+    .accounting-log-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--log-border-light);
+    }
+
+        .accounting-log-table-heading h2 {
+            margin: 0;
+            color: var(--log-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .accounting-log-table-heading span {
+            color: var(--log-muted);
+            font-size: .78rem;
+        }
+
+    .accounting-log-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .accounting-log-table {
+        width: 100%;
+        min-width: 1080px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--log-text);
+    }
+
+        .accounting-log-table thead th {
+            padding: 15px 17px;
+            color: var(--log-blue-800);
+            background: var(--log-blue-50);
+            border-bottom: 1px solid var(--log-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .accounting-log-table tbody td {
+            padding: 17px;
+            border-bottom: 1px solid var(--log-border-light);
+            font-size: .84rem;
+            vertical-align: middle;
+        }
+
+        .accounting-log-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+        .accounting-log-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+    /* =====================================================
+       DATOS DE TABLA
+       ===================================================== */
+
+    .accounting-log-date {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 11px;
+        border: 1px solid var(--log-blue-100);
+        border-radius: 999px;
+        color: var(--log-blue-700);
+        background: var(--log-blue-50);
+        font-size: .73rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .accounting-log-user {
+        color: var(--log-blue-950);
+        font-weight: 800;
+    }
+
+    .accounting-log-module {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border: 1px solid var(--log-blue-200);
+        border-radius: 999px;
+        color: var(--log-blue-800);
+        background: var(--log-blue-100);
+        font-size: .72rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .accounting-log-action {
+        color: var(--log-text);
+        font-weight: 700;
+    }
+
+    .accounting-log-description {
+        max-width: 360px;
+        color: var(--log-muted);
+        line-height: 1.55;
+    }
+
+    .accounting-log-empty {
+        padding: 60px 25px !important;
+        color: var(--log-muted);
+        font-size: .94rem !important;
+        text-align: center;
+    }
+
+        .accounting-log-empty::before {
+            content: "—";
+            display: block;
+            margin-bottom: 8px;
+            color: var(--log-blue-300);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 1100px) {
+        .accounting-log-filter-form {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .accounting-log-filter-actions {
+            grid-column: 1 / -1;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .accounting-log-filter-form {
+            grid-template-columns: 1fr;
+        }
+
+        .accounting-log-filter-actions {
+            grid-column: auto;
+        }
+
+        .accounting-log-summary {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .accounting-log-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .accounting-log-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .accounting-log-filter-panel {
+            padding: 22px 19px;
+            border-radius: 16px;
+        }
+
+        .accounting-log-filter-actions {
+            flex-direction: column;
+        }
+
+        .accounting-log-filter-button,
+        .accounting-log-pdf-button {
+            width: 100%;
+        }
+
+        .accounting-log-table-section {
+            border-radius: 16px;
+        }
+
+        .accounting-log-table-heading {
+            padding: 18px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="accounting-log-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="accounting-log-hero">
+
+        <div class="accounting-log-heading">
+
+            <span class="accounting-log-eyebrow">
+                Gestión contable
+            </span>
+
+            <h1>
+                Bitácora contable
+            </h1>
+
+            <p>
+                Consulta los movimientos realizados por los usuarios
+                y filtra los registros por cédula o período.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="accounting-log-alerts">
 
         @if (TempData["MensajeInfo"] != null)
         {
-            <div class="alert alert-info">@TempData["MensajeInfo"]</div>
-        }
-
-        @using (Html.BeginForm("Index", "BitacoraContable", FormMethod.Get, new { @class = "row g-2 mb-3" }))
-        {
-            <div class="col-md-3">
-                <input type="text" name="cedula" value="@ViewBag.Cedula" class="form-control form-control-sm" placeholder="Cédula del usuario" />
-            </div>
-            <div class="col-md-3">
-                <input type="date" name="fechaInicio" value="@(ViewBag.FechaInicio != null ? ((DateTime)ViewBag.FechaInicio).ToString("yyyy-MM-dd") : "")" class="form-control form-control-sm" />
-            </div>
-            <div class="col-md-3">
-                <input type="date" name="fechaFin" value="@(ViewBag.FechaFin != null ? ((DateTime)ViewBag.FechaFin).ToString("yyyy-MM-dd") : "")" class="form-control form-control-sm" />
-            </div>
-            <div class="col-md-3 d-flex gap-2">
-                <button type="submit" class="btn btn-outline-secondary btn-sm">Consultar</button>
-                @Html.ActionLink("Descargar PDF", "DescargarPdf", "BitacoraContable",
-                    new { cedula = ViewBag.Cedula, fechaInicio = ViewBag.FechaInicio, fechaFin = ViewBag.FechaFin },
-                    new { @class = "btn btn-outline-primary btn-sm" })
+            <div class="alert alert-info">
+                @TempData["MensajeInfo"]
             </div>
         }
-
-        <table class="table table-hover table-bordered">
-            <thead style="background-color:#1f6f8b; color:white;">
-                <tr>
-                    <th>Fecha y Hora</th>
-                    <th>Usuario</th>
-                    <th>Módulo</th>
-                    <th>Acción</th>
-                    <th>Descripción</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
-                            <td>@(item.NombreUsuario ?? item.Cedula)</td>
-                            <td>@item.Modulo</td>
-                            <td>@item.AccionRealizada</td>
-                            <td>@item.Descripcion</td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="5" class="text-center text-muted">No se encontraron movimientos contables para los filtros seleccionados.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
 
     </div>
+
+    <!-- =====================================================
+         FILTROS
+         ===================================================== -->
+    <section class="accounting-log-filter-panel">
+
+        <div class="accounting-log-filter-header">
+
+            <h2>
+                Consultar movimientos
+            </h2>
+
+            <p>
+                Filtra los registros por usuario y rango de fechas.
+            </p>
+
+        </div>
+
+        @using (Html.BeginForm(
+            "Index",
+            "BitacoraContable",
+            FormMethod.Get,
+            new { @class = "accounting-log-filter-form" }))
+        {
+            <div class="accounting-log-field">
+
+                <input type="text"
+                       name="cedula"
+                       value="@ViewBag.Cedula"
+                       class="form-control form-control-sm"
+                       placeholder="Cédula del usuario" />
+
+            </div>
+
+            <div class="accounting-log-field">
+
+                <input type="date"
+                       name="fechaInicio"
+                       value="@(ViewBag.FechaInicio != null
+                           ? ((DateTime)ViewBag.FechaInicio).ToString("yyyy-MM-dd")
+                           : "")"
+                       class="form-control form-control-sm" />
+
+            </div>
+
+            <div class="accounting-log-field">
+
+                <input type="date"
+                       name="fechaFin"
+                       value="@(ViewBag.FechaFin != null
+                           ? ((DateTime)ViewBag.FechaFin).ToString("yyyy-MM-dd")
+                           : "")"
+                       class="form-control form-control-sm" />
+
+            </div>
+
+            <div class="accounting-log-filter-actions">
+
+                <button type="submit"
+                        class="btn btn-outline-secondary btn-sm accounting-log-filter-button">
+                    Consultar
+                </button>
+
+                @Html.ActionLink(
+                    "Descargar PDF",
+                    "DescargarPdf",
+                    "BitacoraContable",
+                    new
+                    {
+                        cedula = ViewBag.Cedula,
+                        fechaInicio = ViewBag.FechaInicio,
+                        fechaFin = ViewBag.FechaFin
+                    },
+                    new
+                    {
+                        @class = "btn btn-outline-primary btn-sm accounting-log-pdf-button"
+                    }
+                )
+
+            </div>
+        }
+
+    </section>
+
+    <!-- =====================================================
+         RESUMEN
+         ===================================================== -->
+    <section class="accounting-log-summary">
+
+        <div>
+
+            <div class="accounting-log-summary-title">
+                Movimientos encontrados
+            </div>
+
+            <div class="accounting-log-summary-subtitle">
+                Resultados según los filtros seleccionados.
+            </div>
+
+        </div>
+
+        <div class="accounting-log-summary-data">
+
+            <span class="accounting-log-summary-number">
+                @(Model != null ? Model.Count : 0)
+            </span>
+
+            <span class="accounting-log-summary-label">
+                registros
+            </span>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+    <section class="accounting-log-table-section">
+
+        <div class="accounting-log-table-heading">
+
+            <h2>
+                Historial contable
+            </h2>
+
+            <span>
+                Usuario, módulo, acción y descripción
+            </span>
+
+        </div>
+
+        <div class="accounting-log-table-scroll">
+
+            <table class="accounting-log-table">
+
+                <thead>
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>Usuario</th>
+                        <th>Módulo</th>
+                        <th>Acción</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <span class="accounting-log-date">
+                                        @item.FechaHora.ToString("dd/MM/yyyy HH:mm")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="accounting-log-user">
+                                        @(item.NombreUsuario ?? item.Cedula)
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="accounting-log-module">
+                                        @item.Modulo
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="accounting-log-action">
+                                        @item.AccionRealizada
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="accounting-log-description">
+                                        @item.Descripcion
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="5"
+                                class="accounting-log-empty">
+                                No se encontraron movimientos contables para los filtros seleccionados.
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>

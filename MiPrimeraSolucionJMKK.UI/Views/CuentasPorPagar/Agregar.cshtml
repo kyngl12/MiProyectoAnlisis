@@ -4,60 +4,606 @@
     ViewBag.Title = "Nueva Cuenta por Pagar";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card-modern">
-                <div class="card-body p-4">
+<style>
+    :root {
+        --payable-form-blue-950: #06142f;
+        --payable-form-blue-900: #0a1f46;
+        --payable-form-blue-800: #10376b;
+        --payable-form-blue-700: #185695;
+        --payable-form-blue-600: #2878bd;
+        --payable-form-blue-500: #4298d4;
+        --payable-form-blue-400: #68a5d8;
+        --payable-form-blue-300: #9acced;
+        --payable-form-blue-200: #c9e5f6;
+        --payable-form-blue-100: #e7f3fb;
+        --payable-form-blue-50: #f5faff;
+        --payable-form-white: #ffffff;
+        --payable-form-text: #14263a;
+        --payable-form-muted: #718397;
+        --payable-form-border: #dce9f3;
+        --payable-form-border-light: #eaf1f7;
+        --payable-form-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --payable-form-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --payable-form-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-                    <h2 class="mb-4"><i class="bi bi-receipt me-2"></i>Registrar Cuenta por Pagar</h2>
+    .payable-form-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
-                    @if (TempData["MensajeError"] != null)
-                    {
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            @TempData["MensajeError"]
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    }
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
 
-                    @using (Html.BeginForm("Agregar", "CuentasPorPagar", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
+    .payable-form-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--payable-form-blue-950), var(--payable-form-blue-800) );
+        box-shadow: var(--payable-form-shadow-lg);
+        overflow: hidden;
+    }
 
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.Proveedor, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.Proveedor, new { @class = "form-control", placeholder = "Nombre del proveedor" })
-                            @Html.ValidationMessageFor(m => m.Proveedor, "", new { @class = "text-danger small" })
-                        </div>
+        .payable-form-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
 
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.Monto, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.Monto, new { @class = "form-control", type = "number", step = "0.01", min = "0.01" })
-                            @Html.ValidationMessageFor(m => m.Monto, "", new { @class = "text-danger small" })
-                        </div>
+        .payable-form-hero::after {
+            content: "CUENTA";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
 
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.Descripcion, new { @class = "form-label" })
-                            @Html.TextAreaFor(m => m.Descripcion, new { @class = "form-control", rows = 3, placeholder = "Detalle de la factura o mercadería" })
-                            @Html.ValidationMessageFor(m => m.Descripcion, "", new { @class = "text-danger small" })
-                        </div>
+    .payable-form-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 720px;
+    }
 
-                        <div class="mb-4">
-                            @Html.LabelFor(m => m.FechaVencimiento, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.FechaVencimiento, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                            @Html.ValidationMessageFor(m => m.FechaVencimiento, "", new { @class = "text-danger small" })
-                        </div>
+    .payable-form-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--payable-form-blue-400);
+        color: var(--payable-form-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
 
-                        <div class="d-flex gap-2 justify-content-end">
-                            @Html.ActionLink("Cancelar", "Index", "CuentasPorPagar", null, new { @class = "btn btn-secondary" })
-                            <button type="submit" class="btn btn-pubrock">
-                                <i class="bi bi-check-circle-fill me-1"></i>Guardar
-                            </button>
-                        </div>
-                    }
+    .payable-form-heading h1 {
+        margin: 0 0 13px;
+        color: var(--payable-form-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .payable-form-heading p {
+        max-width: 650px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .payable-form-alerts {
+        margin-top: 25px;
+    }
+
+        .payable-form-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .payable-form-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    /* =====================================================
+       DISTRIBUCIÓN
+       ===================================================== */
+
+    .payable-form-shell {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr);
+        gap: 24px;
+        align-items: start;
+    }
+
+    .payable-form-panel {
+        padding: 32px;
+        border: 1px solid var(--payable-form-border);
+        border-radius: 20px;
+        background: linear-gradient( 180deg, var(--payable-form-white), var(--payable-form-blue-50) );
+        box-shadow: var(--payable-form-shadow-md);
+    }
+
+    .payable-form-panel-header {
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--payable-form-border-light);
+    }
+
+        .payable-form-panel-header h2 {
+            margin: 0 0 7px;
+            color: var(--payable-form-blue-950);
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .payable-form-panel-header p {
+            margin: 0;
+            color: var(--payable-form-muted);
+            font-size: .86rem;
+            line-height: 1.6;
+        }
+
+    /* =====================================================
+       CAMPOS
+       ===================================================== */
+
+    .payable-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .payable-form-field {
+        margin-bottom: 18px;
+    }
+
+        .payable-form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .payable-form-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--payable-form-text);
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .payable-form-field .form-control {
+            min-height: 50px;
+            padding: 12px 15px;
+            color: var(--payable-form-text);
+            background: var(--payable-form-white);
+            border: 1px solid var(--payable-form-border);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+            transition: border-color .16s ease, box-shadow .16s ease;
+        }
+
+        .payable-form-field textarea.form-control {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        .payable-form-field .form-control:hover {
+            border-color: var(--payable-form-blue-300);
+        }
+
+        .payable-form-field .form-control:focus {
+            border-color: var(--payable-form-blue-500);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+        }
+
+        .payable-form-field .form-control::placeholder {
+            color: #97a9b8;
+        }
+
+        .payable-form-field .text-danger {
+            display: block;
+            margin-top: 6px;
+            font-size: .78rem;
+        }
+
+    /* =====================================================
+       BOTONES
+       ===================================================== */
+
+    .payable-form-actions {
+        margin-top: 8px;
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .payable-form-submit,
+    .payable-form-cancel {
+        min-height: 50px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px !important;
+        font-size: .86rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        transition: transform .16s ease, background-color .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .payable-form-submit {
+        color: var(--payable-form-white) !important;
+        background: linear-gradient( 135deg, var(--payable-form-blue-600), var(--payable-form-blue-700) ) !important;
+        border: 1px solid var(--payable-form-blue-600) !important;
+        box-shadow: 0 9px 22px rgba(40, 120, 189, .22);
+    }
+
+        .payable-form-submit:hover {
+            color: var(--payable-form-white) !important;
+            background: linear-gradient( 135deg, var(--payable-form-blue-700), var(--payable-form-blue-800) ) !important;
+            transform: translateY(-2px);
+        }
+
+    .payable-form-cancel {
+        color: var(--payable-form-blue-700) !important;
+        background: var(--payable-form-white) !important;
+        border: 1px solid var(--payable-form-blue-200) !important;
+    }
+
+        .payable-form-cancel:hover {
+            color: var(--payable-form-white) !important;
+            background: var(--payable-form-blue-700) !important;
+            border-color: var(--payable-form-blue-700) !important;
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       PANEL LATERAL
+       ===================================================== */
+
+    .payable-form-aside {
+        padding: 30px;
+        border: 1px solid var(--payable-form-border);
+        border-radius: 20px;
+        background: radial-gradient( circle at top right, rgba(104, 165, 216, .13), transparent 35% ), var(--payable-form-white);
+        box-shadow: var(--payable-form-shadow-sm);
+    }
+
+    .payable-form-aside-number {
+        margin-bottom: 20px;
+        color: var(--payable-form-blue-100);
+        font-size: 5.2rem;
+        font-weight: 800;
+        letter-spacing: -.08em;
+        line-height: .85;
+    }
+
+    .payable-form-aside h3 {
+        margin-bottom: 12px;
+        color: var(--payable-form-blue-950);
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .payable-form-aside p {
+        margin-bottom: 18px;
+        color: var(--payable-form-muted);
+        font-size: .88rem;
+        line-height: 1.7;
+    }
+
+    .payable-form-tip {
+        padding: 14px;
+        border: 1px solid var(--payable-form-blue-200);
+        border-radius: 12px;
+        color: var(--payable-form-blue-800);
+        background: var(--payable-form-blue-50);
+        font-size: .78rem;
+        font-weight: 600;
+        line-height: 1.55;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .payable-form-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+        }
+
+        .payable-form-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .payable-form-aside {
+            order: -1;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .payable-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .payable-form-field.full-width {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .payable-form-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .payable-form-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .payable-form-panel,
+        .payable-form-aside {
+            padding: 24px 20px;
+            border-radius: 16px;
+        }
+
+        .payable-form-actions {
+            flex-direction: column;
+        }
+
+        .payable-form-submit,
+        .payable-form-cancel {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="payable-form-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="payable-form-hero">
+
+        <div class="payable-form-heading">
+
+            <span class="payable-form-eyebrow">
+                Gestión contable
+            </span>
+
+            <h1>
+                Nueva cuenta por pagar
+            </h1>
+
+            <p>
+                Registra la obligación pendiente con el proveedor,
+                su monto, descripción y fecha de vencimiento.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="payable-form-alerts">
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show"
+                 role="alert">
+
+                @TempData["MensajeError"]
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"></button>
+
+            </div>
+        }
+
+    </div>
+
+    <!-- =====================================================
+         FORMULARIO
+         ===================================================== -->
+    <div class="payable-form-shell">
+
+        <section class="payable-form-panel">
+
+            <div class="payable-form-panel-header">
+
+                <h2>
+                    Registrar cuenta por pagar
+                </h2>
+
+                <p>
+                    Complete todos los datos antes de guardar.
+                </p>
+
+            </div>
+
+            @using (Html.BeginForm(
+                "Agregar",
+                "CuentasPorPagar",
+                FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="payable-form-grid">
+
+                    <div class="payable-form-field full-width">
+
+                        @Html.LabelFor(
+                            m => m.Proveedor,
+                            new { @class = "form-label" })
+
+                        @Html.TextBoxFor(
+                            m => m.Proveedor,
+                            new
+                            {
+                                @class = "form-control",
+                                placeholder = "Nombre del proveedor"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            m => m.Proveedor,
+                            "",
+                            new { @class = "text-danger small" })
+
+                    </div>
+
+                    <div class="payable-form-field">
+
+                        @Html.LabelFor(
+                            m => m.Monto,
+                            new { @class = "form-label" })
+
+                        @Html.TextBoxFor(
+                            m => m.Monto,
+                            new
+                            {
+                                @class = "form-control",
+                                type = "number",
+                                step = "0.01",
+                                min = "0.01"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            m => m.Monto,
+                            "",
+                            new { @class = "text-danger small" })
+
+                    </div>
+
+                    <div class="payable-form-field">
+
+                        @Html.LabelFor(
+                            m => m.FechaVencimiento,
+                            new { @class = "form-label" })
+
+                        @Html.TextBoxFor(
+                            m => m.FechaVencimiento,
+                            "{0:yyyy-MM-dd}",
+                            new
+                            {
+                                @class = "form-control",
+                                type = "date"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            m => m.FechaVencimiento,
+                            "",
+                            new { @class = "text-danger small" })
+
+                    </div>
+
+                    <div class="payable-form-field full-width">
+
+                        @Html.LabelFor(
+                            m => m.Descripcion,
+                            new { @class = "form-label" })
+
+                        @Html.TextAreaFor(
+                            m => m.Descripcion,
+                            new
+                            {
+                                @class = "form-control",
+                                rows = 3,
+                                placeholder = "Detalle de la factura o mercadería"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            m => m.Descripcion,
+                            "",
+                            new { @class = "text-danger small" })
+
+                    </div>
 
                 </div>
+
+                <div class="payable-form-actions">
+
+                    @Html.ActionLink(
+                        "Cancelar",
+                        "Index",
+                        "CuentasPorPagar",
+                        null,
+                        new
+                        {
+                            @class = "btn btn-secondary payable-form-cancel"
+                        })
+
+                    <button type="submit"
+                            class="btn btn-pubrock payable-form-submit">
+
+                        <i class="bi bi-check-circle-fill me-1"></i>
+
+                        Guardar
+
+                    </button>
+
+                </div>
+            }
+
+        </section>
+
+        <!-- =====================================================
+             PANEL LATERAL
+             ===================================================== -->
+        <aside class="payable-form-aside">
+
+            <div class="payable-form-aside-number">
+                01
             </div>
-        </div>
+
+            <h3>
+                Obligación pendiente
+            </h3>
+
+            <p>
+                Registra correctamente el proveedor, el monto adeudado,
+                el detalle de la compra y la fecha límite de pago.
+            </p>
+
+            <div class="payable-form-tip">
+                La fecha de vencimiento permitirá identificar cuentas
+                pendientes y próximas a vencer.
+            </div>
+
+        </aside>
+
     </div>
+
 </div>

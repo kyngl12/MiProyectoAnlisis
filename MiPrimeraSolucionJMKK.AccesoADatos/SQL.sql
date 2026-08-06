@@ -205,6 +205,34 @@ VALUES
 );
 GO
 
+INSERT INTO PUBROCK_USUARIO_TB
+(
+    CEDULA,
+    NOMBRE,
+    APELLIDO_PATERNO,
+    APELLIDO_MATERNO,
+    FECHA_REGISTRO,
+    ID_TIPO_USUARIO,
+    ID_ESTADO,
+    CORREO,
+    TELEFONO,
+    CONTRASENIA
+)
+VALUES
+(
+    '555555555',
+    'Carlos',
+    'Ramírez',
+    'Soto',
+    GETDATE(),
+3, 
+1, 
+'cliente@pubrock.com',
+'88886666',
+'Cliente123'
+);
+GO
+
 CREATE TABLE PUBROCK_DIRECCION_TB (
     CEDULA       VARCHAR(20) NOT NULL,
     ID_PAIS      INT,

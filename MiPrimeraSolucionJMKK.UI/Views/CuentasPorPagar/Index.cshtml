@@ -4,105 +4,782 @@
     ViewBag.Title = "Cuentas por Pagar";
 }
 
-<div class="container py-5">
-    <div class="card-modern p-3">
+<style>
+    :root {
+        --payable-blue-950: #06142f;
+        --payable-blue-900: #0a1f46;
+        --payable-blue-800: #10376b;
+        --payable-blue-700: #185695;
+        --payable-blue-600: #2878bd;
+        --payable-blue-500: #4298d4;
+        --payable-blue-400: #68a5d8;
+        --payable-blue-300: #9acced;
+        --payable-blue-200: #c9e5f6;
+        --payable-blue-100: #e7f3fb;
+        --payable-blue-50: #f5faff;
+        --payable-white: #ffffff;
+        --payable-text: #14263a;
+        --payable-muted: #718397;
+        --payable-border: #dce9f3;
+        --payable-border-light: #eaf1f7;
+        --payable-success: #2f855a;
+        --payable-warning: #b7791f;
+        --payable-danger: #c53030;
+        --payable-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --payable-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --payable-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Cuentas por Pagar a Proveedores</h2>
+    .payable-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
+
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
+
+    .payable-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 32px;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--payable-blue-950), var(--payable-blue-800) );
+        box-shadow: var(--payable-shadow-lg);
+        overflow: hidden;
+    }
+
+        .payable-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .payable-hero::after {
+            content: "CUENTAS";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .payable-heading,
+    .payable-hero-actions {
+        position: relative;
+        z-index: 2;
+    }
+
+    .payable-heading {
+        max-width: 720px;
+    }
+
+    .payable-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--payable-blue-400);
+        color: var(--payable-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .payable-heading h1 {
+        margin: 0 0 13px;
+        color: var(--payable-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .payable-heading p {
+        max-width: 650px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       BOTÓN NUEVA CUENTA
+       ===================================================== */
+
+    .payable-add-button {
+        min-width: 220px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, .52);
+        border-radius: 999px;
+        color: var(--payable-blue-950) !important;
+        background: var(--payable-white);
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, .14);
+        transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+        .payable-add-button:hover {
+            color: var(--payable-white) !important;
+            background: var(--payable-blue-500);
+            border-color: var(--payable-blue-500);
+            box-shadow: 0 14px 32px rgba(40, 120, 189, .30);
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .payable-alerts {
+        margin-top: 25px;
+    }
+
+        .payable-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .payable-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .payable-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+        .payable-alerts .alert-warning {
+            color: #73551c;
+            background: #fff9e9;
+            border-color: #efd89a;
+        }
+
+            .payable-alerts .alert-warning strong {
+                color: #61440f;
+            }
+
+            .payable-alerts .alert-warning ul {
+                margin-top: 10px;
+                padding-left: 20px;
+            }
+
+            .payable-alerts .alert-warning li {
+                margin-bottom: 4px;
+                line-height: 1.5;
+            }
+
+    /* =====================================================
+       RESUMEN
+       ===================================================== */
+
+    .payable-summary {
+        margin-top: 25px;
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border: 1px solid var(--payable-border);
+        border-radius: 17px;
+        background: linear-gradient( 180deg, var(--payable-white), var(--payable-blue-50) );
+        box-shadow: var(--payable-shadow-sm);
+    }
+
+    .payable-summary-title {
+        margin-bottom: 4px;
+        color: var(--payable-blue-950);
+        font-size: .95rem;
+        font-weight: 800;
+    }
+
+    .payable-summary-subtitle {
+        color: var(--payable-muted);
+        font-size: .8rem;
+    }
+
+    .payable-summary-count {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .payable-summary-number {
+        min-width: 50px;
+        min-height: 42px;
+        padding: 9px 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--payable-blue-200);
+        border-radius: 999px;
+        color: var(--payable-blue-800);
+        background: var(--payable-blue-100);
+        font-size: .9rem;
+        font-weight: 800;
+    }
+
+    .payable-summary-label {
+        color: var(--payable-muted);
+        font-size: .77rem;
+        font-weight: 600;
+    }
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    .payable-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--payable-border);
+        border-radius: 20px;
+        background: var(--payable-white);
+        box-shadow: var(--payable-shadow-md);
+        overflow: hidden;
+    }
+
+    .payable-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--payable-border-light);
+    }
+
+        .payable-table-heading h2 {
+            margin: 0;
+            color: var(--payable-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .payable-table-heading span {
+            color: var(--payable-muted);
+            font-size: .78rem;
+        }
+
+    .payable-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .payable-table {
+        width: 100%;
+        min-width: 1050px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--payable-text);
+    }
+
+        .payable-table thead th {
+            padding: 15px 17px;
+            color: var(--payable-blue-800);
+            background: var(--payable-blue-50);
+            border-bottom: 1px solid var(--payable-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .payable-table tbody td {
+            padding: 17px;
+            border-bottom: 1px solid var(--payable-border-light);
+            font-size: .84rem;
+            vertical-align: middle;
+        }
+
+        .payable-table tbody tr {
+            transition: background-color .15s ease;
+        }
+
+            .payable-table tbody tr:hover {
+                background: #f9fcff;
+            }
+
+            .payable-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+            .payable-table tbody tr.payable-expired-row {
+                background: #fff7f8;
+            }
+
+                .payable-table tbody tr.payable-expired-row:hover {
+                    background: #fff0f2;
+                }
+
+    /* =====================================================
+       INFORMACIÓN
+       ===================================================== */
+
+    .payable-provider {
+        color: var(--payable-blue-950);
+        font-weight: 800;
+    }
+
+    .payable-description {
+        max-width: 300px;
+        color: var(--payable-muted);
+        line-height: 1.55;
+    }
+
+    .payable-amount {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 12px;
+        border: 1px solid var(--payable-blue-200);
+        border-radius: 999px;
+        color: var(--payable-blue-900);
+        background: var(--payable-blue-100);
+        font-size: .8rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .payable-date {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 11px;
+        border: 1px solid var(--payable-blue-100);
+        border-radius: 999px;
+        color: var(--payable-blue-700);
+        background: var(--payable-blue-50);
+        font-size: .74rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       ESTADOS
+       ===================================================== */
+
+    .payable-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: .73rem;
+        font-weight: 800;
+    }
+
+        .payable-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .payable-status.paid {
+            color: #1f6942;
+            background: #effaf4;
+            border: 1px solid #bfe7cf;
+        }
+
+        .payable-status.expired {
+            color: #842029;
+            background: #fff2f3;
+            border: 1px solid #f3c5ca;
+        }
+
+        .payable-status.pending {
+            color: #73551c;
+            background: #fff9e9;
+            border: 1px solid #efd89a;
+        }
+
+    /* =====================================================
+       ACCIONES
+       ===================================================== */
+
+    .payable-pay-button {
+        min-height: 36px;
+        padding: 7px 12px;
+        border: 1px solid #bfe7cf !important;
+        border-radius: 8px !important;
+        color: #1f6942 !important;
+        background: #effaf4 !important;
+        font-size: .72rem;
+        font-weight: 800;
+        transition: transform .16s ease, background-color .16s ease, border-color .16s ease;
+    }
+
+        .payable-pay-button:hover {
+            color: var(--payable-white) !important;
+            background: var(--payable-success) !important;
+            border-color: var(--payable-success) !important;
+            transform: translateY(-1px);
+        }
+
+    .payable-paid-date {
+        color: var(--payable-muted);
+        font-size: .75rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .payable-empty {
+        padding: 60px 25px !important;
+        color: var(--payable-muted);
+        font-size: .95rem !important;
+        text-align: center;
+    }
+
+        .payable-empty::before {
+            content: "—";
+            display: block;
+            margin-bottom: 8px;
+            color: var(--payable-blue-300);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .payable-hero {
+            min-height: 295px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .payable-hero-actions,
+        .payable-add-button {
+            width: 100%;
+        }
+
+        .payable-summary {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .payable-hero {
+            min-height: 330px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .payable-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .payable-table-section {
+            border-radius: 16px;
+        }
+
+        .payable-table-heading {
+            padding: 18px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="payable-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="payable-hero">
+
+        <div class="payable-heading">
+
+            <span class="payable-eyebrow">
+                Gestión contable
+            </span>
+
+            <h1>
+                Cuentas por pagar
+            </h1>
+
+            <p>
+                Administra las obligaciones pendientes con proveedores,
+                revisa sus vencimientos y registra los pagos realizados.
+            </p>
+
+        </div>
+
+        <div class="payable-hero-actions">
 
             @Html.ActionLink(
                 "Nueva Cuenta por Pagar",
                 "Agregar",
                 "CuentasPorPagar",
                 null,
-                new { @class = "btn btn-primary" }
+                new
+                {
+                    @class = "payable-add-button"
+                }
             )
+
         </div>
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="payable-alerts">
 
         @if (TempData["MensajeExito"] != null)
         {
-            <div class="alert alert-success">@TempData["MensajeExito"]</div>
+            <div class="alert alert-success">
+                @TempData["MensajeExito"]
+            </div>
         }
 
         @if (TempData["MensajeError"] != null)
         {
-            <div class="alert alert-danger">@TempData["MensajeError"]</div>
-        }
-
-        @if (ViewBag.CuentasPorVencer != null && ((List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.CuentaPorPagarDto>)ViewBag.CuentasPorVencer).Any())
-        {
-            <div class="alert alert-warning">
-                <strong>Atención:</strong> hay cuentas por pagar que vencen en 2 días:
-                <ul class="mb-0">
-                    @foreach (var c in (List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.CuentaPorPagarDto>)ViewBag.CuentasPorVencer)
-                    {
-                        <li>@c.Proveedor — @c.Monto.ToString("C2") — vence el @c.FechaVencimiento.ToString("dd/MM/yyyy")</li>
-                    }
-                </ul>
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
             </div>
         }
 
-        <table class="table table-hover table-bordered">
-            <thead style="background-color:#1f6f8b; color:white;">
-                <tr>
-                    <th>Proveedor</th>
-                    <th>Descripción</th>
-                    <th>Monto</th>
-                    <th>Vencimiento</th>
-                    <th>Estado</th>
-                    <th style="width:160px;">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var item in Model)
+        @if (
+            ViewBag.CuentasPorVencer != null
+            && ((List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.CuentaPorPagarDto>)ViewBag.CuentasPorVencer).Any()
+        )
+        {
+            <div class="alert alert-warning">
+
+                <strong>Atención:</strong>
+                hay cuentas por pagar que vencen en 2 días:
+
+                <ul class="mb-0">
+
+                    @foreach (
+                        var c in
+                        (List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Contabilidad.CuentaPorPagarDto>)
+                        ViewBag.CuentasPorVencer
+                    )
                     {
-                        <tr class="@(item.EstaVencida ? "table-danger" : "")">
-                            <td>@item.Proveedor</td>
-                            <td>@item.Descripcion</td>
-                            <td>@item.Monto.ToString("C2")</td>
-                            <td>@item.FechaVencimiento.ToString("dd/MM/yyyy")</td>
-                            <td>
-                                @if (item.EstadoPago == "Pagado")
-                                {
-                                    <span class="badge bg-success">Pagado</span>
-                                }
-                                else if (item.EstaVencida)
-                                {
-                                    <span class="badge bg-danger">Vencida</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning text-dark">Pendiente</span>
-                                }
-                            </td>
-                            <td>
-                                @if (item.EstadoPago == "Pendiente")
-                                {
-                                    using (Html.BeginForm("MarcarComoPagado", "CuentasPorPagar", FormMethod.Post, new { @class = "m-0 p-0" }))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        @Html.Hidden("id", item.IdCuentaPorPagar)
-                                        <button type="submit" class="btn btn-sm btn-outline-success">Marcar como pagado</button>
-                                    }
-                                }
-                                else
-                                {
-                                    <span class="text-muted small">Pagado el @item.FechaPago?.ToString("dd/MM/yyyy")</span>
-                                }
-                            </td>
-                        </tr>
+                        <li>
+                            @c.Proveedor —
+                            @c.Monto.ToString("C2") —
+                            vence el @c.FechaVencimiento.ToString("dd/MM/yyyy")
+                        </li>
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="6" class="text-center text-muted">No hay cuentas por pagar registradas.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
+                </ul>
+
+            </div>
+        }
 
     </div>
+
+    <!-- =====================================================
+         RESUMEN
+         ===================================================== -->
+    <section class="payable-summary">
+
+        <div>
+
+            <div class="payable-summary-title">
+                Control de obligaciones
+            </div>
+
+            <div class="payable-summary-subtitle">
+                Consulta cuentas pendientes, vencidas y pagadas.
+            </div>
+
+        </div>
+
+        <div class="payable-summary-count">
+
+            <span class="payable-summary-number">
+                @(Model != null ? Model.Count : 0)
+            </span>
+
+            <span class="payable-summary-label">
+                cuentas registradas
+            </span>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+    <section class="payable-table-section">
+
+        <div class="payable-table-heading">
+
+            <h2>
+                Cuentas registradas
+            </h2>
+
+            <span>
+                Control de proveedor, vencimiento y estado
+            </span>
+
+        </div>
+
+        <div class="payable-table-scroll">
+
+            <table class="payable-table">
+
+                <thead>
+                    <tr>
+                        <th>Proveedor</th>
+                        <th>Descripción</th>
+                        <th>Monto</th>
+                        <th>Vencimiento</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr class="@(item.EstaVencida ? "payable-expired-row" : "")">
+
+                                <td>
+                                    <span class="payable-provider">
+                                        @item.Proveedor
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="payable-description">
+                                        @item.Descripcion
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="payable-amount">
+                                        @item.Monto.ToString("C2")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="payable-date">
+                                        @item.FechaVencimiento.ToString("dd/MM/yyyy")
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    @if (item.EstadoPago == "Pagado")
+                                    {
+                                        <span class="payable-status paid">
+                                            Pagado
+                                        </span>
+                                    }
+                                    else if (item.EstaVencida)
+                                    {
+                                        <span class="payable-status expired">
+                                            Vencida
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="payable-status pending">
+                                            Pendiente
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    @if (item.EstadoPago == "Pendiente")
+                                    {
+                                        using (
+                                            Html.BeginForm(
+                                                "MarcarComoPagado",
+                                                "CuentasPorPagar",
+                                                FormMethod.Post,
+                                                new { @class = "m-0 p-0" }
+                                            )
+                                        )
+                                        {
+                                            @Html.AntiForgeryToken()
+
+                                            @Html.Hidden(
+                                                "id",
+                                                item.IdCuentaPorPagar
+                                            )
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-success payable-pay-button">
+                                                Marcar como pagado
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="payable-paid-date">
+                                            Pagado el @item.FechaPago?.ToString("dd/MM/yyyy")
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="6"
+                                class="payable-empty">
+                                No hay cuentas por pagar registradas.
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>

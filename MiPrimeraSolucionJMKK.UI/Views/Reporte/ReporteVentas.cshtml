@@ -8,45 +8,670 @@
     var cultura = new CultureInfo("es-CR");
 }
 
-<div class="container py-5">
+<style>
+    :root {
+        --sales-report-blue-950: #06142f;
+        --sales-report-blue-900: #0a1f46;
+        --sales-report-blue-800: #10376b;
+        --sales-report-blue-700: #185695;
+        --sales-report-blue-600: #2878bd;
+        --sales-report-blue-500: #4298d4;
+        --sales-report-blue-400: #68a5d8;
+        --sales-report-blue-300: #9acced;
+        --sales-report-blue-200: #c9e5f6;
+        --sales-report-blue-100: #e7f3fb;
+        --sales-report-blue-50: #f5faff;
+        --sales-report-white: #ffffff;
+        --sales-report-text: #14263a;
+        --sales-report-muted: #718397;
+        --sales-report-border: #dce9f3;
+        --sales-report-border-light: #eaf1f7;
+        --sales-report-success: #2f855a;
+        --sales-report-danger: #c53030;
+        --sales-report-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --sales-report-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --sales-report-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-    <div class="card-modern p-4">
+    .sales-report-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="mb-1">Reporte de Ventas</h2>
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
 
-                <p class="text-muted mb-0">
-                    Consulte las ventas realizadas en un período determinado.
-                </p>
-            </div>
+    .sales-report-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--sales-report-blue-950), var(--sales-report-blue-800) );
+        box-shadow: var(--sales-report-shadow-lg);
+        overflow: hidden;
+    }
 
-            <script>
-                // Actualizar inputs de exportación antes de enviar
-                (function(){
-                    var formX = document.getElementById('formExportExcel');
-                    var formP = document.getElementById('formExportPdf');
-                    var fInicio = document.getElementById('fechaInicio');
-                    var fFin = document.getElementById('fechaFin');
-                    if (formX && formP && fInicio && fFin) {
-                        formX.addEventListener('submit', function(){ document.getElementById('expFechaInicio').value = fInicio.value; document.getElementById('expFechaFin').value = fFin.value; });
-                        formP.addEventListener('submit', function(){ document.getElementById('expPdfFechaInicio').value = fInicio.value; document.getElementById('expPdfFechaFin').value = fFin.value; });
-                    }
-                })();
-            </script>
+        .sales-report-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .sales-report-hero::after {
+            content: "VENTAS";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .sales-report-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 760px;
+    }
+
+    .sales-report-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--sales-report-blue-400);
+        color: var(--sales-report-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .sales-report-heading h1 {
+        margin: 0 0 13px;
+        color: var(--sales-report-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .sales-report-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       FILTRO
+       ===================================================== */
+
+    .sales-report-filter {
+        margin-top: 25px;
+        padding: 29px;
+        border: 1px solid var(--sales-report-border);
+        border-radius: 20px;
+        background: linear-gradient( 180deg, var(--sales-report-white), var(--sales-report-blue-50) );
+        box-shadow: var(--sales-report-shadow-md);
+    }
+
+    .sales-report-filter-header {
+        margin-bottom: 23px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--sales-report-border-light);
+    }
+
+        .sales-report-filter-header h2 {
+            margin: 0 0 7px;
+            color: var(--sales-report-blue-950);
+            font-size: 1.28rem;
+            font-weight: 800;
+        }
+
+        .sales-report-filter-header p {
+            margin: 0;
+            color: var(--sales-report-muted);
+            font-size: .84rem;
+            line-height: 1.6;
+        }
+
+    .sales-report-filter-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 220px;
+        gap: 18px;
+        align-items: end;
+    }
+
+    .sales-report-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--sales-report-text);
+        font-size: .82rem;
+        font-weight: 700;
+    }
+
+    .sales-report-field .form-control {
+        min-height: 50px;
+        padding: 12px 15px;
+        color: var(--sales-report-text);
+        background: var(--sales-report-white);
+        border: 1px solid var(--sales-report-border);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+    }
+
+        .sales-report-field .form-control:hover {
+            border-color: var(--sales-report-blue-300);
+        }
+
+        .sales-report-field .form-control:focus {
+            border-color: var(--sales-report-blue-500);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+        }
+
+    .sales-report-generate {
+        min-height: 50px;
+        border: 1px solid var(--sales-report-blue-600) !important;
+        border-radius: 10px !important;
+        color: var(--sales-report-white) !important;
+        background: linear-gradient( 135deg, var(--sales-report-blue-600), var(--sales-report-blue-800) ) !important;
+        font-size: .84rem;
+        font-weight: 800;
+        box-shadow: 0 9px 22px rgba(40, 120, 189, .22);
+    }
+
+        .sales-report-generate:hover {
+            color: var(--sales-report-white) !important;
+            background: linear-gradient( 135deg, var(--sales-report-blue-700), var(--sales-report-blue-950) ) !important;
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .sales-report-alerts {
+        margin-top: 24px;
+    }
+
+        .sales-report-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .sales-report-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .sales-report-alerts .alert-info {
+            color: var(--sales-report-blue-900);
+            background: var(--sales-report-blue-50);
+            border-color: var(--sales-report-blue-200);
+        }
+
+        .sales-report-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    /* =====================================================
+       RESULTADOS
+       ===================================================== */
+
+    .sales-report-results {
+        margin-top: 25px;
+    }
+
+    .sales-report-period {
+        padding: 20px 23px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border: 1px solid var(--sales-report-border);
+        border-radius: 17px;
+        background: var(--sales-report-white);
+        box-shadow: var(--sales-report-shadow-sm);
+    }
+
+        .sales-report-period h2 {
+            margin: 0 0 5px;
+            color: var(--sales-report-blue-950);
+            font-size: 1.12rem;
+            font-weight: 800;
+        }
+
+        .sales-report-period p {
+            margin: 0;
+            color: var(--sales-report-muted);
+            font-size: .82rem;
+        }
+
+    .sales-report-period-dates {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 13px;
+        border: 1px solid var(--sales-report-blue-200);
+        border-radius: 999px;
+        color: var(--sales-report-blue-800);
+        background: var(--sales-report-blue-50);
+        font-size: .77rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       INDICADORES
+       ===================================================== */
+
+    .sales-report-metrics {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .sales-report-metric {
+        position: relative;
+        min-height: 150px;
+        padding: 23px;
+        border: 1px solid var(--sales-report-border);
+        border-radius: 18px;
+        background: radial-gradient( circle at top right, rgba(104, 165, 216, .10), transparent 38% ), var(--sales-report-white);
+        box-shadow: var(--sales-report-shadow-sm);
+        overflow: hidden;
+        transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+        .sales-report-metric:hover {
+            box-shadow: var(--sales-report-shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .sales-report-metric::after {
+            content: "";
+            position: absolute;
+            width: 95px;
+            height: 95px;
+            right: -47px;
+            top: -47px;
+            border: 18px solid rgba(40, 120, 189, .045);
+            border-radius: 50%;
+        }
+
+    .sales-report-metric-label {
+        margin-bottom: 13px;
+        color: var(--sales-report-muted);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+    }
+
+    .sales-report-metric-value {
+        color: var(--sales-report-blue-950);
+        font-size: 1.65rem;
+        font-weight: 800;
+        letter-spacing: -.04em;
+        line-height: 1.2;
+    }
+
+    .sales-report-metric.sales {
+        border-top: 4px solid var(--sales-report-blue-500);
+    }
+
+    .sales-report-metric.transactions {
+        border-top: 4px solid var(--sales-report-blue-700);
+    }
+
+    .sales-report-metric.amount {
+        border-top: 4px solid var(--sales-report-success);
+    }
+
+        .sales-report-metric.amount .sales-report-metric-value {
+            color: var(--sales-report-success);
+        }
+
+    /* =====================================================
+       EXPORTACIÓN
+       ===================================================== */
+
+    .sales-report-export {
+        margin-top: 22px;
+        padding: 20px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border: 1px solid var(--sales-report-border);
+        border-radius: 16px;
+        background: linear-gradient( 180deg, var(--sales-report-white), var(--sales-report-blue-50) );
+        box-shadow: var(--sales-report-shadow-sm);
+    }
+
+    .sales-report-export-copy h3 {
+        margin: 0 0 5px;
+        color: var(--sales-report-blue-950);
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    .sales-report-export-copy p {
+        margin: 0;
+        color: var(--sales-report-muted);
+        font-size: .78rem;
+    }
+
+    .sales-report-export-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+        .sales-report-export-actions form {
+            margin: 0;
+        }
+
+    .sales-report-export-button {
+        min-height: 43px;
+        padding: 10px 16px;
+        border-radius: 9px !important;
+        font-size: .78rem;
+        font-weight: 800;
+    }
+
+    .sales-report-excel {
+        color: #1f6942 !important;
+        background: #effaf4 !important;
+        border-color: #bfe7cf !important;
+    }
+
+        .sales-report-excel:hover {
+            color: var(--sales-report-white) !important;
+            background: var(--sales-report-success) !important;
+            border-color: var(--sales-report-success) !important;
+        }
+
+    .sales-report-pdf {
+        color: #842029 !important;
+        background: #fff2f3 !important;
+        border-color: #f3c5ca !important;
+    }
+
+        .sales-report-pdf:hover {
+            color: var(--sales-report-white) !important;
+            background: var(--sales-report-danger) !important;
+            border-color: var(--sales-report-danger) !important;
+        }
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    .sales-report-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--sales-report-border);
+        border-radius: 20px;
+        background: var(--sales-report-white);
+        box-shadow: var(--sales-report-shadow-md);
+        overflow: hidden;
+    }
+
+    .sales-report-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--sales-report-border-light);
+    }
+
+        .sales-report-table-heading h2 {
+            margin: 0;
+            color: var(--sales-report-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .sales-report-table-heading span {
+            color: var(--sales-report-muted);
+            font-size: .78rem;
+        }
+
+    .sales-report-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .sales-report-table {
+        width: 100%;
+        min-width: 760px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--sales-report-text);
+    }
+
+        .sales-report-table thead th {
+            padding: 15px 17px;
+            color: var(--sales-report-blue-800);
+            background: var(--sales-report-blue-50);
+            border-bottom: 1px solid var(--sales-report-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .sales-report-table tbody td {
+            padding: 17px;
+            border-bottom: 1px solid var(--sales-report-border-light);
+            font-size: .86rem;
+            vertical-align: middle;
+        }
+
+        .sales-report-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+        .sales-report-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+    .sales-report-payment-method {
+        color: var(--sales-report-blue-950);
+        font-weight: 800;
+    }
+
+    .sales-report-transaction-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 46px;
+        padding: 6px 11px;
+        border: 1px solid var(--sales-report-blue-200);
+        border-radius: 999px;
+        color: var(--sales-report-blue-800);
+        background: var(--sales-report-blue-50);
+        font-size: .75rem;
+        font-weight: 800;
+    }
+
+    .sales-report-collected-amount {
+        color: var(--sales-report-success);
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .sales-report-empty {
+        padding: 55px 20px !important;
+        color: var(--sales-report-muted);
+        text-align: center;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .sales-report-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+        }
+
+        .sales-report-filter-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .sales-report-filter-button {
+            grid-column: 1 / -1;
+        }
+
+        .sales-report-metrics {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .sales-report-filter-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .sales-report-filter-button {
+            grid-column: auto;
+        }
+
+        .sales-report-period,
+        .sales-report-export {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .sales-report-export-actions {
+            width: 100%;
+        }
+
+            .sales-report-export-actions form {
+                flex: 1;
+            }
+
+        .sales-report-export-button {
+            width: 100%;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .sales-report-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .sales-report-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .sales-report-filter {
+            padding: 22px 19px;
+            border-radius: 16px;
+        }
+
+        .sales-report-table-section {
+            border-radius: 16px;
+        }
+
+        .sales-report-table-heading {
+            padding: 18px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .sales-report-export-actions {
+            flex-direction: column;
+        }
+
+            .sales-report-export-actions form {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="sales-report-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="sales-report-hero">
+
+        <div class="sales-report-heading">
+
+            <span class="sales-report-eyebrow">
+                Análisis administrativo
+            </span>
+
+            <h1>
+                Reporte de ventas
+            </h1>
+
+            <p>
+                Consulta las ventas realizadas durante un período,
+                revisa los totales y exporta la información.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         FILTRO
+         ===================================================== -->
+    <section class="sales-report-filter">
+
+        <div class="sales-report-filter-header">
+
+            <h2>
+                Generar reporte
+            </h2>
+
+            <p>
+                Selecciona la fecha inicial y final del período.
+            </p>
+
         </div>
 
         @using (Html.BeginForm(
             "ReporteVentas",
             "Reporte",
-            FormMethod.Post,
-            new { @class = "mb-4" }))
+            FormMethod.Post))
         {
             @Html.AntiForgeryToken()
 
-            <div class="row g-3 align-items-end">
+            <div class="sales-report-filter-grid">
 
-                <div class="col-md-4">
+                <div class="sales-report-field">
+
                     <label for="fechaInicio"
                            class="form-label fw-semibold">
                         Fecha de inicio
@@ -58,9 +683,11 @@
                            class="form-control"
                            value="@Model.FechaInicio.ToString("yyyy-MM-dd")"
                            required />
+
                 </div>
 
-                <div class="col-md-4">
+                <div class="sales-report-field">
+
                     <label for="fechaFin"
                            class="form-label fw-semibold">
                         Fecha de finalización
@@ -72,17 +699,27 @@
                            class="form-control"
                            value="@Model.FechaFin.ToString("yyyy-MM-dd")"
                            required />
+
                 </div>
 
-                <div class="col-md-4">
+                <div class="sales-report-filter-button">
+
                     <button type="submit"
-                            class="btn btn-primary w-100">
+                            class="btn btn-primary w-100 sales-report-generate">
                         Generar Reporte
                     </button>
+
                 </div>
 
             </div>
         }
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="sales-report-alerts">
 
         @if (TempData["MensajeExito"] != null)
         {
@@ -105,151 +742,329 @@
             </div>
         }
 
-        @if (Model.Ventas != null && Model.Ventas.Any())
-        {
-            <hr class="my-4" />
+    </div>
 
-            <div class="mb-4">
-                <h4 class="mb-1">
-                    Resultados del reporte
-                </h4>
+    @if (Model.Ventas != null && Model.Ventas.Any())
+    {
+        <section class="sales-report-results">
 
-                <p class="text-muted">
-                    Período:
-                    <strong>
-                        @Model.FechaInicio.ToString("dd/MM/yyyy")
-                    </strong>
-                    al
-                    <strong>
-                        @Model.FechaFin.ToString("dd/MM/yyyy")
-                    </strong>
-                </p>
-            </div>
+            <!-- =====================================================
+                 PERÍODO
+                 ===================================================== -->
+            <div class="sales-report-period">
 
-            <div class="row g-3 mb-4">
+                <div>
 
-                <div class="col-md-4">
-                    <div class="border rounded p-3 h-100">
-                        <small class="text-muted">
-                            Total de ventas
-                        </small>
+                    <h2>
+                        Resultados del reporte
+                    </h2>
 
-                        <h3 class="mb-0 mt-2">
-                            @Model.Ventas.Count
-                        </h3>
-                    </div>
+                    <p>
+                        Resumen de ventas y medios de pago utilizados.
+                    </p>
+
                 </div>
 
-                <div class="col-md-4">
-                    <div class="border rounded p-3 h-100">
-                        <small class="text-muted">
-                            Cantidad de transacciones
-                        </small>
+                <span class="sales-report-period-dates">
 
-                        <h3 class="mb-0 mt-2">
-                            @Model.CantidadTransacciones
-                        </h3>
-                    </div>
-                </div>
+                    @Model.FechaInicio.ToString("dd/MM/yyyy")
+                    &nbsp;al&nbsp;
+                    @Model.FechaFin.ToString("dd/MM/yyyy")
 
-                <div class="col-md-4">
-                    <div class="border rounded p-3 h-100">
-                        <small class="text-muted">
-                            Monto final recaudado
-                        </small>
-
-                        <h3 class="mb-0 mt-2">
-                            @Model.MontoFinalRecaudado.ToString("C", cultura)
-                        </h3>
-                    </div>
-                </div>
+                </span>
 
             </div>
 
-            <div class="mb-3 d-flex gap-2">
-                @* Formas de exportación *@
-                @using (Html.BeginForm("ExportarExcel", "Reporte", FormMethod.Post, new { id = "formExportExcel" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" name="fechaInicio" id="expFechaInicio" value="@Model.FechaInicio.ToString("yyyy-MM-dd")" />
-                    <input type="hidden" name="fechaFin" id="expFechaFin" value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
-                    <input type="hidden" name="idCategoria" id="expIdCategoria" value="" />
-                    <input type="hidden" name="idTipoPago" id="expIdTipoPago" value="" />
-                    <input type="hidden" name="idCliente" id="expIdCliente" value="" />
-                    <input type="hidden" name="idEstado" id="expIdEstado" value="" />
-                    <button type="submit" class="btn btn-outline-success">Exportar Excel</button>
-                }
+            <!-- =====================================================
+                 INDICADORES
+                 ===================================================== -->
+            <div class="sales-report-metrics">
 
-                @using (Html.BeginForm("ExportarPdf", "Reporte", FormMethod.Post, new { id = "formExportPdf" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" name="fechaInicio" id="expPdfFechaInicio" value="@Model.FechaInicio.ToString("yyyy-MM-dd")" />
-                    <input type="hidden" name="fechaFin" id="expPdfFechaFin" value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
-                    <input type="hidden" name="idCategoria" id="expPdfIdCategoria" value="" />
-                    <input type="hidden" name="idTipoPago" id="expPdfIdTipoPago" value="" />
-                    <input type="hidden" name="idCliente" id="expPdfIdCliente" value="" />
-                    <input type="hidden" name="idEstado" id="expPdfIdEstado" value="" />
-                    <button type="submit" class="btn btn-outline-danger">Exportar PDF</button>
-                }
+                <div class="sales-report-metric sales">
+
+                    <div class="sales-report-metric-label">
+                        Total de ventas
+                    </div>
+
+                    <div class="sales-report-metric-value">
+                        @Model.Ventas.Count
+                    </div>
+
+                </div>
+
+                <div class="sales-report-metric transactions">
+
+                    <div class="sales-report-metric-label">
+                        Cantidad de transacciones
+                    </div>
+
+                    <div class="sales-report-metric-value">
+                        @Model.CantidadTransacciones
+                    </div>
+
+                </div>
+
+                <div class="sales-report-metric amount">
+
+                    <div class="sales-report-metric-label">
+                        Monto final recaudado
+                    </div>
+
+                    <div class="sales-report-metric-value">
+                        @Model.MontoFinalRecaudado.ToString("C", cultura)
+                    </div>
+
+                </div>
+
             </div>
 
-            <h4 class="mb-3">
-                Métodos de pago utilizados
-            </h4>
+            <!-- =====================================================
+                 EXPORTACIÓN
+                 ===================================================== -->
+            <section class="sales-report-export">
 
-            <div class="table-responsive mb-5">
+                <div class="sales-report-export-copy">
 
-                <table class="table table-hover table-bordered">
+                    <h3>
+                        Exportar resultados
+                    </h3>
 
-                    <thead style="background-color:#1f6f8b; color:white;">
-                        <tr>
-                            <th>Método de pago</th>
-                            <th>Transacciones</th>
-                            <th>Monto recaudado</th>
-                        </tr>
-                    </thead>
+                    <p>
+                        Descarga el reporte en Excel o PDF.
+                    </p>
 
-                    <tbody>
+                </div>
 
-                        @if (Model.MetodosPago != null &&
-                             Model.MetodosPago.Any())
-                        {
-                            foreach (var metodo in Model.MetodosPago)
+                <div class="sales-report-export-actions">
+
+                    @using (Html.BeginForm(
+                        "ExportarExcel",
+                        "Reporte",
+                        FormMethod.Post,
+                        new { id = "formExportExcel" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="fechaInicio"
+                               id="expFechaInicio"
+                               value="@Model.FechaInicio.ToString("yyyy-MM-dd")" />
+
+                        <input type="hidden"
+                               name="fechaFin"
+                               id="expFechaFin"
+                               value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
+
+                        <input type="hidden"
+                               name="idCategoria"
+                               id="expIdCategoria"
+                               value="" />
+
+                        <input type="hidden"
+                               name="idTipoPago"
+                               id="expIdTipoPago"
+                               value="" />
+
+                        <input type="hidden"
+                               name="idCliente"
+                               id="expIdCliente"
+                               value="" />
+
+                        <input type="hidden"
+                               name="idEstado"
+                               id="expIdEstado"
+                               value="" />
+
+                        <button type="submit"
+                                class="btn btn-outline-success sales-report-export-button sales-report-excel">
+                            Exportar Excel
+                        </button>
+                    }
+
+                    @using (Html.BeginForm(
+                        "ExportarPdf",
+                        "Reporte",
+                        FormMethod.Post,
+                        new { id = "formExportPdf" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="fechaInicio"
+                               id="expPdfFechaInicio"
+                               value="@Model.FechaInicio.ToString("yyyy-MM-dd")" />
+
+                        <input type="hidden"
+                               name="fechaFin"
+                               id="expPdfFechaFin"
+                               value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
+
+                        <input type="hidden"
+                               name="idCategoria"
+                               id="expPdfIdCategoria"
+                               value="" />
+
+                        <input type="hidden"
+                               name="idTipoPago"
+                               id="expPdfIdTipoPago"
+                               value="" />
+
+                        <input type="hidden"
+                               name="idCliente"
+                               id="expPdfIdCliente"
+                               value="" />
+
+                        <input type="hidden"
+                               name="idEstado"
+                               id="expPdfIdEstado"
+                               value="" />
+
+                        <button type="submit"
+                                class="btn btn-outline-danger sales-report-export-button sales-report-pdf">
+                            Exportar PDF
+                        </button>
+                    }
+
+                </div>
+
+            </section>
+
+            <!-- =====================================================
+                 MÉTODOS DE PAGO
+                 ===================================================== -->
+            <section class="sales-report-table-section">
+
+                <div class="sales-report-table-heading">
+
+                    <h2>
+                        Métodos de pago utilizados
+                    </h2>
+
+                    <span>
+                        Transacciones y monto recaudado
+                    </span>
+
+                </div>
+
+                <div class="sales-report-table-scroll">
+
+                    <table class="sales-report-table">
+
+                        <thead>
+                            <tr>
+                                <th>Método de pago</th>
+                                <th>Transacciones</th>
+                                <th>Monto recaudado</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @if (Model.MetodosPago != null &&
+                                 Model.MetodosPago.Any())
+                            {
+                                foreach (var metodo in Model.MetodosPago)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            <span class="sales-report-payment-method">
+                                                @metodo.MetodoPago
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="sales-report-transaction-count">
+                                                @metodo.CantidadTransacciones
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="sales-report-collected-amount">
+                                                @metodo.MontoTotal.ToString(
+                                                    "C",
+                                                    cultura
+                                                )
+                                            </span>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                            else
                             {
                                 <tr>
-                                    <td>@metodo.MetodoPago</td>
 
-                                    <td>
-                                        @metodo.CantidadTransacciones
+                                    <td colspan="3"
+                                        class="sales-report-empty">
+                                        No hay métodos de pago registrados.
                                     </td>
 
-                                    <td>
-                                        @metodo.MontoTotal.ToString(
-                                            "C",
-                                            cultura
-                                        )
-                                    </td>
                                 </tr>
                             }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="3"
-                                    class="text-center text-muted">
-                                    No hay métodos de pago registrados.
-                                </td>
-                            </tr>
-                        }
 
-                    </tbody>
+                        </tbody>
 
-                </table>
+                    </table>
 
-            </div>
+                </div>
+
+            </section>
+
+        </section>
+    }
+
+</div>
+
+<script>
+    // Actualizar inputs de exportación antes de enviar
+    (function () {
+
+        var formX =
+            document.getElementById('formExportExcel');
+
+        var formP =
+            document.getElementById('formExportPdf');
+
+        var fInicio =
+            document.getElementById('fechaInicio');
+
+        var fFin =
+            document.getElementById('fechaFin');
+
+        if (formX && formP && fInicio && fFin) {
+
+            formX.addEventListener(
+                'submit',
+                function () {
+
+                    document
+                        .getElementById('expFechaInicio')
+                        .value = fInicio.value;
+
+                    document
+                        .getElementById('expFechaFin')
+                        .value = fFin.value;
+
+                }
+            );
+
+            formP.addEventListener(
+                'submit',
+                function () {
+
+                    document
+                        .getElementById('expPdfFechaInicio')
+                        .value = fInicio.value;
+
+                    document
+                        .getElementById('expPdfFechaFin')
+                        .value = fFin.value;
+
+                }
+            );
 
         }
 
-    </div>
-
-</div>
+    })();
+</script>

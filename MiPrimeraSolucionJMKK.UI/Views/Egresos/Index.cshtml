@@ -4,59 +4,607 @@
     ViewBag.Title = "Egresos y Gastos Operativos";
 }
 
-<div class="container py-5">
-    <div class="card-modern p-3">
+<style>
+    :root {
+        --expenses-blue-950: #06142f;
+        --expenses-blue-900: #0a1f46;
+        --expenses-blue-800: #10376b;
+        --expenses-blue-700: #185695;
+        --expenses-blue-600: #2878bd;
+        --expenses-blue-500: #4298d4;
+        --expenses-blue-400: #68a5d8;
+        --expenses-blue-300: #9acced;
+        --expenses-blue-200: #c9e5f6;
+        --expenses-blue-100: #e7f3fb;
+        --expenses-blue-50: #f5faff;
+        --expenses-white: #ffffff;
+        --expenses-text: #14263a;
+        --expenses-muted: #718397;
+        --expenses-border: #dce9f3;
+        --expenses-border-light: #eaf1f7;
+        --expenses-shadow-sm: 0 6px 20px rgba(6, 20, 47, .07);
+        --expenses-shadow-md: 0 16px 38px rgba(6, 20, 47, .11);
+        --expenses-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Egresos y Gastos Operativos</h2>
+    /* =====================================================
+       CONTENEDOR GENERAL
+       ===================================================== */
+
+    .expenses-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
+
+    /* =====================================================
+       ENCABEZADO PRINCIPAL
+       ===================================================== */
+
+    .expenses-header {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 35px;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--expenses-blue-950), var(--expenses-blue-800) );
+        box-shadow: var(--expenses-shadow-lg);
+        overflow: hidden;
+    }
+
+        .expenses-header::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .expenses-header::after {
+            content: "EGRESOS";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .expenses-heading,
+    .expenses-header-actions {
+        position: relative;
+        z-index: 2;
+    }
+
+    .expenses-heading {
+        max-width: 720px;
+    }
+
+    .expenses-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--expenses-blue-400);
+        color: var(--expenses-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .expenses-heading h1 {
+        margin: 0 0 13px;
+        color: var(--expenses-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .expenses-heading p {
+        max-width: 650px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       BOTÓN REGISTRAR
+       ===================================================== */
+
+    .expenses-add-button {
+        min-width: 180px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, .52);
+        border-radius: 999px;
+        color: var(--expenses-blue-950) !important;
+        background: var(--expenses-white);
+        font-size: .8rem;
+        font-weight: 800;
+        letter-spacing: .04em;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, .14);
+        transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+        .expenses-add-button:hover {
+            color: var(--expenses-white) !important;
+            background: var(--expenses-blue-500);
+            border-color: var(--expenses-blue-500);
+            box-shadow: 0 14px 32px rgba(40, 120, 189, .30);
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .expenses-alerts {
+        margin-top: 25px;
+    }
+
+        .expenses-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .expenses-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .expenses-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    /* =====================================================
+       RESUMEN
+       ===================================================== */
+
+    .expenses-summary {
+        margin-top: 28px;
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border: 1px solid var(--expenses-border);
+        border-radius: 17px;
+        background: linear-gradient( 180deg, var(--expenses-white), var(--expenses-blue-50) );
+        box-shadow: var(--expenses-shadow-sm);
+    }
+
+    .expenses-summary-copy {
+        min-width: 220px;
+    }
+
+    .expenses-summary-title {
+        margin-bottom: 4px;
+        color: var(--expenses-blue-950);
+        font-size: .95rem;
+        font-weight: 800;
+    }
+
+    .expenses-summary-subtitle {
+        color: var(--expenses-muted);
+        font-size: .8rem;
+    }
+
+    .expenses-summary-data {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .expenses-summary-number {
+        min-width: 52px;
+        min-height: 42px;
+        padding: 9px 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--expenses-blue-200);
+        border-radius: 999px;
+        color: var(--expenses-blue-800);
+        background: var(--expenses-blue-100);
+        font-size: .9rem;
+        font-weight: 800;
+    }
+
+    .expenses-summary-label {
+        color: var(--expenses-muted);
+        font-size: .77rem;
+        font-weight: 600;
+    }
+
+    /* =====================================================
+       CONTENEDOR DE TABLA
+       ===================================================== */
+
+    .expenses-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--expenses-border);
+        border-radius: 20px;
+        background: var(--expenses-white);
+        box-shadow: var(--expenses-shadow-md);
+        overflow: hidden;
+    }
+
+    .expenses-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--expenses-border-light);
+        background: var(--expenses-white);
+    }
+
+        .expenses-table-heading h2 {
+            margin: 0;
+            color: var(--expenses-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .expenses-table-heading span {
+            color: var(--expenses-muted);
+            font-size: .78rem;
+        }
+
+    .expenses-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .expenses-table {
+        width: 100%;
+        min-width: 720px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--expenses-text);
+    }
+
+        .expenses-table thead th {
+            padding: 15px 17px;
+            color: var(--expenses-blue-800);
+            background: var(--expenses-blue-50);
+            border-bottom: 1px solid var(--expenses-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .expenses-table tbody td {
+            padding: 17px;
+            border-bottom: 1px solid var(--expenses-border-light);
+            font-size: .86rem;
+            vertical-align: middle;
+        }
+
+        .expenses-table tbody tr {
+            transition: background-color .15s ease;
+        }
+
+            .expenses-table tbody tr:hover {
+                background: #f9fcff;
+            }
+
+            .expenses-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+    /* =====================================================
+       DATOS DE TABLA
+       ===================================================== */
+
+    .expenses-date {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 6px 11px;
+        border: 1px solid var(--expenses-blue-100);
+        border-radius: 999px;
+        color: var(--expenses-blue-700);
+        background: var(--expenses-blue-50);
+        font-size: .75rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .expenses-description {
+        color: var(--expenses-text);
+        font-weight: 600;
+        line-height: 1.55;
+    }
+
+    .expenses-amount {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 7px 13px;
+        border: 1px solid var(--expenses-blue-200);
+        border-radius: 999px;
+        color: var(--expenses-blue-900);
+        background: var(--expenses-blue-100);
+        font-size: .83rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       ESTADO VACÍO
+       ===================================================== */
+
+    .expenses-empty-state {
+        padding: 60px 25px !important;
+        color: var(--expenses-muted);
+        font-size: .95rem !important;
+        text-align: center;
+    }
+
+        .expenses-empty-state::before {
+            content: "—";
+            display: block;
+            margin-bottom: 8px;
+            color: var(--expenses-blue-300);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .expenses-page {
+            padding-top: 10px;
+        }
+
+        .expenses-header {
+            min-height: 290px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .expenses-header-actions {
+            width: 100%;
+        }
+
+        .expenses-add-button {
+            width: 100%;
+        }
+
+        .expenses-summary {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .expenses-header {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .expenses-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .expenses-summary {
+            padding: 18px;
+            border-radius: 14px;
+        }
+
+        .expenses-table-section {
+            border-radius: 16px;
+        }
+
+        .expenses-table-heading {
+            padding: 18px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="expenses-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="expenses-header">
+
+        <div class="expenses-heading">
+
+            <span class="expenses-eyebrow">
+                Gestión contable
+            </span>
+
+            <h1>
+                Egresos y gastos operativos
+            </h1>
+
+            <p>
+                Registra y consulta las salidas de dinero del negocio
+                desde un solo espacio.
+            </p>
+
+        </div>
+
+        <div class="expenses-header-actions">
 
             @Html.ActionLink(
-                "Registrar Gasto",
+                "Registrar gasto",
                 "Agregar",
                 "Egresos",
                 null,
-                new { @class = "btn btn-primary" }
+                new
+                {
+                    @class = "expenses-add-button"
+                }
             )
+
         </div>
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="expenses-alerts">
 
         @if (TempData["MensajeExito"] != null)
         {
-            <div class="alert alert-success">@TempData["MensajeExito"]</div>
+            <div class="alert alert-success">
+                @TempData["MensajeExito"]
+            </div>
         }
 
         @if (TempData["MensajeError"] != null)
         {
-            <div class="alert alert-danger">@TempData["MensajeError"]</div>
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
+            </div>
         }
 
-        <table class="table table-hover table-bordered">
-            <thead style="background-color:#1f6f8b; color:white;">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Descripción</th>
-                    <th>Monto</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var item in Model)
+    </div>
+
+    <!-- =====================================================
+         RESUMEN
+         ===================================================== -->
+    <section class="expenses-summary">
+
+        <div class="expenses-summary-copy">
+
+            <div class="expenses-summary-title">
+                Historial de egresos
+            </div>
+
+            <div class="expenses-summary-subtitle">
+                Consulta los gastos operativos registrados.
+            </div>
+
+        </div>
+
+        <div class="expenses-summary-data">
+
+            <span class="expenses-summary-number">
+                @(Model != null ? Model.Count : 0)
+            </span>
+
+            <span class="expenses-summary-label">
+                registros encontrados
+            </span>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+    <section class="expenses-table-section">
+
+        <div class="expenses-table-heading">
+
+            <h2>
+                Gastos registrados
+            </h2>
+
+            <span>
+                Control de fecha, descripción y monto
+            </span>
+
+        </div>
+
+        <div class="expenses-table-scroll">
+
+            <table class="expenses-table">
+
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <span class="expenses-date">
+                                        @item.Fecha.ToString("dd/MM/yyyy")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="expenses-description">
+                                        @item.Descripcion
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="expenses-amount">
+                                        @item.Monto.ToString("C2")
+                                    </span>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
-                            <td>@item.Descripcion</td>
-                            <td>@item.Monto.ToString("C2")</td>
+
+                            <td colspan="3"
+                                class="expenses-empty-state">
+                                No hay egresos registrados.
+                            </td>
+
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="3" class="text-center text-muted">No hay egresos registrados.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
 
-    </div>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>

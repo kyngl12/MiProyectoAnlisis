@@ -2,87 +2,518 @@
     ViewBag.Title = "Dashboard de Reportes";
 }
 
-<div class="container py-5">
-    <h2>Dashboard de Ventas</h2>
+<style>
+    :root {
+        --report-blue-950: #06142f;
+        --report-blue-900: #0a1f46;
+        --report-blue-800: #10376b;
+        --report-blue-700: #185695;
+        --report-blue-600: #2878bd;
+        --report-blue-500: #4298d4;
+        --report-blue-400: #68a5d8;
+        --report-blue-300: #9acced;
+        --report-blue-200: #c9e5f6;
+        --report-blue-100: #e7f3fb;
+        --report-blue-50: #f5faff;
+        --report-white: #ffffff;
+        --report-text: #14263a;
+        --report-muted: #718397;
+        --report-border: #dce9f3;
+        --report-border-light: #eaf1f7;
+        --report-success: #2f855a;
+        --report-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --report-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --report-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-    <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <div class="border rounded p-3 h-100">
-                <small class="text-muted">Total vendido hoy</small>
-                <h3 id="totalHoy">-</h3>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="border rounded p-3 h-100">
-                <small class="text-muted">Total vendido este mes</small>
-                <h3 id="totalMes">-</h3>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="border rounded p-3 h-100">
-                <small class="text-muted">Producto más vendido</small>
-                <h5 id="productoTop">-</h5>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="border rounded p-3 h-100">
-                <small class="text-muted">Método de pago más usado</small>
-                <h5 id="metodoTop">-</h5>
-            </div>
-        </div>
-    </div>
+    .report-dashboard-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
-    <div class="row g-3">
-        <div class="col-md-8">
-            <canvas id="ventasLine" height="150"></canvas>
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
+
+    .report-dashboard-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--report-blue-950), var(--report-blue-800) );
+        box-shadow: var(--report-shadow-lg);
+        overflow: hidden;
+    }
+
+        .report-dashboard-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .report-dashboard-hero::after {
+            content: "REPORTES";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .report-dashboard-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 760px;
+    }
+
+    .report-dashboard-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--report-blue-400);
+        color: var(--report-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .report-dashboard-heading h1 {
+        margin: 0 0 13px;
+        color: var(--report-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .report-dashboard-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       INDICADORES
+       ===================================================== */
+
+    .report-metrics {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .report-metric {
+        position: relative;
+        min-height: 155px;
+        padding: 23px;
+        border: 1px solid var(--report-border);
+        border-radius: 18px;
+        background: radial-gradient( circle at top right, rgba(104, 165, 216, .10), transparent 38% ), var(--report-white);
+        box-shadow: var(--report-shadow-sm);
+        overflow: hidden;
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+        .report-metric:hover {
+            border-color: var(--report-blue-200);
+            box-shadow: var(--report-shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .report-metric::after {
+            content: "";
+            position: absolute;
+            width: 95px;
+            height: 95px;
+            right: -47px;
+            top: -47px;
+            border: 18px solid rgba(40, 120, 189, .045);
+            border-radius: 50%;
+        }
+
+    .report-metric-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .report-metric-icon {
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--report-blue-100);
+        border-radius: 12px;
+        color: var(--report-blue-700);
+        background: var(--report-blue-50);
+        font-size: 1.15rem;
+    }
+
+    .report-metric-number {
+        color: var(--report-blue-100);
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .report-metric-label {
+        margin-top: 22px;
+        color: var(--report-muted);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .report-metric-value {
+        margin-top: 7px;
+        color: var(--report-blue-950);
+        font-size: 1.55rem;
+        font-weight: 800;
+        letter-spacing: -.035em;
+        line-height: 1.2;
+    }
+
+        .report-metric-value.small-value {
+            font-size: 1.12rem;
+            line-height: 1.4;
+        }
+
+    .report-metric.sales-today {
+        border-top: 4px solid var(--report-blue-500);
+    }
+
+    .report-metric.sales-month {
+        border-top: 4px solid var(--report-success);
+    }
+
+    .report-metric.product {
+        border-top: 4px solid var(--report-blue-700);
+    }
+
+    .report-metric.payment {
+        border-top: 4px solid var(--report-blue-300);
+    }
+
+    /* =====================================================
+       GRÁFICAS
+       ===================================================== */
+
+    .report-charts {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(300px, .8fr);
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .report-chart-panel {
+        min-width: 0;
+        padding: 25px;
+        border: 1px solid var(--report-border);
+        border-radius: 20px;
+        background: linear-gradient( 180deg, var(--report-white), var(--report-blue-50) );
+        box-shadow: var(--report-shadow-md);
+    }
+
+    .report-chart-header {
+        margin-bottom: 22px;
+        padding-bottom: 17px;
+        border-bottom: 1px solid var(--report-border-light);
+    }
+
+        .report-chart-header h2 {
+            margin: 0 0 6px;
+            color: var(--report-blue-950);
+            font-size: 1.12rem;
+            font-weight: 800;
+        }
+
+        .report-chart-header p {
+            margin: 0;
+            color: var(--report-muted);
+            font-size: .8rem;
+            line-height: 1.6;
+        }
+
+    .report-chart-wrapper {
+        position: relative;
+        width: 100%;
+        min-height: 330px;
+        padding: 10px;
+        border: 1px solid var(--report-border-light);
+        border-radius: 14px;
+        background: var(--report-white);
+    }
+
+        .report-chart-wrapper canvas {
+            width: 100% !important;
+            max-width: 100%;
+        }
+
+        .report-chart-wrapper.line-chart {
+            min-height: 360px;
+        }
+
+        .report-chart-wrapper.pie-chart {
+            min-height: 360px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 1199.98px) {
+        .report-metrics {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .report-charts {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .report-metrics {
+            grid-template-columns: 1fr;
+        }
+
+        .report-chart-wrapper,
+        .report-chart-wrapper.line-chart,
+        .report-chart-wrapper.pie-chart {
+            min-height: 290px;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .report-dashboard-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .report-dashboard-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .report-metric {
+            min-height: 145px;
+            padding: 20px;
+        }
+
+        .report-chart-panel {
+            padding: 20px 17px;
+            border-radius: 16px;
+        }
+    }
+</style>
+
+<div class="report-dashboard-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="report-dashboard-hero">
+
+        <div class="report-dashboard-heading">
+
+            <span class="report-dashboard-eyebrow">
+                Análisis administrativo
+            </span>
+
+            <h1>
+                Dashboard de reportes
+            </h1>
+
+            <p>
+                Consulta los principales indicadores de ventas,
+                productos y métodos de pago del negocio.
+            </p>
+
         </div>
-        <div class="col-md-4">
-            <canvas id="ventasPie" height="150"></canvas>
+
+    </section>
+
+    <!-- =====================================================
+         INDICADORES
+         ===================================================== -->
+    <section class="report-metrics">
+
+        <div class="report-metric sales-today">
+
+            <div class="report-metric-top">
+
+                <span class="report-metric-icon">
+                    <i class="bi bi-cash-coin"></i>
+                </span>
+
+                <span class="report-metric-number">
+                    01
+                </span>
+
+            </div>
+
+            <div class="report-metric-label">
+                Total vendido hoy
+            </div>
+
+            <div class="report-metric-value"
+                 id="totalHoy">
+                -
+            </div>
+
         </div>
-    </div>
+
+        <div class="report-metric sales-month">
+
+            <div class="report-metric-top">
+
+                <span class="report-metric-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </span>
+
+                <span class="report-metric-number">
+                    02
+                </span>
+
+            </div>
+
+            <div class="report-metric-label">
+                Total vendido este mes
+            </div>
+
+            <div class="report-metric-value"
+                 id="totalMes">
+                -
+            </div>
+
+        </div>
+
+        <div class="report-metric product">
+
+            <div class="report-metric-top">
+
+                <span class="report-metric-icon">
+                    <i class="bi bi-box-seam"></i>
+                </span>
+
+                <span class="report-metric-number">
+                    03
+                </span>
+
+            </div>
+
+            <div class="report-metric-label">
+                Producto más vendido
+            </div>
+
+            <div class="report-metric-value small-value"
+                 id="productoTop">
+                -
+            </div>
+
+        </div>
+
+        <div class="report-metric payment">
+
+            <div class="report-metric-top">
+
+                <span class="report-metric-icon">
+                    <i class="bi bi-credit-card"></i>
+                </span>
+
+                <span class="report-metric-number">
+                    04
+                </span>
+
+            </div>
+
+            <div class="report-metric-label">
+                Método de pago más usado
+            </div>
+
+            <div class="report-metric-value small-value"
+                 id="metodoTop">
+                -
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         GRÁFICAS
+         ===================================================== -->
+    <section class="report-charts">
+
+        <div class="report-chart-panel">
+
+            <div class="report-chart-header">
+
+                <h2>
+                    Comportamiento de ventas
+                </h2>
+
+                <p>
+                    Evolución de las ventas registradas durante el período.
+                </p>
+
+            </div>
+
+            <div class="report-chart-wrapper line-chart">
+
+                <canvas id="ventasLine"
+                        height="150"></canvas>
+
+            </div>
+
+        </div>
+
+        <div class="report-chart-panel">
+
+            <div class="report-chart-header">
+
+                <h2>
+                    Distribución de ventas
+                </h2>
+
+                <p>
+                    Comparación visual de los datos registrados.
+                </p>
+
+            </div>
+
+            <div class="report-chart-wrapper pie-chart">
+
+                <canvas id="ventasPie"
+                        height="150"></canvas>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    (function(){
-        fetch('@Url.Action("DashboardData","ReporteApi")', { credentials: 'same-origin' })
-            .then(r => r.json())
-            .then(data => {
-                if(data.error){ console.error(data.error); return; }
-
-                var totalHoy = data.totalToday || 0;
-                var totalMes = data.totalMonth || 0;
-
-                document.getElementById('totalHoy').textContent = new Intl.NumberFormat('es-CR', {style:'currency', currency:'CRC'}).format(totalHoy);
-                document.getElementById('totalMes').textContent = new Intl.NumberFormat('es-CR', {style:'currency', currency:'CRC'}).format(totalMes);
-                document.getElementById('productoTop').textContent = data.prodMasVendido || '-';
-                document.getElementById('metodoTop').textContent = data.metodoMasUsado || '-';
-
-                var ventasPorDia = data.ventasPorDia || [];
-                var labels = ventasPorDia.map(v => v.fecha);
-                var values = ventasPorDia.map(v => v.total);
-
-                if(labels && labels.length > 0){
-                    var ctx = document.getElementById('ventasLine').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: { labels: labels, datasets: [{ label: 'Ventas', data: values, borderColor: '#1f6f8b', fill: false }] },
-                        options: { responsive: true }
-                    });
-
-                    var ctx2 = document.getElementById('ventasPie').getContext('2d');
-                    new Chart(ctx2, { type: 'pie', data: { labels: labels, datasets: [{ data: values, backgroundColor: labels.map((l,i)=> 'hsl(' + (i*30 % 360) + ',70%,60%)') }] }, options: { responsive: true } });
-                } else {
-                    var vp = data.ventasPorProducto || [];
-                    if(vp && vp.length > 0){
-                        var labels2 = vp.map(x => x.nombre);
-                        var values2 = vp.map(x => x.cantidad);
-                        var ctx2 = document.getElementById('ventasPie').getContext('2d');
-                        new Chart(ctx2, { type: 'pie', data: { labels: labels2, datasets: [{ data: values2, backgroundColor: labels2.map((l,i)=> 'hsl(' + (i*30 % 360) + ',70%,60%)') }] }, options: { responsive: true } });
-                    }
-                }
-            })
-            .catch(err => { console.error('Dashboard fetch error:', err); });
-    })();
-</script>

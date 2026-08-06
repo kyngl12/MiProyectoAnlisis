@@ -2,52 +2,671 @@
     ViewBag.Title = "Reporte de Inventario";
 }
 
-<div class="container py-5">
-    <h2>Reporte de Inventario</h2>
-
-    @if (ViewBag.MensajeError != null)
-    {
-        <div class="alert alert-danger">@ViewBag.MensajeError</div>
+<style>
+    :root {
+        --inventory-report-blue-950: #06142f;
+        --inventory-report-blue-900: #0a1f46;
+        --inventory-report-blue-800: #10376b;
+        --inventory-report-blue-700: #185695;
+        --inventory-report-blue-600: #2878bd;
+        --inventory-report-blue-500: #4298d4;
+        --inventory-report-blue-400: #68a5d8;
+        --inventory-report-blue-300: #9acced;
+        --inventory-report-blue-200: #c9e5f6;
+        --inventory-report-blue-100: #e7f3fb;
+        --inventory-report-blue-50: #f5faff;
+        --inventory-report-white: #ffffff;
+        --inventory-report-text: #14263a;
+        --inventory-report-muted: #718397;
+        --inventory-report-border: #dce9f3;
+        --inventory-report-border-light: #eaf1f7;
+        --inventory-report-success: #2f855a;
+        --inventory-report-warning: #b7791f;
+        --inventory-report-danger: #c53030;
+        --inventory-report-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --inventory-report-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --inventory-report-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
     }
 
-    <div class="mb-3">
-        <a href="@Url.Action("Index", "Inventario")" class="btn btn-secondary">Volver al inventario</a>
+    .inventory-report-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
+
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
+
+    .inventory-report-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        border-radius: 24px;
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30% ), radial-gradient( circle at 15% 90%, rgba(40, 120, 189, .20), transparent 32% ), linear-gradient( 135deg, var(--inventory-report-blue-950), var(--inventory-report-blue-800) );
+        box-shadow: var(--inventory-report-shadow-lg);
+        overflow: hidden;
+    }
+
+        .inventory-report-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .inventory-report-hero::after {
+            content: "INVENTARIO";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .inventory-report-heading,
+    .inventory-report-hero-actions {
+        position: relative;
+        z-index: 2;
+    }
+
+    .inventory-report-heading {
+        max-width: 720px;
+    }
+
+    .inventory-report-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--inventory-report-blue-400);
+        color: var(--inventory-report-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .inventory-report-heading h1 {
+        margin: 0 0 13px;
+        color: var(--inventory-report-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .inventory-report-heading p {
+        max-width: 650px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       BOTÓN VOLVER
+       ===================================================== */
+
+    .inventory-report-back {
+        min-width: 190px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, .52);
+        border-radius: 999px;
+        color: var(--inventory-report-blue-950) !important;
+        background: var(--inventory-report-white);
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, .14);
+        transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+        .inventory-report-back:hover {
+            color: var(--inventory-report-white) !important;
+            background: var(--inventory-report-blue-500);
+            border-color: var(--inventory-report-blue-500);
+            box-shadow: 0 14px 32px rgba(40, 120, 189, .30);
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .inventory-report-alerts {
+        margin-top: 25px;
+    }
+
+        .inventory-report-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .inventory-report-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    /* =====================================================
+       RESUMEN
+       ===================================================== */
+
+    .inventory-report-summary {
+        margin-top: 25px;
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border: 1px solid var(--inventory-report-border);
+        border-radius: 17px;
+        background: linear-gradient( 180deg, var(--inventory-report-white), var(--inventory-report-blue-50) );
+        box-shadow: var(--inventory-report-shadow-sm);
+    }
+
+    .inventory-report-summary-title {
+        margin-bottom: 4px;
+        color: var(--inventory-report-blue-950);
+        font-size: .95rem;
+        font-weight: 800;
+    }
+
+    .inventory-report-summary-subtitle {
+        color: var(--inventory-report-muted);
+        font-size: .8rem;
+    }
+
+    .inventory-report-summary-data {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .inventory-report-summary-number {
+        min-width: 50px;
+        min-height: 42px;
+        padding: 9px 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--inventory-report-blue-200);
+        border-radius: 999px;
+        color: var(--inventory-report-blue-800);
+        background: var(--inventory-report-blue-100);
+        font-size: .9rem;
+        font-weight: 800;
+    }
+
+    .inventory-report-summary-label {
+        color: var(--inventory-report-muted);
+        font-size: .77rem;
+        font-weight: 600;
+    }
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    .inventory-report-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--inventory-report-border);
+        border-radius: 20px;
+        background: var(--inventory-report-white);
+        box-shadow: var(--inventory-report-shadow-md);
+        overflow: hidden;
+    }
+
+    .inventory-report-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--inventory-report-border-light);
+    }
+
+        .inventory-report-table-heading h2 {
+            margin: 0;
+            color: var(--inventory-report-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .inventory-report-table-heading span {
+            color: var(--inventory-report-muted);
+            font-size: .78rem;
+        }
+
+    .inventory-report-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .inventory-report-table {
+        width: 100%;
+        min-width: 1120px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--inventory-report-text);
+    }
+
+        .inventory-report-table thead th {
+            padding: 15px 17px;
+            color: var(--inventory-report-blue-800);
+            background: var(--inventory-report-blue-50);
+            border-bottom: 1px solid var(--inventory-report-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .inventory-report-table tbody td {
+            padding: 17px;
+            border-bottom: 1px solid var(--inventory-report-border-light);
+            font-size: .84rem;
+            vertical-align: middle;
+        }
+
+        .inventory-report-table tbody tr {
+            transition: background-color .15s ease;
+        }
+
+            .inventory-report-table tbody tr:hover {
+                background: #f9fcff;
+            }
+
+            .inventory-report-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+    /* =====================================================
+       CELDAS
+       ===================================================== */
+
+    .inventory-report-code {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 11px;
+        border: 1px solid var(--inventory-report-blue-100);
+        border-radius: 999px;
+        color: var(--inventory-report-blue-700);
+        background: var(--inventory-report-blue-50);
+        font-size: .74rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .inventory-report-product {
+        color: var(--inventory-report-blue-950);
+        font-weight: 800;
+    }
+
+    .inventory-report-category {
+        color: var(--inventory-report-muted);
+        font-weight: 600;
+    }
+
+    .inventory-report-stock {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 32px;
+        padding: 6px 10px;
+        border: 1px solid var(--inventory-report-blue-200);
+        border-radius: 9px;
+        color: var(--inventory-report-blue-800);
+        background: var(--inventory-report-blue-50);
+        font-size: .78rem;
+        font-weight: 800;
+    }
+
+    .inventory-report-price {
+        color: var(--inventory-report-blue-900);
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       ESTADOS
+       ===================================================== */
+
+    .inventory-report-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: .73rem;
+        font-weight: 800;
+    }
+
+        .inventory-report-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .inventory-report-status.available {
+            color: #1f6942;
+            background: #effaf4;
+            border: 1px solid #bfe7cf;
+        }
+
+        .inventory-report-status.low-stock {
+            color: #73551c;
+            background: #fff9e9;
+            border: 1px solid #efd89a;
+        }
+
+        .inventory-report-status.unavailable {
+            color: #842029;
+            background: #fff2f3;
+            border: 1px solid #f3c5ca;
+        }
+
+    .inventory-report-empty {
+        padding: 60px 25px !important;
+        color: var(--inventory-report-muted);
+        font-size: .94rem !important;
+        text-align: center;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .inventory-report-hero {
+            min-height: 295px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .inventory-report-hero-actions,
+        .inventory-report-back {
+            width: 100%;
+        }
+
+        .inventory-report-summary {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .inventory-report-hero {
+            min-height: 330px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .inventory-report-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .inventory-report-table-section {
+            border-radius: 16px;
+        }
+
+        .inventory-report-table-heading {
+            padding: 18px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+@{
+    var lista =
+        System.Linq.Enumerable.Cast<
+            MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reportes.ReporteInventarioRowDto
+        >(
+            (System.Collections.IEnumerable)(
+                ViewBag.Inventario
+                ?? new System.Collections.Generic.List<
+                    MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reportes.ReporteInventarioRowDto
+                >()
+            )
+        );
+}
+
+<div class="inventory-report-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="inventory-report-hero">
+
+        <div class="inventory-report-heading">
+
+            <span class="inventory-report-eyebrow">
+                Análisis administrativo
+            </span>
+
+            <h1>
+                Reporte de inventario
+            </h1>
+
+            <p>
+                Consulta el estado actual del inventario, sus niveles
+                mínimos, máximos y disponibilidad.
+            </p>
+
+        </div>
+
+        <div class="inventory-report-hero-actions">
+
+            <a href="@Url.Action("Index", "Inventario")"
+               class="inventory-report-back">
+                Volver al inventario
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="inventory-report-alerts">
+
+        @if (ViewBag.MensajeError != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.MensajeError
+            </div>
+        }
+
     </div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Producto</th>
-                    <th>Categoría</th>
-                    <th>Stock actual</th>
-                    <th>Stock mínimo</th>
-                    <th>Stock máximo</th>
-                    <th>Precio</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    var lista = System.Linq.Enumerable.Cast<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reportes.ReporteInventarioRowDto>(
-                        (System.Collections.IEnumerable)(ViewBag.Inventario ?? new System.Collections.Generic.List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reportes.ReporteInventarioRowDto>()));
-                }
-                @foreach (var item in lista)
-                {
-                    var estado = item?.EstadoInventario ?? "Disponible";
-                    var badgeClass = estado == "Disponible" ? "badge bg-success" : (estado == "Stock Bajo" ? "badge bg-warning text-dark" : "badge bg-danger");
+
+    <!-- =====================================================
+         RESUMEN
+         ===================================================== -->
+    <section class="inventory-report-summary">
+
+        <div>
+
+            <div class="inventory-report-summary-title">
+                Productos del inventario
+            </div>
+
+            <div class="inventory-report-summary-subtitle">
+                Existencias, precios y estado actual.
+            </div>
+
+        </div>
+
+        <div class="inventory-report-summary-data">
+
+            <span class="inventory-report-summary-number">
+                @lista.Count()
+            </span>
+
+            <span class="inventory-report-summary-label">
+                productos encontrados
+            </span>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+    <section class="inventory-report-table-section">
+
+        <div class="inventory-report-table-heading">
+
+            <h2>
+                Detalle del inventario
+            </h2>
+
+            <span>
+                Control de existencias y disponibilidad
+            </span>
+
+        </div>
+
+        <div class="inventory-report-table-scroll">
+
+            <table class="inventory-report-table">
+
+                <thead>
                     <tr>
-                        <td>@(item?.Codigo?.ToString() ?? "-")</td>
-                        <td>@(item?.Producto ?? "-")</td>
-                        <td>@(item?.Categoria?.ToString() ?? "-")</td>
-                        <td>@(item?.StockActual?.ToString() ?? "0")</td>
-                        <td>@(item?.StockMinimo?.ToString() ?? "0")</td>
-                        <td>@(item?.StockMaximo?.ToString() ?? "0")</td>
-                        <td>@String.Format("{0:C}", item?.Precio ?? 0m)</td>
-                        <td><span class="@badgeClass">@estado</span></td>
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Stock actual</th>
+                        <th>Stock mínimo</th>
+                        <th>Stock máximo</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+
+                <tbody>
+
+                    @if (lista.Any())
+                    {
+                        foreach (var item in lista)
+                        {
+                            var estado =
+                                item?.EstadoInventario
+                                ?? "Disponible";
+
+                            var statusClass =
+                                estado == "Disponible"
+                                    ? "available"
+                                    : (
+                                        estado == "Stock Bajo"
+                                            ? "low-stock"
+                                            : "unavailable"
+                                    );
+
+                            <tr>
+
+                                <td>
+                                    <span class="inventory-report-code">
+                                        @(item?.Codigo?.ToString() ?? "-")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-report-product">
+                                        @(item?.Producto ?? "-")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-report-category">
+                                        @(item?.Categoria?.ToString() ?? "-")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-report-stock">
+                                        @(item?.StockActual?.ToString() ?? "0")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-report-stock">
+                                        @(item?.StockMinimo?.ToString() ?? "0")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-report-stock">
+                                        @(item?.StockMaximo?.ToString() ?? "0")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-report-price">
+                                        @String.Format(
+                                            "{0:C}",
+                                            item?.Precio ?? 0m
+                                        )
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="inventory-report-status @statusClass">
+                                        @estado
+                                    </span>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="8"
+                                class="inventory-report-empty">
+                                No hay productos disponibles para mostrar.
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>
