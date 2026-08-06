@@ -1,0 +1,88 @@
+@{
+    ViewBag.Title = "Dashboard de Reportes";
+}
+
+<div class="container py-5">
+    <h2>Dashboard de Ventas</h2>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="border rounded p-3 h-100">
+                <small class="text-muted">Total vendido hoy</small>
+                <h3 id="totalHoy">-</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="border rounded p-3 h-100">
+                <small class="text-muted">Total vendido este mes</small>
+                <h3 id="totalMes">-</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="border rounded p-3 h-100">
+                <small class="text-muted">Producto más vendido</small>
+                <h5 id="productoTop">-</h5>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="border rounded p-3 h-100">
+                <small class="text-muted">Método de pago más usado</small>
+                <h5 id="metodoTop">-</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-8">
+            <canvas id="ventasLine" height="150"></canvas>
+        </div>
+        <div class="col-md-4">
+            <canvas id="ventasPie" height="150"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    (function(){
+        fetch('@Url.Action("DashboardData","ReporteApi")', { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(data => {
+                if(data.error){ console.error(data.error); return; }
+
+                var totalHoy = data.totalToday || 0;
+                var totalMes = data.totalMonth || 0;
+
+                document.getElementById('totalHoy').textContent = new Intl.NumberFormat('es-CR', {style:'currency', currency:'CRC'}).format(totalHoy);
+                document.getElementById('totalMes').textContent = new Intl.NumberFormat('es-CR', {style:'currency', currency:'CRC'}).format(totalMes);
+                document.getElementById('productoTop').textContent = data.prodMasVendido || '-';
+                document.getElementById('metodoTop').textContent = data.metodoMasUsado || '-';
+
+                var ventasPorDia = data.ventasPorDia || [];
+                var labels = ventasPorDia.map(v => v.fecha);
+                var values = ventasPorDia.map(v => v.total);
+
+                if(labels && labels.length > 0){
+                    var ctx = document.getElementById('ventasLine').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: { labels: labels, datasets: [{ label: 'Ventas', data: values, borderColor: '#1f6f8b', fill: false }] },
+                        options: { responsive: true }
+                    });
+
+                    var ctx2 = document.getElementById('ventasPie').getContext('2d');
+                    new Chart(ctx2, { type: 'pie', data: { labels: labels, datasets: [{ data: values, backgroundColor: labels.map((l,i)=> 'hsl(' + (i*30 % 360) + ',70%,60%)') }] }, options: { responsive: true } });
+                } else {
+                    var vp = data.ventasPorProducto || [];
+                    if(vp && vp.length > 0){
+                        var labels2 = vp.map(x => x.nombre);
+                        var values2 = vp.map(x => x.cantidad);
+                        var ctx2 = document.getElementById('ventasPie').getContext('2d');
+                        new Chart(ctx2, { type: 'pie', data: { labels: labels2, datasets: [{ data: values2, backgroundColor: labels2.map((l,i)=> 'hsl(' + (i*30 % 360) + ',70%,60%)') }] }, options: { responsive: true } });
+                    }
+                }
+            })
+            .catch(err => { console.error('Dashboard fetch error:', err); });
+    })();
+</script>

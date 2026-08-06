@@ -164,9 +164,16 @@
     <Compile Include="Modelos\Productos\ProductoDto.cs" />
     <Compile Include="Modelos\Promocion\PromocionDto.cs" />
     <Compile Include="Modelos\ReportesMensuales\ReportesMensualesDto.cs" />
+    <Compile Include="Modelos\Reportes\CategoriaDto.cs" />
     <Compile Include="Modelos\Reportes\DetalleVentaReporteDto.cs" />
+    <Compile Include="Modelos\Reportes\EstadoDto.cs" />
+    <Compile Include="Modelos\Reportes\FacturaRowDto.cs" />
     <Compile Include="Modelos\Reportes\MetodoPagoReporteDto.cs" />
+    <Compile Include="Modelos\Reportes\ReporteExportRowDto.cs" />
+    <Compile Include="Modelos\Reportes\ReporteInventarioRowDto.cs" />
     <Compile Include="Modelos\Reportes\ReporteVentasDto.cs" />
+    <Compile Include="Modelos\Reportes\TipoPagoDto.cs" />
+    <Compile Include="Modelos\Reportes\VentaProductoDto.cs" />
     <Compile Include="Modelos\Reservacion\ReservacionDto.cs" />
     <Compile Include="Modelos\Reservacion\ReservacionesRequestDto.cs" />
     <Compile Include="Modelos\SINPESApi\RespuestaAPIDto.cs" />

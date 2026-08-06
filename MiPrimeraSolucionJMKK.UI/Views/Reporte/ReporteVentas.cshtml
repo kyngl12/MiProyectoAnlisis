@@ -20,6 +20,20 @@
                     Consulte las ventas realizadas en un período determinado.
                 </p>
             </div>
+
+            <script>
+                // Actualizar inputs de exportación antes de enviar
+                (function(){
+                    var formX = document.getElementById('formExportExcel');
+                    var formP = document.getElementById('formExportPdf');
+                    var fInicio = document.getElementById('fechaInicio');
+                    var fFin = document.getElementById('fechaFin');
+                    if (formX && formP && fInicio && fFin) {
+                        formX.addEventListener('submit', function(){ document.getElementById('expFechaInicio').value = fInicio.value; document.getElementById('expFechaFin').value = fFin.value; });
+                        formP.addEventListener('submit', function(){ document.getElementById('expPdfFechaInicio').value = fInicio.value; document.getElementById('expPdfFechaFin').value = fFin.value; });
+                    }
+                })();
+            </script>
         </div>
 
         @using (Html.BeginForm(
@@ -152,6 +166,33 @@
 
             </div>
 
+            <div class="mb-3 d-flex gap-2">
+                @* Formas de exportación *@
+                @using (Html.BeginForm("ExportarExcel", "Reporte", FormMethod.Post, new { id = "formExportExcel" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="fechaInicio" id="expFechaInicio" value="@Model.FechaInicio.ToString("yyyy-MM-dd")" />
+                    <input type="hidden" name="fechaFin" id="expFechaFin" value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
+                    <input type="hidden" name="idCategoria" id="expIdCategoria" value="" />
+                    <input type="hidden" name="idTipoPago" id="expIdTipoPago" value="" />
+                    <input type="hidden" name="idCliente" id="expIdCliente" value="" />
+                    <input type="hidden" name="idEstado" id="expIdEstado" value="" />
+                    <button type="submit" class="btn btn-outline-success">Exportar Excel</button>
+                }
+
+                @using (Html.BeginForm("ExportarPdf", "Reporte", FormMethod.Post, new { id = "formExportPdf" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="fechaInicio" id="expPdfFechaInicio" value="@Model.FechaInicio.ToString("yyyy-MM-dd")" />
+                    <input type="hidden" name="fechaFin" id="expPdfFechaFin" value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
+                    <input type="hidden" name="idCategoria" id="expPdfIdCategoria" value="" />
+                    <input type="hidden" name="idTipoPago" id="expPdfIdTipoPago" value="" />
+                    <input type="hidden" name="idCliente" id="expPdfIdCliente" value="" />
+                    <input type="hidden" name="idEstado" id="expPdfIdEstado" value="" />
+                    <button type="submit" class="btn btn-outline-danger">Exportar PDF</button>
+                }
+            </div>
+
             <h4 class="mb-3">
                 Métodos de pago utilizados
             </h4>
@@ -207,66 +248,6 @@
 
             </div>
 
-            <h4 class="mb-3">
-                Detalle de ventas
-            </h4>
-
-            <div class="table-responsive">
-
-                <table class="table table-hover table-bordered">
-
-                    <thead style="background-color:#1f6f8b; color:white;">
-                        <tr>
-                            <th>ID Venta</th>
-                            <th>Fecha</th>
-                            <th>Número de factura</th>
-                            <th>Método de pago</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        @foreach (var venta in Model.Ventas)
-                        {
-                            <tr>
-                                <td>@venta.IdVenta</td>
-
-                                <td>
-                                    @venta.FechaVenta.ToString("dd/MM/yyyy")
-                                </td>
-
-                                <td>@venta.NumeroFactura</td>
-
-                                <td>@venta.MetodoPago</td>
-
-                                <td>
-                                    @venta.TotalVenta.ToString("C", cultura)
-                                </td>
-                            </tr>
-                        }
-
-                    </tbody>
-
-                    <tfoot>
-                        <tr class="fw-bold">
-                            <td colspan="4"
-                                class="text-end">
-                                Total recaudado:
-                            </td>
-
-                            <td>
-                                @Model.MontoFinalRecaudado.ToString(
-                                    "C",
-                                    cultura
-                                )
-                            </td>
-                        </tr>
-                    </tfoot>
-
-                </table>
-
-            </div>
         }
 
     </div>

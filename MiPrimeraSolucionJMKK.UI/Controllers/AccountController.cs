@@ -65,11 +65,32 @@ namespace MiPrimeraSolucion.UI.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
                 return View(model);
+            // Intentar autenticación con ASP.NET Identity (users creados desde la UI)
+            var signInResult = await SignInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, shouldLockout: false);
 
+            if (signInResult == SignInStatus.Success)
+            {
+                var appUser = await UserManager.FindByEmailAsync(model.Email);
+                if (appUser != null)
+                {
+                    var roles = await UserManager.GetRolesAsync(appUser.Id);
+                    var rol = roles != null && roles.Count > 0 ? roles[0] : "Sin rol";
+
+                    Session["Cedula"] = appUser.Id; // no hay CEDULA en Identity; usar Id
+                    Session["Nombre"] = appUser.UserName;
+                    Session["Correo"] = appUser.Email;
+                    Session["Rol"] = rol;
+
+                    TempData["MensajeExito"] = "El inicio de sesión fue exitoso";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            // Fallback: compatibilidad con usuarios almacenados en tabla PUBROCK_USUARIO_TB (legacy)
             using (var db = new Contexto())
             {
                 // Buscar usuario sin filtrar por estado para distinguir inactivo de credenciales

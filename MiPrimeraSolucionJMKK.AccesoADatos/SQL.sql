@@ -17,6 +17,49 @@ BEGIN
 END;
 GO
 
+-- =====================================================================
+-- PROCEDIMIENTO: REPORTE DE INVENTARIO
+-- Devuelve estado actual del inventario con indicadores
+-- =====================================================================
+IF OBJECT_ID('SP_PUBROCK_REPORTE_INVENTARIO', 'P') IS NOT NULL
+    DROP PROCEDURE SP_PUBROCK_REPORTE_INVENTARIO;
+GO
+
+CREATE PROCEDURE SP_PUBROCK_REPORTE_INVENTARIO
+    @IdCategoria INT = NULL,
+    @IdProveedor INT = NULL,
+    @IdEstado INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        p.ID_PRODUCTO AS Codigo,
+        p.NOMBRE_PRODUCTO AS Producto,
+        p.ID_CATEGORIA_PRODUCTO AS Categoria,
+        i.STOCK_ACTUAL AS StockActual,
+        i.STOCK_MINIMO AS StockMinimo,
+        i.STOCK_MAXIMO AS StockMaximo,
+        ISNULL(p.PRECIO_VENTA, 0) AS Precio,
+        CASE
+            WHEN i.STOCK_ACTUAL <= 0 THEN 'Sin Existencias'
+            WHEN i.STOCK_ACTUAL <= i.STOCK_MINIMO THEN 'Stock Bajo'
+            ELSE 'Disponible'
+        END AS EstadoInventario
+    FROM PUBROCK_PRODUCTO_TB p
+    LEFT JOIN PUBROCK_INVENTARIO_TB i ON p.ID_PRODUCTO = i.ID_PRODUCTO
+    WHERE (@IdCategoria IS NULL OR p.ID_CATEGORIA_PRODUCTO = @IdCategoria)
+      AND (@IdProveedor IS NULL OR p.ID_PROVEEDOR = @IdProveedor)
+      AND (@IdEstado IS NULL OR (
+            CASE
+                WHEN i.STOCK_ACTUAL <= 0 THEN 3
+                WHEN i.STOCK_ACTUAL <= i.STOCK_MINIMO THEN 2
+                ELSE 1
+            END) = @IdEstado)
+    ORDER BY p.NOMBRE_PRODUCTO;
+END
+GO
+
 CREATE DATABASE PUBROCK_CR;
 GO
 
@@ -1469,3 +1512,60 @@ SELECT
 FROM PUBROCK_TIPO_MOVIMIENTO_FINANCIERO_TB
 WHERE DESCRIPCION IN ('Egreso', 'Ingreso')
 ORDER BY DESCRIPCION;
+GO
+
+-- =====================================================================
+-- PROCEDIMIENTO: REPORTE DE VENTAS
+-- Devuelve facturas/ventas con totales, impuestos y datos relacionados.
+-- Parámetros opcionales para filtrar por fecha, categoría, tipo de pago, cliente o estado.
+-- =====================================================================
+CREATE PROCEDURE SP_PUBROCK_REPORTE_VENTAS
+    @FechaInicio    DATE = NULL,
+    @FechaFin       DATE = NULL,
+    @IdCategoria    INT  = NULL,
+    @IdTipoPago     INT  = NULL,
+    @IdCliente      INT  = NULL,
+    @IdEstado       INT  = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        f.NUMERO_FACTURA      AS NumeroFactura,
+        f.FECHA_FACTURA       AS Fecha,
+        ISNULL(u.NOMBRE + ' ' + u.APELLIDO_PATERNO, '') AS Cliente,
+        ISNULL(usr.NOMBRE + ' ' + usr.APELLIDO_PATERNO, '') AS Usuario,
+        tp.DESCRIPCION        AS MetodoPago,
+        SUM(dv.SUBTOTAL)     AS Subtotal,
+        ISNULL((SELECT SUM(vim.MONTO_IMPUESTO) FROM PUBROCK_VENTA_IMPUESTO_TB vim WHERE vim.ID_VENTA = v.ID_VENTA AND vim.ID_ESTADO = 1), 0) AS IVA,
+        0.00                 AS Descuento,
+        f.MONTO_TOTAL        AS Total,
+        est.DESCRIPCION      AS Estado
+    FROM PUBROCK_FACTURA_TB f
+    INNER JOIN PUBROCK_VENTA_TB v ON f.ID_VENTA = v.ID_VENTA
+    LEFT JOIN PUBROCK_DETALLE_VENTA_TB dv ON dv.ID_VENTA = v.ID_VENTA AND dv.ID_ESTADO = 1
+    LEFT JOIN PUBROCK_TIPO_PAGO_TB tp ON f.ID_TIPO_PAGO = tp.ID_TIPO_PAGO
+    LEFT JOIN PUBROCK_CLIENTE_TB c ON v.ID_CLIENTE = c.ID_CLIENTE
+    LEFT JOIN PUBROCK_USUARIO_TB u ON c.CEDULA = u.CEDULA
+    LEFT JOIN PUBROCK_EMPLEADO_TB e ON v.ID_EMPLEADO = e.ID_EMPLEADO
+    LEFT JOIN PUBROCK_USUARIO_TB usr ON e.CEDULA = usr.CEDULA
+    LEFT JOIN PUBROCK_ESTADO_TB est ON v.ID_ESTADO = est.ID_ESTADO
+    LEFT JOIN PUBROCK_PRODUCTO_TB p ON dv.ID_PRODUCTO = p.ID_PRODUCTO
+    WHERE (@FechaInicio IS NULL OR f.FECHA_FACTURA >= @FechaInicio)
+      AND (@FechaFin IS NULL OR f.FECHA_FACTURA <= @FechaFin)
+      AND (@IdCategoria IS NULL OR p.ID_CATEGORIA_PRODUCTO = @IdCategoria)
+      AND (@IdTipoPago IS NULL OR f.ID_TIPO_PAGO = @IdTipoPago)
+      AND (@IdCliente IS NULL OR v.ID_CLIENTE = @IdCliente)
+      AND (@IdEstado IS NULL OR v.ID_ESTADO = @IdEstado)
+    GROUP BY
+        f.NUMERO_FACTURA,
+        f.FECHA_FACTURA,
+        u.NOMBRE, u.APELLIDO_PATERNO,
+        usr.NOMBRE, usr.APELLIDO_PATERNO,
+        tp.DESCRIPCION,
+        f.MONTO_TOTAL,
+        est.DESCRIPCION,
+        v.ID_VENTA
+    ORDER BY f.FECHA_FACTURA DESC;
+END
+GO

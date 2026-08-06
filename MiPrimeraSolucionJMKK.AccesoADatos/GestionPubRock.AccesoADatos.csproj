@@ -158,7 +158,6 @@
     <None Include="App.config" />
     <None Include="CHECKLIST.md" />
     <None Include="packages.config" />
-    <None Include="SOLUCION_BALANCE_DECIMAL_NULL.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MiPrimeraSolucionJMKK.Abstracciones\GestionPubRock.Abstracciones.csproj">

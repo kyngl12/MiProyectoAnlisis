@@ -3,6 +3,7 @@ using MiPrimeraSolucionJMKK.LogicaDeNegocio.Inventario;
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace MiPrimeraSolucionJMKK.UI.Controllers
 {
@@ -39,6 +40,32 @@ namespace MiPrimeraSolucionJMKK.UI.Controllers
             }
 
             return View(lista);
+        }
+
+        // GET: Inventario/ReporteInventario
+        public ActionResult ReporteInventario(int? idCategoria, int? idProveedor, int? idEstado)
+        {
+            try
+            {
+                using (var ctx = new GestionPubRock.AccesoADatos.Contexto())
+                {
+                    var p1 = new System.Data.SqlClient.SqlParameter("@IdCategoria", (object)idCategoria ?? DBNull.Value);
+                    var p2 = new System.Data.SqlClient.SqlParameter("@IdProveedor", (object)idProveedor ?? DBNull.Value);
+                    var p3 = new System.Data.SqlClient.SqlParameter("@IdEstado", (object)idEstado ?? DBNull.Value);
+
+                    var sql = "EXEC SP_PUBROCK_REPORTE_INVENTARIO @IdCategoria, @IdProveedor, @IdEstado";
+                    var rows = ctx.Database.SqlQuery<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reportes.ReporteInventarioRowDto>(sql, p1, p2, p3).ToList();
+
+                    ViewBag.Inventario = rows ?? new List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reportes.ReporteInventarioRowDto>();
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.MensajeError = ex.Message;
+                ViewBag.Inventario = new List<object>();
+                return View();
+            }
         }
 
         [HttpPost]

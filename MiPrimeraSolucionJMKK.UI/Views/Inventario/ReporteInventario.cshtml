@@ -1,0 +1,53 @@
+@{
+    ViewBag.Title = "Reporte de Inventario";
+}
+
+<div class="container py-5">
+    <h2>Reporte de Inventario</h2>
+
+    @if (ViewBag.MensajeError != null)
+    {
+        <div class="alert alert-danger">@ViewBag.MensajeError</div>
+    }
+
+    <div class="mb-3">
+        <a href="@Url.Action("Index", "Inventario")" class="btn btn-secondary">Volver al inventario</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Stock actual</th>
+                    <th>Stock mínimo</th>
+                    <th>Stock máximo</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var lista = System.Linq.Enumerable.Cast<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reportes.ReporteInventarioRowDto>(
+                        (System.Collections.IEnumerable)(ViewBag.Inventario ?? new System.Collections.Generic.List<MiPrimeraSolucionJMKK.Abstracciones.Modelos.Reportes.ReporteInventarioRowDto>()));
+                }
+                @foreach (var item in lista)
+                {
+                    var estado = item?.EstadoInventario ?? "Disponible";
+                    var badgeClass = estado == "Disponible" ? "badge bg-success" : (estado == "Stock Bajo" ? "badge bg-warning text-dark" : "badge bg-danger");
+                    <tr>
+                        <td>@(item?.Codigo?.ToString() ?? "-")</td>
+                        <td>@(item?.Producto ?? "-")</td>
+                        <td>@(item?.Categoria?.ToString() ?? "-")</td>
+                        <td>@(item?.StockActual?.ToString() ?? "0")</td>
+                        <td>@(item?.StockMinimo?.ToString() ?? "0")</td>
+                        <td>@(item?.StockMaximo?.ToString() ?? "0")</td>
+                        <td>@String.Format("{0:C}", item?.Precio ?? 0m)</td>
+                        <td><span class="@badgeClass">@estado</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
