@@ -83,6 +83,7 @@
     <Compile Include="Entidades\CajasEntidad.cs" />
     <Compile Include="Entidades\ComerciosEntidad.cs" />
     <Compile Include="Entidades\ConfiguracionComercioEntidad.cs" />
+    <Compile Include="Entidades\FacturaEntidad.cs" />
     <Compile Include="Entidades\MarketingEntidad.cs" />
     <Compile Include="Entidades\ProductosEntidad.cs" />
     <Compile Include="Entidades\PromocionEntidad.cs" />
@@ -96,8 +97,10 @@
     <Compile Include="Entidades\ReportesMensualesEntidad.cs" />
     <Compile Include="Entidades\ReservacionEntidad.cs" />
     <Compile Include="Entidades\SINPESEntidad.cs" />
+    <Compile Include="Entidades\TipoPagoEntidad.cs" />
     <Compile Include="Entidades\TipoUsuarioEntidad.cs" />
     <Compile Include="Entidades\UsuariosEntidad.cs" />
+    <Compile Include="Entidades\VentaEntidad.cs" />
     <Compile Include="Inventario\EditarProductoAD.cs" />
     <Compile Include="Inventario\EliminarProducto.cs" />
     <Compile Include="Inventario\MovimientoInventarioAD.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="ReportesMensuales\ConsultarReporteMensual\ConsultarReporteMensualAD.cs" />
     <Compile Include="ReportesMensuales\GenerarReporteMensual\GenerarReportesMensualesAD.cs" />
     <Compile Include="ReportesMensuales\ObtenerTodosLosReportesMensuales\ObtenerTodosLosReportesMensualesAD.cs" />
+    <Compile Include="Reportes\ReporteVentasAD.cs" />
     <Compile Include="Reservaciones\CancelarReservacionAD.cs" />
     <Compile Include="Reservaciones\ObtenerReservacionesAD.cs" />
     <Compile Include="Reservaciones\RegistrarReservacionAD.cs" />

@@ -39,7 +39,9 @@ namespace GestionPubRock.AccesoADatos
         public DbSet<ImpuestoEntidad> Impuestos { get; set; }
         public DbSet<CuentaPorPagarEntidad> CuentasPorPagar { get; set; }
         public DbSet<BitacoraContableEntidad> BitacoraContable { get; set; }
-
+        public DbSet<VentaEntidad> Ventas { get; set; }
+        public DbSet<FacturaEntidad> Facturas { get; set; }
+        public DbSet<TipoPagoEntidad> TiposPago { get; set; }
 
 
     }

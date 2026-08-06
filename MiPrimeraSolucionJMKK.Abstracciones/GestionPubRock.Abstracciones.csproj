@@ -86,6 +86,7 @@
     <Compile Include="AccesoADatos\ReportesMensuales\ConsultaReporteMensual\IConsultarReporteMensualAD.cs" />
     <Compile Include="AccesoADatos\ReportesMensuales\GenerarReporteMensual\IGenerarReportesMensualesAD.cs" />
     <Compile Include="AccesoADatos\ReportesMensuales\ObtenerTodosLosReportesMensuales\IObtenerTodosLosReportesMensualesAD.cs" />
+    <Compile Include="AccesoADatos\Reportes\IReporteVentasAD.cs" />
     <Compile Include="AccesoADatos\SINPESApi\ISINPESApiAD.cs" />
     <Compile Include="AccesoADatos\SINPES\RegistrarSINPES\IRegistrarSINPESAD.cs" />
     <Compile Include="AccesoADatos\SINPES\ValidacionCajaTelefonoSINPES\IValidacionCajaTelefonoSINPESAD.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="LogicaDeNegocio\Promocion\IRegistrarPromocionLN.cs" />
     <Compile Include="LogicaDeNegocio\ReportesMensuales\GenerarReporteMensual\IGenerarReportesMensualesLN.cs" />
     <Compile Include="LogicaDeNegocio\ReportesMensuales\ObtenerTodosLosReportesMensuales\IObtenerTodosLosReportesMensualesLN.cs" />
+    <Compile Include="LogicaDeNegocio\Reportes\IReporteVentasLN.cs" />
     <Compile Include="LogicaDeNegocio\SINPESApi\ISINPESApiLN.cs" />
     <Compile Include="LogicaDeNegocio\SINPES\RegistrarSINPES\IRegistrarSINPESLN.cs" />
     <Compile Include="LogicaDeNegocio\Usuarios\EditarUsuario\IEditarUsuarioLN.cs" />
@@ -162,6 +164,9 @@
     <Compile Include="Modelos\Productos\ProductoDto.cs" />
     <Compile Include="Modelos\Promocion\PromocionDto.cs" />
     <Compile Include="Modelos\ReportesMensuales\ReportesMensualesDto.cs" />
+    <Compile Include="Modelos\Reportes\DetalleVentaReporteDto.cs" />
+    <Compile Include="Modelos\Reportes\MetodoPagoReporteDto.cs" />
+    <Compile Include="Modelos\Reportes\ReporteVentasDto.cs" />
     <Compile Include="Modelos\Reservacion\ReservacionDto.cs" />
     <Compile Include="Modelos\Reservacion\ReservacionesRequestDto.cs" />
     <Compile Include="Modelos\SINPESApi\RespuestaAPIDto.cs" />
