@@ -1,62 +1,512 @@
 <!-- Plantilla de Factura Profesional (Solo HTML, sin modelo Razor) -->
 <!-- Sera renderizada con datos dinamicos desde JavaScript -->
 
+<style>
+    :root {
+        --invoice-blue-950: #06142f;
+        --invoice-blue-900: #0a1f46;
+        --invoice-blue-800: #10376b;
+        --invoice-blue-700: #185695;
+        --invoice-blue-600: #2878bd;
+        --invoice-blue-500: #4298d4;
+        --invoice-blue-400: #68a5d8;
+        --invoice-blue-300: #9acced;
+        --invoice-blue-200: #c9e5f6;
+        --invoice-blue-100: #e7f3fb;
+        --invoice-blue-50: #f5faff;
+        --invoice-white: #ffffff;
+        --invoice-text: #14263a;
+        --invoice-muted: #718397;
+        --invoice-border: #dce9f3;
+        --invoice-border-light: #eaf1f7;
+        --invoice-shadow-sm: 0 8px 24px rgba(6, 20, 47, .08);
+        --invoice-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --invoice-shadow-lg: 0 30px 70px rgba(6, 20, 47, .18);
+    }
+
+    .factura-page {
+        position: relative;
+        width: 100%;
+        max-width: 820px;
+        min-height: 1040px;
+        margin: 0 auto;
+        padding: 38px;
+        color: var(--invoice-text);
+        background: radial-gradient( circle at 100% 0, rgba(104, 165, 216, .10), transparent 25% ), linear-gradient( 180deg, var(--invoice-white), #fbfdff );
+        border: 1px solid var(--invoice-border);
+        border-radius: 22px;
+        box-shadow: var(--invoice-shadow-lg);
+        overflow: hidden;
+    }
+
+        .factura-page::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            right: -130px;
+            top: -130px;
+            border: 42px solid rgba(40, 120, 189, .045);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .factura-page::after {
+            content: "PUBROCK";
+            position: absolute;
+            right: 22px;
+            bottom: 20px;
+            color: rgba(6, 20, 47, .025);
+            font-size: 4.6rem;
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    /* =====================================================
+       ENCABEZADO
+       ===================================================== */
+
+    .factura-header {
+        position: relative;
+        z-index: 2;
+        padding: 24px 26px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border-radius: 18px;
+        color: var(--invoice-white);
+        background: radial-gradient( circle at 85% 20%, rgba(104, 165, 216, .26), transparent 30% ), linear-gradient( 135deg, var(--invoice-blue-950), var(--invoice-blue-800) );
+        box-shadow: var(--invoice-shadow-md);
+    }
+
+    .factura-logo-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .factura-logo {
+        width: 54px;
+        height: 54px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, .22);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, .10);
+        font-size: 1.7rem;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+    }
+
+    .factura-empresa h1 {
+        margin: 0 0 4px;
+        color: var(--invoice-white) !important;
+        font-size: 1.55rem;
+        font-weight: 800;
+        letter-spacing: -.04em;
+    }
+
+    .factura-empresa p {
+        margin: 0;
+        color: rgba(255, 255, 255, .72);
+        font-size: .78rem;
+        font-weight: 500;
+    }
+
+    .factura-numero {
+        min-width: 210px;
+        padding: 13px 16px;
+        border: 1px solid rgba(255, 255, 255, .16);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, .08);
+        text-align: right;
+    }
+
+    .numero-label {
+        margin-bottom: 4px;
+        color: rgba(255, 255, 255, .66);
+        font-size: .66rem;
+        font-weight: 800;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+    }
+
+    .numero-valor {
+        color: var(--invoice-white);
+        font-size: .95rem;
+        font-weight: 800;
+        letter-spacing: .025em;
+    }
+
+    /* =====================================================
+       INFORMACIÓN
+       ===================================================== */
+
+    .factura-empresa-info,
+    .factura-fechas {
+        position: relative;
+        z-index: 2;
+        margin-top: 22px;
+        padding: 19px 21px;
+        display: grid;
+        gap: 14px;
+        border: 1px solid var(--invoice-border);
+        border-radius: 15px;
+        background: var(--invoice-white);
+        box-shadow: var(--invoice-shadow-sm);
+    }
+
+    .factura-empresa-info {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .factura-fechas {
+        grid-template-columns: repeat(3, 1fr);
+        background: linear-gradient( 180deg, var(--invoice-blue-50), var(--invoice-white) );
+    }
+
+    .info-item,
+    .fecha-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+        .info-item .label,
+        .fecha-item .label {
+            color: var(--invoice-muted);
+            font-size: .66rem;
+            font-weight: 800;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+        }
+
+        .info-item .value,
+        .fecha-item .value {
+            color: var(--invoice-blue-950);
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    .factura-detalle {
+        position: relative;
+        z-index: 2;
+        margin-top: 22px;
+        border: 1px solid var(--invoice-border);
+        border-radius: 16px;
+        background: var(--invoice-white);
+        box-shadow: var(--invoice-shadow-sm);
+        overflow: hidden;
+    }
+
+    .tabla-detalles {
+        width: 100%;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--invoice-text);
+    }
+
+        .tabla-detalles thead th {
+            padding: 14px 15px;
+            color: var(--invoice-blue-800);
+            background: var(--invoice-blue-50);
+            border-bottom: 1px solid var(--invoice-blue-200);
+            font-size: .67rem;
+            font-weight: 800;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .tabla-detalles tbody td {
+            padding: 14px 15px;
+            border-bottom: 1px solid var(--invoice-border-light);
+            font-size: .8rem;
+            vertical-align: middle;
+        }
+
+        .tabla-detalles tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .tabla-detalles tbody tr:nth-child(even) {
+            background: #fbfdff;
+        }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    /* =====================================================
+       TOTALES
+       ===================================================== */
+
+    .factura-totales {
+        position: relative;
+        z-index: 2;
+        margin-top: 22px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .totales-container {
+        width: min(360px, 100%);
+        padding: 20px;
+        border: 1px solid var(--invoice-border);
+        border-radius: 16px;
+        background: linear-gradient( 180deg, var(--invoice-white), var(--invoice-blue-50) );
+        box-shadow: var(--invoice-shadow-sm);
+    }
+
+    .total-item {
+        padding: 9px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--invoice-border-light);
+        color: var(--invoice-muted);
+        font-size: .82rem;
+        font-weight: 600;
+    }
+
+        .total-item:last-child {
+            border-bottom: 0;
+        }
+
+        .total-item .valor {
+            color: var(--invoice-blue-900);
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+    .total-final {
+        margin: 8px 0;
+        padding: 14px 15px;
+        border: 0;
+        border-radius: 12px;
+        color: var(--invoice-white);
+        background: linear-gradient( 135deg, var(--invoice-blue-700), var(--invoice-blue-900) );
+        font-size: .95rem;
+        font-weight: 800;
+        box-shadow: 0 9px 20px rgba(24, 86, 149, .18);
+    }
+
+        .total-final .valor {
+            color: var(--invoice-white);
+            font-size: 1.05rem;
+        }
+
+    /* =====================================================
+       PIE
+       ===================================================== */
+
+    .factura-footer {
+        position: relative;
+        z-index: 2;
+        margin-top: 28px;
+        padding-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        border-top: 1px solid var(--invoice-border);
+    }
+
+    .footer-text p {
+        margin: 0 0 4px;
+        color: var(--invoice-blue-950);
+        font-size: .9rem;
+        font-weight: 800;
+    }
+
+    .footer-text .footer-small {
+        color: var(--invoice-muted);
+        font-size: .72rem;
+        font-weight: 500;
+    }
+
+    .footer-qr {
+        width: 70px;
+        height: 70px;
+        border: 1px dashed var(--invoice-blue-300);
+        border-radius: 12px;
+        background: linear-gradient( 45deg, var(--invoice-blue-50) 25%, transparent 25% ), linear-gradient( -45deg, var(--invoice-blue-50) 25%, transparent 25% ), linear-gradient( 45deg, transparent 75%, var(--invoice-blue-50) 75% ), linear-gradient( -45deg, transparent 75%, var(--invoice-blue-50) 75% );
+        background-size: 12px 12px;
+        background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+        opacity: .72;
+    }
+
+    /* =====================================================
+       IMPRESIÓN / PDF
+       ===================================================== */
+
+    @@media print {
+        .factura-page {
+            max-width: none;
+            min-height: auto;
+            margin: 0;
+            padding: 24px;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+            .factura-page::before,
+            .factura-page::after {
+                display: none;
+            }
+    }
+
+    @@media (max-width: 700px) {
+        .factura-page {
+            min-height: auto;
+            padding: 22px;
+            border-radius: 16px;
+        }
+
+        .factura-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .factura-numero {
+            width: 100%;
+            min-width: 0;
+            text-align: left;
+        }
+
+        .factura-empresa-info,
+        .factura-fechas {
+            grid-template-columns: 1fr;
+        }
+
+        .factura-detalle {
+            overflow-x: auto;
+        }
+
+        .tabla-detalles {
+            min-width: 620px;
+        }
+
+        .factura-totales {
+            justify-content: stretch;
+        }
+
+        .totales-container {
+            width: 100%;
+        }
+
+        .factura-footer {
+            align-items: flex-start;
+        }
+    }
+</style>
+
 <div id="facturaTemplate" style="display: none;">
+
     <div class="factura-page">
+
         <!-- Encabezado -->
         <div class="factura-header">
+
             <div class="factura-logo-section">
-                <div class="factura-logo">🎸</div>
-                <div class="factura-empresa">
-                    <h1>PubRock CR</h1>
-                    <p>Gestion de Pub & Rock</p>
+
+                <div class="factura-logo">
+                    🎸
                 </div>
+
+                <div class="factura-empresa">
+
+                    <h1>
+                        PubRock CR
+                    </h1>
+
+                    <p>
+                        Gestion de Pub & Rock
+                    </p>
+
+                </div>
+
             </div>
+
             <div class="factura-numero">
-                <div class="numero-label">Factura No.</div>
-                <div class="numero-valor" id="facturaNumero">001-001-000000001</div>
+
+                <div class="numero-label">
+                    Factura No.
+                </div>
+
+                <div class="numero-valor"
+                     id="facturaNumero">
+                    001-001-000000001
+                </div>
+
             </div>
+
         </div>
 
         <!-- Datos de la empresa -->
         <div class="factura-empresa-info">
+
             <div class="info-item">
                 <span class="label">Empresa:</span>
                 <span class="value">Pub Rock CR</span>
             </div>
+
             <div class="info-item">
                 <span class="label">Telefono:</span>
                 <span class="value">(506) 2234-5678</span>
             </div>
+
             <div class="info-item">
                 <span class="label">Direccion:</span>
                 <span class="value">San Jose, Costa Rica</span>
             </div>
+
             <div class="info-item">
                 <span class="label">Email:</span>
                 <span class="value">ventas@pubrock.cr</span>
             </div>
+
         </div>
 
         <!-- Fechas -->
         <div class="factura-fechas">
+
             <div class="fecha-item">
                 <span class="label">Fecha de Factura:</span>
                 <span class="value" id="facturaFecha">01/01/2025</span>
             </div>
+
             <div class="fecha-item">
                 <span class="label">Hora:</span>
                 <span class="value" id="facturaHora">10:30 AM</span>
             </div>
+
             <div class="fecha-item">
                 <span class="label">Vendedor:</span>
                 <span class="value" id="facturaVendedor">-</span>
             </div>
+
         </div>
 
         <!-- Tabla de detalles -->
         <div class="factura-detalle">
+
             <table class="tabla-detalles">
+
                 <thead>
                     <tr>
                         <th>Descripcion</th>
@@ -65,43 +515,66 @@
                         <th class="text-right">Subtotal</th>
                     </tr>
                 </thead>
+
                 <tbody id="facturaDetalleBody">
                     <!-- Rellenado dinamicamente -->
                 </tbody>
+
             </table>
+
         </div>
 
         <!-- Totales -->
         <div class="factura-totales">
+
             <div class="totales-container">
+
                 <div class="total-item">
                     <span>Subtotal:</span>
                     <span class="valor" id="facturaSubtotal">₡ 0.00</span>
                 </div>
+
                 <div class="total-item">
                     <span>IVA (13%):</span>
                     <span class="valor" id="facturaIVA">₡ 0.00</span>
                 </div>
+
                 <div class="total-item total-final">
                     <span>TOTAL:</span>
                     <span class="valor" id="facturaTotal">₡ 0.00</span>
                 </div>
+
                 <div class="total-item">
                     <span>Metodo de Pago:</span>
                     <span class="valor" id="facturaMetodoPago">-</span>
                 </div>
+
             </div>
+
         </div>
 
         <!-- Pie de pagina -->
         <div class="factura-footer">
+
             <div class="footer-text">
-                <p>Gracias por su compra</p>
-                <p class="footer-small">Esta factura es valida como comprobante de compra.</p>
+
+                <p>
+                    Gracias por su compra
+                </p>
+
+                <p class="footer-small">
+                    Esta factura es valida como comprobante de compra.
+                </p>
+
             </div>
-            <div class="footer-qr" id="facturaQR">
+
+            <div class="footer-qr"
+                 id="facturaQR">
                 <!-- QR placeholder -->
             </div>
+
         </div>
+
     </div>
+
 </div>

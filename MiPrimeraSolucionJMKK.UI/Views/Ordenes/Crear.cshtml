@@ -4,49 +4,440 @@
     ViewBag.Title = "Crear Orden";
 }
 
-<div class="container py-3">
-    <div class="card-modern">
-        <h2>Crear Orden de Compra</h2>
+<style>
+    :root {
+        --order-blue-950: #06142f;
+        --order-blue-900: #0a1f46;
+        --order-blue-800: #10376b;
+        --order-blue-700: #185695;
+        --order-blue-600: #2878bd;
+        --order-blue-500: #4298d4;
+        --order-blue-400: #68a5d8;
+        --order-blue-300: #9acced;
+        --order-blue-200: #c9e5f6;
+        --order-blue-100: #e7f3fb;
+        --order-blue-50: #f5faff;
+        --order-white: #ffffff;
+        --order-text: #14263a;
+        --order-muted: #718397;
+        --order-border: #dce9f3;
+        --order-border-light: #eaf1f7;
+        --order-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --order-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --order-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-@if (TempData["MensajeError"] != null)
-{
-    <div class="alert alert-danger">@TempData["MensajeError"]</div>
-}
+    .order-form-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
-@using (Html.BeginForm("Crear", "Ordenes", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+    .order-form-hero {
+        position: relative;
+        min-height: 230px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        border-radius: 24px;
+        background: radial-gradient(circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30%), radial-gradient(circle at 15% 90%, rgba(40, 120, 189, .18), transparent 32%), linear-gradient(135deg, var(--order-blue-950), var(--order-blue-800));
+        box-shadow: var(--order-shadow-lg);
+        overflow: hidden;
+    }
 
-    @* NumeroOrden se genera/ignora en BD (autoincremental) *@
+        .order-form-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255,255,255,.035);
+            border-radius: 50%;
+        }
 
-    <div class="mb-3">
-        @Html.LabelFor(m => m.IdProducto, "Producto")
-        @Html.DropDownListFor(m => m.IdProducto, ViewBag.Productos as System.Web.Mvc.SelectList, "-- Seleccione --", new { @class = "form-control" })
+        .order-form-hero::after {
+            content: "ORDEN";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255,255,255,.035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .order-form-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 720px;
+    }
+
+    .order-form-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--order-blue-400);
+        color: var(--order-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .order-form-heading h1 {
+        margin: 0 0 13px;
+        color: var(--order-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.1rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .order-form-heading p {
+        margin: 0;
+        color: rgba(255,255,255,.74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .order-form-alerts {
+        margin-top: 24px;
+    }
+
+        .order-form-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6,20,47,.05);
+        }
+
+        .order-form-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    .order-form-shell {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr);
+        gap: 24px;
+    }
+
+    .order-form-panel {
+        padding: 32px;
+        border: 1px solid var(--order-border);
+        border-radius: 20px;
+        background: linear-gradient(180deg, var(--order-white), var(--order-blue-50));
+        box-shadow: var(--order-shadow-md);
+    }
+
+    .order-form-panel-header {
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--order-border-light);
+    }
+
+        .order-form-panel-header h2 {
+            margin: 0 0 7px;
+            color: var(--order-blue-950);
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .order-form-panel-header p {
+            margin: 0;
+            color: var(--order-muted);
+            font-size: .86rem;
+            line-height: 1.6;
+        }
+
+    .order-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .order-field {
+        margin-bottom: 18px;
+    }
+
+        .order-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .order-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--order-text);
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .order-field .form-control {
+            min-height: 50px;
+            padding: 12px 15px;
+            color: var(--order-text);
+            background: var(--order-white);
+            border: 1px solid var(--order-border);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(6,20,47,.04);
+        }
+
+        .order-field textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .order-field .form-control:hover {
+            border-color: var(--order-blue-300);
+        }
+
+        .order-field .form-control:focus {
+            border-color: var(--order-blue-500);
+            box-shadow: 0 0 0 4px rgba(66,152,212,.12);
+        }
+
+        .order-field .text-danger {
+            display: block;
+            margin-top: 6px;
+            font-size: .78rem;
+        }
+
+    .order-submit {
+        min-height: 52px;
+        padding: 13px 24px;
+        border: 1px solid var(--order-blue-600) !important;
+        border-radius: 10px !important;
+        color: var(--order-white) !important;
+        background: linear-gradient(135deg, var(--order-blue-600), var(--order-blue-700)) !important;
+        font-size: .88rem;
+        font-weight: 800;
+        box-shadow: 0 9px 22px rgba(40,120,189,.22);
+    }
+
+        .order-submit:hover {
+            color: var(--order-white) !important;
+            background: linear-gradient(135deg, var(--order-blue-700), var(--order-blue-800)) !important;
+            transform: translateY(-2px);
+        }
+
+    .order-form-aside {
+        padding: 30px;
+        border: 1px solid var(--order-border);
+        border-radius: 20px;
+        background: radial-gradient(circle at top right, rgba(104,165,216,.13), transparent 35%), var(--order-white);
+        box-shadow: var(--order-shadow-sm);
+    }
+
+    .order-form-aside-number {
+        margin-bottom: 20px;
+        color: var(--order-blue-100);
+        font-size: 5.2rem;
+        font-weight: 800;
+        letter-spacing: -.08em;
+        line-height: .85;
+    }
+
+    .order-form-aside h3 {
+        margin-bottom: 12px;
+        color: var(--order-blue-950);
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .order-form-aside p {
+        margin-bottom: 0;
+        color: var(--order-muted);
+        font-size: .88rem;
+        line-height: 1.7;
+    }
+
+    @@media (max-width: 991.98px) {
+        .order-form-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .order-form-aside {
+            order: -1;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .order-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .order-field.full-width {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .order-form-hero {
+            min-height: 290px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .order-form-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .order-form-panel,
+        .order-form-aside {
+            padding: 24px 20px;
+            border-radius: 16px;
+        }
+
+        .order-submit {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="order-form-page">
+
+    <section class="order-form-hero">
+
+        <div class="order-form-heading">
+            <span class="order-form-eyebrow">
+                Gestión de compras
+            </span>
+
+            <h1>
+                Crear orden de compra
+            </h1>
+
+            <p>
+                Registra el producto, la cantidad, el proveedor y la fecha estimada de entrega.
+            </p>
+        </div>
+
+    </section>
+
+    <div class="order-form-alerts">
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
+            </div>
+        }
+
     </div>
 
-    <div class="mb-3">
-        @Html.LabelFor(m => m.Cantidad)
-        @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control", type = "number", step = "1" })
-        @Html.ValidationMessageFor(m => m.Cantidad, "", new { @class = "text-danger" })
+    <div class="order-form-shell">
+
+        <section class="order-form-panel">
+
+            <div class="order-form-panel-header">
+                <h2>Información de la orden</h2>
+                <p>Complete los datos requeridos antes de crear la orden.</p>
+            </div>
+
+            @using (Html.BeginForm("Crear", "Ordenes", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                @* NumeroOrden se genera/ignora en BD (autoincremental) *@
+
+                <div class="order-grid">
+
+                    <div class="order-field">
+                        @Html.LabelFor(m => m.IdProducto, "Producto")
+
+                        @Html.DropDownListFor(
+                            m => m.IdProducto,
+                            ViewBag.Productos as System.Web.Mvc.SelectList,
+                            "-- Seleccione --",
+                            new { @class = "form-control" })
+                    </div>
+
+                    <div class="order-field">
+                        @Html.LabelFor(m => m.Cantidad)
+
+                        @Html.TextBoxFor(
+                            m => m.Cantidad,
+                            new
+                            {
+                                @class = "form-control",
+                                type = "number",
+                                step = "1"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            m => m.Cantidad,
+                            "",
+                            new { @class = "text-danger" })
+                    </div>
+
+                    <div class="order-field">
+                        @Html.LabelFor(m => m.IdProveedor, "Proveedor")
+
+                        @Html.DropDownListFor(
+                            m => m.IdProveedor,
+                            ViewBag.Proveedores as System.Collections.Generic.List<System.Web.Mvc.SelectListItem>,
+                            "-- Seleccione --",
+                            new { @class = "form-control" })
+                    </div>
+
+                    <div class="order-field">
+                        @Html.LabelFor(m => m.FechaEntregaEstim, "Fecha Entrega Estimada")
+
+                        @Html.TextBoxFor(
+                            m => m.FechaEntregaEstim,
+                            new
+                            {
+                                @class = "form-control",
+                                type = "date"
+                            })
+                    </div>
+
+                    <div class="order-field full-width">
+                        @Html.LabelFor(m => m.Observaciones, "Observaciones")
+
+                        @Html.TextAreaFor(
+                            m => m.Observaciones,
+                            new
+                            {
+                                @class = "form-control",
+                                rows = 3
+                            })
+                    </div>
+
+                </div>
+
+                <button class="btn btn-primary order-submit"
+                        type="submit">
+                    Crear orden
+                </button>
+            }
+
+        </section>
+
+        <aside class="order-form-aside">
+
+            <div class="order-form-aside-number">
+                01
+            </div>
+
+            <h3>
+                Compra organizada
+            </h3>
+
+            <p>
+                El número de orden se genera automáticamente. Solo completa la información comercial y de entrega.
+            </p>
+
+        </aside>
+
     </div>
 
-    <div class="mb-3">
-        @Html.LabelFor(m => m.IdProveedor, "Proveedor")
-        @Html.DropDownListFor(m => m.IdProveedor, ViewBag.Proveedores as System.Collections.Generic.List<System.Web.Mvc.SelectListItem>, "-- Seleccione --", new { @class = "form-control" })
-    </div>
-
-    <div class="mb-3">
-        @Html.LabelFor(m => m.FechaEntregaEstim, "Fecha Entrega Estimada")
-        @Html.TextBoxFor(m => m.FechaEntregaEstim, new { @class = "form-control", type = "date" })
-    </div>
-
-    <div class="mb-3">
-        @Html.LabelFor(m => m.Observaciones, "Observaciones")
-        @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control", rows = 3 })
-    </div>
-
-
-    <button class="btn btn-primary" type="submit">Crear Orden</button>
-}
-    </div>
 </div>

@@ -4,132 +4,830 @@
     ViewBag.Title = "Agregar Promoción";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card-modern">
-                <div class="card-body p-4">
+<style>
+    :root {
+        --promo-blue-950: #06142f;
+        --promo-blue-900: #0a1f46;
+        --promo-blue-800: #10376b;
+        --promo-blue-700: #185695;
+        --promo-blue-600: #2878bd;
+        --promo-blue-500: #4298d4;
+        --promo-blue-400: #68a5d8;
+        --promo-blue-300: #9acced;
+        --promo-blue-200: #c9e5f6;
+        --promo-blue-100: #e7f3fb;
+        --promo-blue-50: #f5faff;
+        --promo-white: #ffffff;
+        --promo-text: #14263a;
+        --promo-muted: #718397;
+        --promo-border: #dce9f3;
+        --promo-border-light: #eaf1f7;
+        --promo-shadow-sm: 0 7px 22px rgba(6,20,47,.08);
+        --promo-shadow-md: 0 18px 42px rgba(6,20,47,.12);
+        --promo-shadow-lg: 0 28px 65px rgba(6,20,47,.16);
+    }
 
-                    <h2 class="mb-4">
-                        <i class="bi bi-percent me-2"></i>Agregar Nueva Promocion
-                    </h2>
+    .promo-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
-                    @if (TempData["MensajeError"] != null)
-                    {
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                            @TempData["MensajeError"]
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    }
+    .promo-hero {
+        position: relative;
+        min-height: 230px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 28px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 85% 20%, rgba(104,165,216,.25), transparent 30%), radial-gradient(circle at 15% 90%, rgba(40,120,189,.18), transparent 32%), linear-gradient(135deg, var(--promo-blue-950), var(--promo-blue-800));
+        box-shadow: var(--promo-shadow-lg);
+        overflow: hidden;
+    }
 
-                    @using (Html.BeginForm("AgregarPromocion", "Promocion", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
+        .promo-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255,255,255,.035);
+            border-radius: 50%;
+        }
 
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.NombrePromocion, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.NombrePromocion, new
+        .promo-hero::after {
+            content: attr(data-word);
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255,255,255,.035);
+            font-size: clamp(4rem,8vw,8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .promo-heading,
+    .promo-hero-actions {
+        position: relative;
+        z-index: 2;
+    }
+
+    .promo-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--promo-blue-400);
+        color: var(--promo-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .promo-heading h1 {
+        margin: 0 0 13px;
+        color: var(--promo-white) !important;
+        font-size: clamp(2.3rem,4vw,4.1rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .promo-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: rgba(255,255,255,.74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .promo-primary-link {
+        min-width: 185px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,.52);
+        border-radius: 999px;
+        color: var(--promo-blue-950) !important;
+        background: var(--promo-white);
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0,0,0,.14);
+    }
+
+        .promo-primary-link:hover {
+            color: var(--promo-white) !important;
+            background: var(--promo-blue-500);
+            border-color: var(--promo-blue-500);
+            transform: translateY(-2px);
+        }
+
+    .promo-alerts {
+        margin-top: 24px;
+    }
+
+        .promo-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6,20,47,.05);
+        }
+
+        .promo-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .promo-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+        .promo-alerts .alert-info {
+            color: var(--promo-blue-900);
+            background: var(--promo-blue-50);
+            border-color: var(--promo-blue-200);
+        }
+
+    .promo-shell {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: minmax(0,1.35fr) minmax(260px,.65fr);
+        gap: 24px;
+    }
+
+    .promo-panel {
+        padding: 32px;
+        border: 1px solid var(--promo-border);
+        border-radius: 20px;
+        background: linear-gradient(180deg,var(--promo-white),var(--promo-blue-50));
+        box-shadow: var(--promo-shadow-md);
+    }
+
+    .promo-panel-header {
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--promo-border-light);
+    }
+
+        .promo-panel-header h2 {
+            margin: 0 0 7px;
+            color: var(--promo-blue-950);
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .promo-panel-header p {
+            margin: 0;
+            color: var(--promo-muted);
+            font-size: .86rem;
+            line-height: 1.6;
+        }
+
+    .promo-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .promo-field {
+        margin-bottom: 18px;
+    }
+
+        .promo-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .promo-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--promo-text);
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .promo-field .form-control,
+        .promo-field .form-select {
+            min-height: 50px;
+            padding: 12px 15px;
+            color: var(--promo-text);
+            background: var(--promo-white);
+            border: 1px solid var(--promo-border);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(6,20,47,.04);
+        }
+
+        .promo-field textarea.form-control {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        .promo-field .form-control:hover,
+        .promo-field .form-select:hover {
+            border-color: var(--promo-blue-300);
+        }
+
+        .promo-field .form-control:focus,
+        .promo-field .form-select:focus {
+            border-color: var(--promo-blue-500);
+            box-shadow: 0 0 0 4px rgba(66,152,212,.12);
+        }
+
+        .promo-field .text-danger {
+            display: block;
+            margin-top: 6px;
+            font-size: .78rem;
+        }
+
+    .promo-actions {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .promo-submit,
+    .promo-cancel {
+        min-height: 50px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px !important;
+        font-size: .86rem;
+        font-weight: 800;
+        text-decoration: none !important;
+    }
+
+    .promo-submit {
+        border: 1px solid var(--promo-blue-600) !important;
+        color: var(--promo-white) !important;
+        background: linear-gradient(135deg,var(--promo-blue-600),var(--promo-blue-700)) !important;
+        box-shadow: 0 9px 22px rgba(40,120,189,.22);
+    }
+
+        .promo-submit:hover {
+            color: var(--promo-white) !important;
+            background: linear-gradient(135deg,var(--promo-blue-700),var(--promo-blue-800)) !important;
+            transform: translateY(-2px);
+        }
+
+    .promo-cancel {
+        border: 1px solid var(--promo-blue-200) !important;
+        color: var(--promo-blue-700) !important;
+        background: var(--promo-white) !important;
+    }
+
+        .promo-cancel:hover {
+            color: var(--promo-white) !important;
+            background: var(--promo-blue-700) !important;
+            border-color: var(--promo-blue-700) !important;
+            transform: translateY(-2px);
+        }
+
+    .promo-aside {
+        padding: 30px;
+        border: 1px solid var(--promo-border);
+        border-radius: 20px;
+        background: radial-gradient(circle at top right,rgba(104,165,216,.13),transparent 35%), var(--promo-white);
+        box-shadow: var(--promo-shadow-sm);
+    }
+
+    .promo-aside-number {
+        margin-bottom: 20px;
+        color: var(--promo-blue-100);
+        font-size: 5.2rem;
+        font-weight: 800;
+        letter-spacing: -.08em;
+        line-height: .85;
+    }
+
+    .promo-aside h3 {
+        margin-bottom: 12px;
+        color: var(--promo-blue-950);
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .promo-aside p {
+        margin-bottom: 0;
+        color: var(--promo-muted);
+        font-size: .88rem;
+        line-height: 1.7;
+    }
+
+    .promo-search-section {
+        margin-top: 24px;
+        padding: 22px 24px;
+        border: 1px solid var(--promo-border);
+        border-radius: 18px;
+        background: linear-gradient(180deg,var(--promo-white),var(--promo-blue-50));
+        box-shadow: var(--promo-shadow-sm);
+    }
+
+    .promo-search-header {
+        margin-bottom: 16px;
+    }
+
+        .promo-search-header h2 {
+            margin: 0 0 5px;
+            color: var(--promo-blue-950);
+            font-size: 1.02rem;
+            font-weight: 800;
+        }
+
+        .promo-search-header p {
+            margin: 0;
+            color: var(--promo-muted);
+            font-size: .8rem;
+        }
+
+    .promo-search {
+        max-width: 560px;
+        display: flex;
+        border: 1px solid var(--promo-border);
+        border-radius: 999px;
+        background: var(--promo-white);
+        box-shadow: 0 3px 10px rgba(6,20,47,.045);
+        overflow: hidden;
+    }
+
+        .promo-search:focus-within {
+            border-color: var(--promo-blue-400);
+            box-shadow: 0 0 0 4px rgba(66,152,212,.10);
+        }
+
+        .promo-search .form-control {
+            min-height: 46px;
+            padding: 11px 18px;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .promo-search .btn {
+            min-width: 115px;
+            border: 0 !important;
+            border-radius: 999px !important;
+            color: var(--promo-white) !important;
+            background: var(--promo-blue-700) !important;
+            font-size: .8rem;
+            font-weight: 800;
+        }
+
+            .promo-search .btn:hover {
+                background: var(--promo-blue-800) !important;
+            }
+
+    .promo-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--promo-border);
+        border-radius: 20px;
+        background: var(--promo-white);
+        box-shadow: var(--promo-shadow-md);
+        overflow: hidden;
+    }
+
+    .promo-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--promo-border-light);
+    }
+
+        .promo-table-heading h2 {
+            margin: 0;
+            color: var(--promo-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .promo-table-heading span {
+            color: var(--promo-muted);
+            font-size: .78rem;
+        }
+
+    .promo-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .promo-table {
+        width: 100%;
+        min-width: 1120px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--promo-text);
+    }
+
+        .promo-table thead th {
+            padding: 15px 17px;
+            color: var(--promo-blue-800);
+            background: var(--promo-blue-50);
+            border-bottom: 1px solid var(--promo-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .promo-table tbody td {
+            padding: 16px 17px;
+            border-bottom: 1px solid var(--promo-border-light);
+            font-size: .84rem;
+            vertical-align: middle;
+        }
+
+        .promo-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+    .promo-id {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border: 1px solid var(--promo-blue-100);
+        border-radius: 999px;
+        color: var(--promo-blue-700);
+        background: var(--promo-blue-50);
+        font-size: .74rem;
+        font-weight: 800;
+    }
+
+    .promo-name {
+        color: var(--promo-blue-950);
+        font-weight: 800;
+    }
+
+    .promo-description {
+        max-width: 310px;
+        color: var(--promo-muted);
+        line-height: 1.5;
+    }
+
+    .promo-discount {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 58px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        color: var(--promo-blue-800);
+        background: var(--promo-blue-100);
+        font-weight: 800;
+    }
+
+    .promo-period {
+        color: var(--promo-blue-900);
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+        .promo-period small {
+            color: var(--promo-muted);
+            font-weight: 600;
+        }
+
+    .promo-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: .73rem;
+        font-weight: 800;
+    }
+
+        .promo-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .promo-status.active {
+            color: #1f6942;
+            background: #effaf4;
+            border: 1px solid #bfe7cf;
+        }
+
+        .promo-status.inactive {
+            color: #842029;
+            background: #fff2f3;
+            border: 1px solid #f3c5ca;
+        }
+
+    .promo-row-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+        .promo-row-actions .btn {
+            min-height: 34px;
+            padding: 7px 11px;
+            border-radius: 8px !important;
+            font-size: .72rem;
+            font-weight: 800;
+        }
+
+    .promo-edit-button {
+        color: #966500 !important;
+        background: #fff9e8 !important;
+        border-color: #edd68d !important;
+    }
+
+    .promo-disable-button {
+        color: #9a2531 !important;
+        background: #fff1f2 !important;
+        border-color: #efbdc2 !important;
+    }
+
+    .promo-disabled-button {
+        color: var(--promo-muted) !important;
+        background: #f1f4f7 !important;
+        border-color: var(--promo-border) !important;
+        opacity: .8;
+    }
+
+    .promo-empty {
+        padding: 55px 20px !important;
+        color: var(--promo-muted);
+        text-align: center;
+    }
+
+    @@media (max-width: 991.98px) {
+        .promo-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .promo-hero-actions,
+        .promo-primary-link {
+            width: 100%;
+        }
+
+        .promo-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .promo-aside {
+            order: -1;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .promo-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .promo-field.full-width {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .promo-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .promo-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .promo-panel,
+        .promo-aside {
+            padding: 24px 20px;
+            border-radius: 16px;
+        }
+
+        .promo-actions {
+            flex-direction: column;
+        }
+
+        .promo-submit,
+        .promo-cancel {
+            width: 100%;
+        }
+
+        .promo-search {
+            flex-direction: column;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            overflow: visible;
+        }
+
+            .promo-search .form-control {
+                margin-bottom: 8px;
+                border: 1px solid var(--promo-border) !important;
+                border-radius: 10px !important;
+                background: var(--promo-white) !important;
+            }
+
+            .promo-search .btn {
+                width: 100%;
+                min-height: 44px;
+                border-radius: 10px !important;
+            }
+    }
+</style>
+
+<div class="promo-page">
+
+    <section class="promo-hero" data-word="NUEVA">
+
+        <div class="promo-heading">
+            <span class="promo-eyebrow">Gestión comercial</span>
+
+            <h1>Agregar promoción</h1>
+
+            <p>
+                Registra una nueva promoción con descuento, vigencia,
+                producto y estado.
+            </p>
+        </div>
+
+    </section>
+
+    <div class="promo-alerts">
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                @TempData["MensajeError"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+    </div>
+
+    <div class="promo-shell">
+
+        <section class="promo-panel">
+
+            <div class="promo-panel-header">
+                <h2>Información de la promoción</h2>
+                <p>Complete todos los datos requeridos antes de guardar.</p>
+            </div>
+
+            @using (Html.BeginForm("AgregarPromocion", "Promocion", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="promo-grid">
+
+                    <div class="promo-field full-width">
+                        @Html.LabelFor(m => m.NombrePromocion, new { @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.NombrePromocion, new
+                        {
+                            @class = "form-control",
+                            placeholder = "Ej: Descuento Fin de Semana"
+                        })
+
+                        @Html.ValidationMessageFor(m => m.NombrePromocion, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="promo-field full-width">
+                        @Html.LabelFor(m => m.Descripcion, new { @class = "form-label" })
+
+                        @Html.TextAreaFor(m => m.Descripcion, new
+                        {
+                            @class = "form-control",
+                            rows = 4,
+                            placeholder = "Descripción de la promoción..."
+                        })
+
+                        @Html.ValidationMessageFor(m => m.Descripcion, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="promo-field full-width">
+                        @Html.LabelFor(m => m.PorcentajeDescuento, new { @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.PorcentajeDescuento, new
+                        {
+                            @class = "form-control",
+                            type = "number",
+                            min = "1",
+                            max = "100",
+                            step = "0.01",
+                            placeholder = "Ingrese un porcentaje"
+                        })
+
+                        @Html.ValidationMessageFor(m => m.PorcentajeDescuento, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="promo-field">
+                        @Html.LabelFor(m => m.FechaInicio, new { @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.FechaInicio, "{0:yyyy-MM-dd}", new
+                        {
+                            @class = "form-control",
+                            type = "date"
+                        })
+
+                        @Html.ValidationMessageFor(m => m.FechaInicio, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="promo-field">
+                        @Html.LabelFor(m => m.FechaFin, new { @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.FechaFin, "{0:yyyy-MM-dd}", new
+                        {
+                            @class = "form-control",
+                            type = "date"
+                        })
+
+                        @Html.ValidationMessageFor(m => m.FechaFin, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="promo-field">
+                        @Html.LabelFor(m => m.IdProducto, new { @class = "form-label" })
+
+                        @Html.TextBoxFor(m => m.IdProducto, new
+                        {
+                            @class = "form-control",
+                            type = "number",
+                            placeholder = "Ingrese el ID del producto"
+                        })
+
+                        @Html.ValidationMessageFor(m => m.IdProducto, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="promo-field">
+                        @Html.LabelFor(m => m.IdEstado, new { @class = "form-label" })
+
+                        @Html.DropDownListFor(
+                            m => m.IdEstado,
+                            new SelectList(new[]
                             {
-                                @class = "form-control",
-                                placeholder = "Ej: Descuento Fin de Semana"
-                            })
-                            @Html.ValidationMessageFor(m => m.NombrePromocion, "", new { @class = "text-danger small" })
-                        </div>
+                                new { Value = 1, Text = "Activo" },
+                                new { Value = 2, Text = "Inactivo" }
+                            }, "Value", "Text"),
+                            "-- Seleccione estado --",
+                            new { @class = "form-select" }
+                        )
 
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.Descripcion, new { @class = "form-label" })
-                            @Html.TextAreaFor(m => m.Descripcion, new
-                            {
-                                @class = "form-control",
-                                rows = 4,
-                                placeholder = "Descripción de la promoción..."
-                            })
-                            @Html.ValidationMessageFor(m => m.Descripcion, "", new { @class = "text-danger small" })
-                        </div>
-
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.PorcentajeDescuento, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.PorcentajeDescuento, new
-                            {
-                                @class = "form-control",
-                                type = "number",
-                                min = "1",
-                                max = "100",
-                                step = "0.01",
-                                placeholder = "Ingrese un porcentaje"
-                            })
-                            @Html.ValidationMessageFor(m => m.PorcentajeDescuento, "", new { @class = "text-danger small" })
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                @Html.LabelFor(m => m.FechaInicio, new { @class = "form-label" })
-                                @Html.TextBoxFor(m => m.FechaInicio, "{0:yyyy-MM-dd}", new
-                                {
-                                    @class = "form-control",
-                                    type = "date"
-                                })
-                                @Html.ValidationMessageFor(m => m.FechaInicio, "", new { @class = "text-danger small" })
-                            </div>
-
-                            <div class="col-md-6">
-                                @Html.LabelFor(m => m.FechaFin, new { @class = "form-label" })
-                                @Html.TextBoxFor(m => m.FechaFin, "{0:yyyy-MM-dd}", new
-                                {
-                                    @class = "form-control",
-                                    type = "date"
-                                })
-                                @Html.ValidationMessageFor(m => m.FechaFin, "", new { @class = "text-danger small" })
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.IdProducto, new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.IdProducto, new
-                            {
-                                @class = "form-control",
-                                type = "number",
-                                placeholder = "Ingrese el ID del producto"
-                            })
-                            @Html.ValidationMessageFor(m => m.IdProducto, "", new { @class = "text-danger small" })
-                        </div>
-
-                        <div class="mb-4">
-                            @Html.LabelFor(m => m.IdEstado, new { @class = "form-label" })
-
-                            @Html.DropDownListFor(
-                                m => m.IdEstado,
-                                new SelectList(new[]
-                                {
-                                    new { Value = 1, Text = "Activo" },
-                                    new { Value = 2, Text = "Inactivo" }
-                                }, "Value", "Text"),
-                                "-- Seleccione estado --",
-                                new { @class = "form-select" }
-                            )
-
-                            @Html.ValidationMessageFor(m => m.IdEstado, "", new { @class = "text-danger small" })
-                        </div>
-
-                        <div class="d-flex gap-2 justify-content-end">
-
-                            @Html.ActionLink(
-                                "Cancelar",
-                                "Index",
-                                "Home",
-                                null,
-                                new { @class = "btn btn-secondary" })
-
-                            <button type="submit" class="btn btn-pubrock">
-                                <i class="bi bi-check-circle-fill me-1"></i>Guardar Promocion
-                            </button>
-
-                        </div>
-                    }
+                        @Html.ValidationMessageFor(m => m.IdEstado, "", new { @class = "text-danger small" })
+                    </div>
 
                 </div>
-            </div>
-        </div>
+
+                <div class="promo-actions">
+
+                    @Html.ActionLink(
+                        "Cancelar",
+                        "Index",
+                        "Home",
+                        null,
+                        new { @class = "btn btn-secondary promo-cancel" })
+
+                    <button type="submit" class="btn btn-pubrock promo-submit">
+                        <i class="bi bi-check-circle-fill me-1"></i>Guardar Promocion
+                    </button>
+
+                </div>
+            }
+
+        </section>
+
+        <aside class="promo-aside">
+            <div class="promo-aside-number">01</div>
+            <h3>Promoción bien definida</h3>
+            <p>
+                Revisa el porcentaje, la vigencia, el producto y el estado antes de guardar.
+            </p>
+        </aside>
+
     </div>
+
 </div>

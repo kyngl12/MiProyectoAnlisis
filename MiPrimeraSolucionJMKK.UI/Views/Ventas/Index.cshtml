@@ -2,19 +2,580 @@
     ViewBag.Title = "Ventas";
 }
 
-<h2 class="fw-bold mb-4">Punto de Venta</h2>
+<style>
+    :root {
+        --sales-blue-950: #06142f;
+        --sales-blue-900: #0a1f46;
+        --sales-blue-800: #10376b;
+        --sales-blue-700: #185695;
+        --sales-blue-600: #2878bd;
+        --sales-blue-500: #4298d4;
+        --sales-blue-400: #68a5d8;
+        --sales-blue-300: #9acced;
+        --sales-blue-200: #c9e5f6;
+        --sales-blue-100: #e7f3fb;
+        --sales-blue-50: #f5faff;
+        --sales-white: #ffffff;
+        --sales-text: #14263a;
+        --sales-muted: #718397;
+        --sales-border: #dce9f3;
+        --sales-border-light: #eaf1f7;
+        --sales-success: #2f855a;
+        --sales-danger: #c53030;
+        --sales-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --sales-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --sales-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header">Productos disponibles</div>
-            <div class="card-body">
-                <div class="input-group mb-3">
-                    <input type="text" id="txtBuscarProducto" class="form-control" placeholder="Buscar por nombre, codigo o categoria" />
-                    <button type="button" id="btnBuscarProducto" class="btn btn-outline-secondary">Buscar</button>
+    .sales-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
+
+    .sales-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30%), radial-gradient(circle at 15% 90%, rgba(40, 120, 189, .18), transparent 32%), linear-gradient(135deg, var(--sales-blue-950), var(--sales-blue-800));
+        box-shadow: var(--sales-shadow-lg);
+        overflow: hidden;
+    }
+
+        .sales-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
+        }
+
+        .sales-hero::after {
+            content: "VENTAS";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .sales-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 720px;
+    }
+
+    .sales-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--sales-blue-400);
+        color: var(--sales-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .sales-heading h1 {
+        margin: 0 0 13px;
+        color: var(--sales-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.1rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .sales-heading p {
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .sales-workspace {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+    }
+
+    .sales-panel {
+        border: 1px solid var(--sales-border);
+        border-radius: 20px;
+        background: linear-gradient( 180deg, var(--sales-white), var(--sales-blue-50) );
+        box-shadow: var(--sales-shadow-md);
+        overflow: hidden;
+    }
+
+    .sales-panel-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--sales-border-light);
+        background: var(--sales-white);
+    }
+
+        .sales-panel-header h2 {
+            margin: 0 0 5px;
+            color: var(--sales-blue-950);
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+
+        .sales-panel-header p {
+            margin: 0;
+            color: var(--sales-muted);
+            font-size: .8rem;
+        }
+
+    .sales-panel-body {
+        padding: 24px;
+    }
+
+    .sales-search {
+        display: flex;
+        border: 1px solid var(--sales-border);
+        border-radius: 999px;
+        background: var(--sales-white);
+        box-shadow: 0 3px 10px rgba(6, 20, 47, .045);
+        overflow: hidden;
+    }
+
+        .sales-search:focus-within {
+            border-color: var(--sales-blue-400);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .10);
+        }
+
+        .sales-search .form-control {
+            min-height: 46px;
+            padding: 11px 18px;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .sales-search .btn {
+            min-width: 105px;
+            border: 0 !important;
+            border-radius: 999px !important;
+            color: var(--sales-white) !important;
+            background: var(--sales-blue-700) !important;
+            font-size: .8rem;
+            font-weight: 800;
+        }
+
+            .sales-search .btn:hover {
+                background: var(--sales-blue-800) !important;
+            }
+
+    .sales-table-wrap {
+        max-height: 410px;
+        margin-top: 20px;
+        border: 1px solid var(--sales-border);
+        border-radius: 14px;
+        background: var(--sales-white);
+        overflow: auto;
+    }
+
+    .sales-table {
+        width: 100%;
+        margin: 0;
+        color: var(--sales-text);
+        vertical-align: middle;
+    }
+
+        .sales-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            padding: 13px 14px;
+            color: var(--sales-blue-800);
+            background: var(--sales-blue-50);
+            border-bottom: 1px solid var(--sales-blue-200);
+            font-size: .69rem;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .sales-table tbody td,
+        .sales-table tfoot td {
+            padding: 14px;
+            border-color: var(--sales-border-light);
+            font-size: .82rem;
+        }
+
+        .sales-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+        .sales-table .btn {
+            min-height: 32px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: .7rem;
+            font-weight: 800;
+        }
+
+        .sales-table .btn-outline-primary {
+            color: var(--sales-blue-700);
+            background: var(--sales-blue-50);
+            border-color: var(--sales-blue-200);
+        }
+
+            .sales-table .btn-outline-primary:hover {
+                color: var(--sales-white);
+                background: var(--sales-blue-700);
+                border-color: var(--sales-blue-700);
+            }
+
+        .sales-table .btn-outline-danger {
+            color: #9a2531;
+            background: #fff1f2;
+            border-color: #efbdc2;
+        }
+
+            .sales-table .btn-outline-danger:hover {
+                color: #7c1923;
+                background: #ffe1e4;
+                border-color: #e1939c;
+            }
+
+    .sales-fields-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .sales-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--sales-text);
+        font-size: .8rem;
+        font-weight: 700;
+    }
+
+    .sales-field .form-control,
+    .sales-field .form-select {
+        min-height: 47px;
+        padding: 11px 13px;
+        border: 1px solid var(--sales-border);
+        border-radius: 10px;
+        color: var(--sales-text);
+        background: var(--sales-white);
+        box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+    }
+
+        .sales-field .form-control:hover,
+        .sales-field .form-select:hover {
+            border-color: var(--sales-blue-300);
+        }
+
+        .sales-field .form-control:focus,
+        .sales-field .form-select:focus {
+            border-color: var(--sales-blue-500);
+            box-shadow: 0 0 0 4px rgba(66, 152, 212, .12);
+        }
+
+    .sales-current-table {
+        width: 100%;
+        margin-bottom: 20px;
+        border: 1px solid var(--sales-border);
+        border-radius: 14px;
+        background: var(--sales-white);
+        overflow: hidden;
+    }
+
+        .sales-current-table table {
+            margin: 0;
+        }
+
+    .sales-total-row td {
+        padding-top: 17px !important;
+        padding-bottom: 17px !important;
+        color: var(--sales-blue-950);
+        background: var(--sales-blue-50);
+        font-size: .9rem !important;
+        font-weight: 800;
+    }
+
+    #totalVenta {
+        color: var(--sales-blue-700);
+        font-size: 1rem;
+    }
+
+    .sales-register-button {
+        min-height: 50px;
+        border: 1px solid var(--sales-blue-600) !important;
+        border-radius: 10px !important;
+        color: var(--sales-white) !important;
+        background: linear-gradient( 135deg, var(--sales-blue-600), var(--sales-blue-700) ) !important;
+        font-size: .86rem;
+        font-weight: 800;
+        box-shadow: 0 9px 22px rgba(40, 120, 189, .22);
+    }
+
+        .sales-register-button:hover:not(:disabled) {
+            background: linear-gradient( 135deg, var(--sales-blue-700), var(--sales-blue-800) ) !important;
+            transform: translateY(-2px);
+        }
+
+        .sales-register-button:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+    .sales-operation-panel {
+        margin-top: 24px;
+    }
+
+    .sales-operation-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 150px;
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+
+        .sales-operation-grid .sales-field {
+            min-width: 0;
+        }
+
+    .sales-action-button {
+        min-height: 47px;
+        border-radius: 10px !important;
+        font-size: .8rem;
+        font-weight: 800;
+    }
+
+        .sales-action-button.btn-success {
+            background: var(--sales-success) !important;
+            border-color: var(--sales-success) !important;
+        }
+
+        .sales-action-button.btn-danger {
+            background: var(--sales-danger) !important;
+            border-color: var(--sales-danger) !important;
+        }
+
+    .sales-detail-box {
+        min-height: 90px;
+        margin: 18px 0 0;
+        padding: 15px;
+        border: 1px solid var(--sales-border);
+        border-radius: 12px;
+        color: var(--sales-text);
+        background: var(--sales-blue-50);
+        font-family: 'Inter', sans-serif;
+        font-size: .8rem;
+        line-height: 1.6;
+        white-space: pre-wrap;
+    }
+
+    .offcanvas-factura {
+        width: min(560px, 100vw) !important;
+        border-left: 1px solid rgba(201, 229, 246, .22);
+        background: var(--sales-white);
+        box-shadow: -18px 0 45px rgba(6, 20, 47, .18);
+    }
+
+        .offcanvas-factura .offcanvas-header {
+            padding: 20px 22px;
+            color: var(--sales-white);
+            background: linear-gradient( 135deg, var(--sales-blue-950), var(--sales-blue-800) );
+        }
+
+        .offcanvas-factura .offcanvas-title {
+            color: var(--sales-white) !important;
+            font-weight: 800;
+        }
+
+        .offcanvas-factura .offcanvas-body {
+            padding: 22px;
+            background: var(--sales-blue-50);
+        }
+
+    .factura-container {
+        min-height: 300px;
+        padding: 18px;
+        border: 1px solid var(--sales-border);
+        border-radius: 16px;
+        background: var(--sales-white);
+        box-shadow: var(--sales-shadow-sm);
+    }
+
+    .factura-actions {
+        margin-top: 18px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+        .factura-actions .btn {
+            min-height: 43px;
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-size: .8rem;
+            font-weight: 800;
+        }
+
+    .toast-container .toast {
+        border: 1px solid var(--sales-border);
+        border-radius: 12px;
+        box-shadow: var(--sales-shadow-md);
+        overflow: hidden;
+    }
+
+    .toast-container .toast-header {
+        color: var(--sales-blue-950);
+        background: var(--sales-blue-50);
+        border-bottom: 1px solid var(--sales-border-light);
+    }
+
+    .toast-container .toast-body {
+        color: var(--sales-text);
+        background: var(--sales-white);
+    }
+
+    @@media (max-width: 1100px) {
+        .sales-workspace {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .sales-fields-grid,
+        .sales-operation-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .sales-hero {
+            min-height: 310px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .sales-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .sales-panel {
+            border-radius: 16px;
+        }
+
+        .sales-panel-body {
+            padding: 19px;
+        }
+
+        .sales-search {
+            flex-direction: column;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            overflow: visible;
+        }
+
+            .sales-search .form-control {
+                margin-bottom: 8px;
+                border: 1px solid var(--sales-border) !important;
+                border-radius: 10px !important;
+                background: var(--sales-white) !important;
+            }
+
+            .sales-search .btn {
+                width: 100%;
+                min-height: 44px;
+                border-radius: 10px !important;
+            }
+
+        .factura-actions {
+            flex-direction: column;
+        }
+
+            .factura-actions .btn {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="sales-page">
+
+    <section class="sales-hero">
+
+        <div class="sales-heading">
+
+            <span class="sales-eyebrow">
+                Operación comercial
+            </span>
+
+            <h1>
+                Punto de venta
+            </h1>
+
+            <p>
+                Busca productos, arma la venta, procesa el pago
+                y genera la factura desde un solo espacio.
+            </p>
+
+        </div>
+
+    </section>
+
+    <div class="sales-workspace">
+
+        <section class="sales-panel">
+
+            <div class="sales-panel-header">
+
+                <h2>
+                    Productos disponibles
+                </h2>
+
+                <p>
+                    Busca y agrega productos a la venta actual.
+                </p>
+
+            </div>
+
+            <div class="sales-panel-body">
+
+                <div class="sales-search">
+
+                    <input type="text"
+                           id="txtBuscarProducto"
+                           class="form-control"
+                           placeholder="Buscar por nombre, codigo o categoria" />
+
+                    <button type="button"
+                            id="btnBuscarProducto"
+                            class="btn btn-outline-secondary">
+                        Buscar
+                    </button>
+
                 </div>
-                <div class="table-responsive" style="max-height:400px; overflow-y:auto;">
-                    <table class="table table-sm align-middle">
+
+                <div class="sales-table-wrap">
+
+                    <table class="table table-sm align-middle sales-table">
+
                         <thead>
                             <tr>
                                 <th>Codigo</th>
@@ -24,110 +585,273 @@
                                 <th></th>
                             </tr>
                         </thead>
+
                         <tbody id="tblProductos"></tbody>
+
                     </table>
+
                 </div>
+
             </div>
+
+        </section>
+
+        <div>
+
+            <section class="sales-panel">
+
+                <div class="sales-panel-header">
+
+                    <h2>
+                        Venta actual
+                    </h2>
+
+                    <p>
+                        Selecciona empleado, cliente y productos.
+                    </p>
+
+                </div>
+
+                <div class="sales-panel-body">
+
+                    <div class="sales-fields-grid">
+
+                        <div class="sales-field">
+
+                            <label>
+                                Empleado
+                            </label>
+
+                            <select id="idEmpleado"
+                                    class="form-select"></select>
+
+                        </div>
+
+                        <div class="sales-field">
+
+                            <label>
+                                Cliente (opcional)
+                            </label>
+
+                            <input type="number"
+                                   id="idCliente"
+                                   class="form-control"
+                                   min="1" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="sales-current-table">
+
+                        <table class="table table-sm sales-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tblDetalleVenta"></tbody>
+
+                            <tfoot>
+                                <tr class="sales-total-row">
+                                    <td colspan="2"
+                                        class="text-end fw-bold">
+                                        Total:
+                                    </td>
+
+                                    <td id="totalVenta"
+                                        class="fw-bold">
+                                        C0.00
+                                    </td>
+
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+
+                    </div>
+
+                    <button type="button"
+                            id="btnRegistrarVenta"
+                            class="btn btn-primary w-100 sales-register-button"
+                            disabled>
+                        Registrar venta
+                    </button>
+
+                </div>
+
+            </section>
+
+            <section class="sales-panel sales-operation-panel"
+                     id="cardOperarVenta"
+                     style="display:none;">
+
+                <div class="sales-panel-header">
+
+                    <h2>
+                        Venta #<span id="idVentaActual"></span>
+                    </h2>
+
+                    <p>
+                        Procesa el cobro o anula la venta.
+                    </p>
+
+                </div>
+
+                <div class="sales-panel-body">
+
+                    <div class="sales-operation-grid">
+
+                        <div class="sales-field">
+
+                            <label>
+                                Tipo de pago
+                            </label>
+
+                            <select id="idTipoPago"
+                                    class="form-select"></select>
+
+                        </div>
+
+                        <div class="d-flex align-items-end">
+
+                            <button type="button"
+                                    id="btnProcesarVenta"
+                                    class="btn btn-success w-100 sales-action-button">
+                                Cobrar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="sales-operation-grid">
+
+                        <div class="sales-field">
+
+                            <label>
+                                Motivo de anulacion (opcional)
+                            </label>
+
+                            <input type="text"
+                                   id="motivoAnulacion"
+                                   class="form-control" />
+
+                        </div>
+
+                        <div class="d-flex align-items-end">
+
+                            <button type="button"
+                                    id="btnAnularVenta"
+                                    class="btn btn-danger w-100 sales-action-button">
+                                Anular venta
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <pre id="detalleVenta"
+                         class="sales-detail-box"></pre>
+
+                </div>
+
+            </section>
+
         </div>
+
     </div>
 
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header">Venta actual</div>
-            <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col-6">
-                        <label>Empleado</label>
-                        <select id="idEmpleado" class="form-select"></select>
-                    </div>
-                    <div class="col-6">
-                        <label>Cliente (opcional)</label>
-                        <input type="number" id="idCliente" class="form-control" min="1" />
-                    </div>
-                </div>
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Subtotal</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tblDetalleVenta"></tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2" class="text-end fw-bold">Total:</td>
-                            <td id="totalVenta" class="fw-bold">C0.00</td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
-                <button type="button" id="btnRegistrarVenta" class="btn btn-primary w-100" disabled>Registrar venta</button>
-            </div>
-        </div>
-
-        <div class="card mb-4" id="cardOperarVenta" style="display:none;">
-            <div class="card-header">Venta #<span id="idVentaActual"></span></div>
-            <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col-7">
-                        <label>Tipo de pago</label>
-                        <select id="idTipoPago" class="form-select"></select>
-                    </div>
-                    <div class="col-5 d-flex align-items-end">
-                        <button type="button" id="btnProcesarVenta" class="btn btn-success w-100">Cobrar</button>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-7">
-                        <label>Motivo de anulacion (opcional)</label>
-                        <input type="text" id="motivoAnulacion" class="form-control" />
-                    </div>
-                    <div class="col-5 d-flex align-items-end">
-                        <button type="button" id="btnAnularVenta" class="btn btn-danger w-100">Anular venta</button>
-                    </div>
-                </div>
-                <pre id="detalleVenta" class="bg-light p-2" style="min-height:80px; white-space:pre-wrap;"></pre>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- ===== OFFCANVAS FACTURA ===== -->
-<div class="offcanvas offcanvas-end offcanvas-factura" tabindex="-1" id="offcanvasFactura" aria-labelledby="offcanvasFacturaLabel">
+<div class="offcanvas offcanvas-end offcanvas-factura"
+     tabindex="-1"
+     id="offcanvasFactura"
+     aria-labelledby="offcanvasFacturaLabel">
+
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasFacturaLabel">Factura</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+
+        <h5 class="offcanvas-title"
+            id="offcanvasFacturaLabel">
+            Factura
+        </h5>
+
+        <button type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas"
+                aria-label="Cerrar"></button>
+
     </div>
+
     <div class="offcanvas-body">
-        <div class="factura-container" id="factura-container">
+
+        <div class="factura-container"
+             id="factura-container">
             <!-- Factura renderizada aquí -->
         </div>
+
         <div class="factura-actions">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cerrar</button>
-            <button type="button" class="btn btn-primary" id="btnDescargarPDF">
+
+            <button type="button"
+                    class="btn btn-outline-secondary"
+                    data-bs-dismiss="offcanvas">
+                Cerrar
+            </button>
+
+            <button type="button"
+                    class="btn btn-primary"
+                    id="btnDescargarPDF">
                 <i class="bi bi-download"></i> Descargar PDF
             </button>
+
         </div>
+
     </div>
+
 </div>
 
 <!-- TEMPLATE: Factura (oculto, clonado dinámicamente) -->
 @Html.Partial("_FacturaTemplate")
 
 <!-- Toast Container -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer" style="z-index: 9999;">
+<div class="toast-container position-fixed bottom-0 end-0 p-3"
+     id="toastContainer"
+     style="z-index: 9999;">
 </div>
 
 <!-- Toast Template (hidden, cloned when needed) -->
-<div class="toast" id="toastTemplate" role="alert" aria-live="assertive" aria-atomic="true" style="display: none;">
+<div class="toast"
+     id="toastTemplate"
+     role="alert"
+     aria-live="assertive"
+     aria-atomic="true"
+     style="display: none;">
+
     <div class="toast-header">
-        <strong class="me-auto" id="toastTitulo">Aviso</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+
+        <strong class="me-auto"
+                id="toastTitulo">
+            Aviso
+        </strong>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="toast"
+                aria-label="Cerrar"></button>
+
     </div>
-    <div class="toast-body" id="toastCuerpo">
+
+    <div class="toast-body"
+         id="toastCuerpo">
     </div>
+
 </div>
 
 @section scripts {
@@ -360,10 +1084,10 @@
             template.find("#facturaNumero").text(comprobante.NumeroFactura || "---");
 
             var fechaObj = new Date(comprobante.FechaFactura);
-            var fechaStr = ("0" + fechaObj.getDate()).slice(-2) + "/" + 
-                          ("0" + (fechaObj.getMonth() + 1)).slice(-2) + "/" + 
+            var fechaStr = ("0" + fechaObj.getDate()).slice(-2) + "/" +
+                          ("0" + (fechaObj.getMonth() + 1)).slice(-2) + "/" +
                           fechaObj.getFullYear();
-            var horaStr = ("0" + fechaObj.getHours()).slice(-2) + ":" + 
+            var horaStr = ("0" + fechaObj.getHours()).slice(-2) + ":" +
                          ("0" + fechaObj.getMinutes()).slice(-2);
             template.find("#facturaFecha").text(fechaStr);
             template.find("#facturaHora").text(horaStr);
@@ -436,3 +1160,4 @@
         cargarDatosIniciales();
     </script>
 }
+.

@@ -4,92 +4,774 @@
     ViewBag.Title = "Usuarios";
 }
 
-<div class="container py-3">
-    @Html.AntiForgeryToken()
-    <div class="card-modern">
-        <h2>Usuarios</h2>
+<style>
+    :root {
+        --users-blue-950: #06142f;
+        --users-blue-900: #0a1f46;
+        --users-blue-800: #10376b;
+        --users-blue-700: #185695;
+        --users-blue-600: #2878bd;
+        --users-blue-500: #4298d4;
+        --users-blue-400: #68a5d8;
+        --users-blue-300: #9acced;
+        --users-blue-200: #c9e5f6;
+        --users-blue-100: #e7f3fb;
+        --users-blue-50: #f5faff;
+        --users-white: #ffffff;
+        --users-text: #14263a;
+        --users-muted: #718397;
+        --users-border: #dce9f3;
+        --users-border-light: #eaf1f7;
+        --users-shadow-sm: 0 7px 22px rgba(6,20,47,.08);
+        --users-shadow-md: 0 18px 42px rgba(6,20,47,.12);
+        --users-shadow-lg: 0 28px 65px rgba(6,20,47,.16);
+    }
 
-@if (TempData["MensajeExito"] != null)
-{
-    <div class="alert alert-success">@TempData["MensajeExito"]</div>
-}
+    .users-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
-@if (TempData["MensajeError"] != null)
-{
-    <div class="alert alert-danger">@TempData["MensajeError"]</div>
-}
+    .users-hero {
+        position: relative;
+        min-height: 230px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 28px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 85% 20%, rgba(104,165,216,.25), transparent 30%), radial-gradient(circle at 15% 90%, rgba(40,120,189,.18), transparent 32%), linear-gradient(135deg, var(--users-blue-950), var(--users-blue-800));
+        box-shadow: var(--users-shadow-lg);
+        overflow: hidden;
+    }
 
-<p>
-    @Html.ActionLink("Agregar Usuario", "AgregarUsuario", "Usuarios", null, new { @class = "btn btn-primary" })
-</p>
+        .users-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255,255,255,.035);
+            border-radius: 50%;
+        }
 
-<table class="table-modern">
-    <thead>
-        <tr>
-            <th>Cedula</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Correo</th>
-            <th>Telefono</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            foreach (var u in Model)
-            {
-                <tr>
-                    <td>@u.Cedula</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <div class="avatar me-2">@u.Nombre.Substring(0,1).ToUpper()</div>
-                            <div>
-                                <div class="fw-bold">@u.Nombre</div>
-                                <div class="text-muted" style="font-size:.85rem">@u.CorreoElectronico</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>@u.ApellidoPaterno @u.ApellidoMaterno</td>
-                    <td>@u.CorreoElectronico</td>
-                    <td>@u.Telefono</td>
-                    <td>@u.DescripcionTipoUsuario</td>
-                    <td>
-                        @if(u.IdEstado == 1){ <span class="badge-status badge-active">Activo</span> } else { <span class="badge-status badge-inactive">Inactivo</span> }
-                    </td>
-                    <td>
-                        <div class="d-flex">
-                            <div class="btn-group actions-group" role="group">
-                                @Html.ActionLink("Detalles", "DetallesDelUsuario", new { cedula = u.Cedula }, new { @class = "btn btn-sm btn-outline-info" })
-                                @Html.ActionLink("Editar", "EditarUsuario", new { cedula = u.Cedula }, new { @class = "btn btn-sm btn-outline-warning" })
-                                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Acciones
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <button class="dropdown-item btn-inactivar-user text-danger" data-cedula="@u.Cedula">Inactivar usuario</button>
-                                    </li>
-                                    <li><hr class="dropdown-divider" /></li>
-                                    <li>
-                                        <a class="dropdown-item" href="@Url.Action("DetallesDelUsuario","Usuarios", new { cedula = u.Cedula })">Ver perfil</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+        .users-hero::after {
+            content: attr(data-word);
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255,255,255,.035);
+            font-size: clamp(4rem,8vw,8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .users-heading,
+    .users-hero-actions {
+        position: relative;
+        z-index: 2;
+    }
+
+    .users-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--users-blue-400);
+        color: var(--users-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .users-heading h1 {
+        margin: 0 0 13px;
+        color: var(--users-white) !important;
+        font-size: clamp(2.3rem,4vw,4.1rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .users-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: rgba(255,255,255,.74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .users-primary-link {
+        min-width: 180px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,.52);
+        border-radius: 999px;
+        color: var(--users-blue-950) !important;
+        background: var(--users-white);
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0,0,0,.14);
+    }
+
+        .users-primary-link:hover {
+            color: var(--users-white) !important;
+            background: var(--users-blue-500);
+            border-color: var(--users-blue-500);
+            transform: translateY(-2px);
+        }
+
+    .users-alerts {
+        margin-top: 24px;
+    }
+
+        .users-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6,20,47,.05);
+        }
+
+        .users-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .users-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    .users-shell {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: minmax(0,1.35fr) minmax(260px,.65fr);
+        gap: 24px;
+    }
+
+    .users-panel {
+        padding: 32px;
+        border: 1px solid var(--users-border);
+        border-radius: 20px;
+        background: linear-gradient(180deg,var(--users-white),var(--users-blue-50));
+        box-shadow: var(--users-shadow-md);
+    }
+
+    .users-panel-header {
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--users-border-light);
+    }
+
+        .users-panel-header h2 {
+            margin: 0 0 7px;
+            color: var(--users-blue-950);
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .users-panel-header p {
+            margin: 0;
+            color: var(--users-muted);
+            font-size: .86rem;
+            line-height: 1.6;
+        }
+
+    .users-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .users-field {
+        margin-bottom: 18px;
+    }
+
+        .users-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .users-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--users-text);
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .users-field .form-control,
+        .users-field .form-select {
+            min-height: 50px;
+            padding: 12px 15px;
+            color: var(--users-text);
+            background: var(--users-white);
+            border: 1px solid var(--users-border);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(6,20,47,.04);
+        }
+
+            .users-field .form-control:hover,
+            .users-field .form-select:hover {
+                border-color: var(--users-blue-300);
             }
-        }
-        else
-        {
-            <tr><td colspan="8" class="text-center">No hay usuarios registrados</td></tr>
-        }
-    </tbody>
 
-</table>
+            .users-field .form-control:focus,
+            .users-field .form-select:focus {
+                border-color: var(--users-blue-500);
+                box-shadow: 0 0 0 4px rgba(66,152,212,.12);
+            }
+
+            .users-field .form-control:disabled {
+                color: var(--users-muted);
+                background: #eef4f9;
+            }
+
+        .users-field .text-danger {
+            display: block;
+            margin-top: 6px;
+            font-size: .78rem;
+        }
+
+    .users-actions {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .users-submit,
+    .users-cancel {
+        min-height: 50px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px !important;
+        font-size: .86rem;
+        font-weight: 800;
+        text-decoration: none !important;
+    }
+
+    .users-submit {
+        border: 1px solid var(--users-blue-600) !important;
+        color: var(--users-white) !important;
+        background: linear-gradient(135deg,var(--users-blue-600),var(--users-blue-700)) !important;
+        box-shadow: 0 9px 22px rgba(40,120,189,.22);
+    }
+
+        .users-submit:hover {
+            color: var(--users-white) !important;
+            background: linear-gradient(135deg,var(--users-blue-700),var(--users-blue-800)) !important;
+            transform: translateY(-2px);
+        }
+
+    .users-cancel {
+        border: 1px solid var(--users-blue-200) !important;
+        color: var(--users-blue-700) !important;
+        background: var(--users-white) !important;
+    }
+
+        .users-cancel:hover {
+            color: var(--users-white) !important;
+            background: var(--users-blue-700) !important;
+            border-color: var(--users-blue-700) !important;
+            transform: translateY(-2px);
+        }
+
+    .users-aside {
+        padding: 30px;
+        border: 1px solid var(--users-border);
+        border-radius: 20px;
+        background: radial-gradient(circle at top right,rgba(104,165,216,.13),transparent 35%), var(--users-white);
+        box-shadow: var(--users-shadow-sm);
+    }
+
+    .users-aside-number {
+        margin-bottom: 20px;
+        color: var(--users-blue-100);
+        font-size: 5.2rem;
+        font-weight: 800;
+        letter-spacing: -.08em;
+        line-height: .85;
+    }
+
+    .users-aside h3 {
+        margin-bottom: 12px;
+        color: var(--users-blue-950);
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .users-aside p {
+        margin-bottom: 0;
+        color: var(--users-muted);
+        font-size: .88rem;
+        line-height: 1.7;
+    }
+
+    .users-details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .users-detail-item {
+        padding: 20px;
+        border: 1px solid var(--users-border);
+        border-radius: 14px;
+        background: var(--users-white);
+    }
+
+        .users-detail-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+    .users-detail-label {
+        margin-bottom: 7px;
+        color: var(--users-muted);
+        font-size: .74rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+    }
+
+    .users-detail-value {
+        margin: 0;
+        color: var(--users-blue-950);
+        font-size: .98rem;
+        font-weight: 800;
+        word-break: break-word;
+    }
+
+    .users-detail-contact {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        flex-wrap: wrap;
+    }
+
+    .users-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: .73rem;
+        font-weight: 800;
+    }
+
+        .users-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .users-status.active {
+            color: #1f6942;
+            background: #effaf4;
+            border: 1px solid #bfe7cf;
+        }
+
+        .users-status.inactive {
+            color: #842029;
+            background: #fff2f3;
+            border: 1px solid #f3c5ca;
+        }
+
+    .users-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--users-border);
+        border-radius: 20px;
+        background: var(--users-white);
+        box-shadow: var(--users-shadow-md);
+        overflow: hidden;
+    }
+
+    .users-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--users-border-light);
+    }
+
+        .users-table-heading h2 {
+            margin: 0;
+            color: var(--users-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .users-table-heading span {
+            color: var(--users-muted);
+            font-size: .78rem;
+        }
+
+    .users-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .users-table {
+        width: 100%;
+        min-width: 1180px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--users-text);
+    }
+
+        .users-table thead th {
+            padding: 15px 17px;
+            color: var(--users-blue-800);
+            background: var(--users-blue-50);
+            border-bottom: 1px solid var(--users-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .users-table tbody td {
+            padding: 16px 17px;
+            border-bottom: 1px solid var(--users-border-light);
+            font-size: .84rem;
+            vertical-align: middle;
+        }
+
+        .users-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+    .users-cedula {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border: 1px solid var(--users-blue-100);
+        border-radius: 999px;
+        color: var(--users-blue-700);
+        background: var(--users-blue-50);
+        font-size: .74rem;
+        font-weight: 800;
+    }
+
+    .users-person {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .users-avatar {
+        width: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: var(--users-white);
+        background: linear-gradient(135deg,var(--users-blue-500),var(--users-blue-800));
+        font-weight: 800;
+        box-shadow: 0 6px 14px rgba(40,120,189,.18);
+    }
+
+    .users-name {
+        color: var(--users-blue-950);
+        font-weight: 800;
+    }
+
+    .users-email-small {
+        color: var(--users-muted);
+        font-size: .77rem;
+    }
+
+    .users-action-group {
+        display: flex;
+        gap: 7px;
+    }
+
+        .users-action-group .btn {
+            min-height: 34px;
+            padding: 7px 11px;
+            border-radius: 8px !important;
+            font-size: .72rem;
+            font-weight: 800;
+        }
+
+    .users-detail-button {
+        color: var(--users-blue-700) !important;
+        background: var(--users-blue-50) !important;
+        border-color: var(--users-blue-200) !important;
+    }
+
+    .users-edit-button {
+        color: #966500 !important;
+        background: #fff9e8 !important;
+        border-color: #edd68d !important;
+    }
+
+    .users-dropdown-button {
+        color: var(--users-blue-700) !important;
+        background: var(--users-white) !important;
+        border-color: var(--users-blue-200) !important;
+    }
+
+    .users-empty {
+        padding: 55px 20px !important;
+        color: var(--users-muted);
+        text-align: center;
+    }
+
+    @@media (max-width: 991.98px) {
+        .users-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .users-hero-actions,
+        .users-primary-link {
+            width: 100%;
+        }
+
+        .users-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .users-aside {
+            order: -1;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .users-grid,
+        .users-details-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .users-field.full-width,
+        .users-detail-item.full-width {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .users-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .users-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .users-panel,
+        .users-aside {
+            padding: 24px 20px;
+            border-radius: 16px;
+        }
+
+        .users-actions {
+            flex-direction: column;
+        }
+
+        .users-submit,
+        .users-cancel {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="users-page">
+
+    @Html.AntiForgeryToken()
+
+    <section class="users-hero" data-word="USUARIOS">
+
+        <div class="users-heading">
+            <span class="users-eyebrow">Administración del sistema</span>
+
+            <h1>Usuarios</h1>
+
+            <p>
+                Consulta, revisa, edita e inactiva las cuentas registradas.
+            </p>
+        </div>
+
+        <div class="users-hero-actions">
+
+            @Html.ActionLink(
+                "Agregar usuario",
+                "AgregarUsuario",
+                "Usuarios",
+                null,
+                new { @class = "users-primary-link" })
+
+        </div>
+
+    </section>
+
+    <div class="users-alerts">
+
+        @if (TempData["MensajeExito"] != null)
+        {
+            <div class="alert alert-success">@TempData["MensajeExito"]</div>
+        }
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">@TempData["MensajeError"]</div>
+        }
+
     </div>
+
+    <section class="users-table-section">
+
+        <div class="users-table-heading">
+            <h2>Usuarios registrados</h2>
+            <span>Control de perfiles, roles y estado</span>
+        </div>
+
+        <div class="users-table-scroll">
+
+            <table class="users-table">
+
+                <thead>
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var u in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <span class="users-cedula">@u.Cedula</span>
+                                </td>
+
+                                <td>
+                                    <div class="users-person">
+                                        <div class="users-avatar">@u.Nombre.Substring(0, 1).ToUpper()</div>
+
+                                        <div>
+                                            <div class="users-name">@u.Nombre</div>
+                                            <div class="users-email-small">@u.CorreoElectronico</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>@u.ApellidoPaterno @u.ApellidoMaterno</td>
+                                <td>@u.CorreoElectronico</td>
+                                <td>@u.Telefono</td>
+                                <td>@u.DescripcionTipoUsuario</td>
+
+                                <td>
+                                    @if (u.IdEstado == 1)
+                                    {
+                                        <span class="users-status active">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="users-status inactive">Inactivo</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <div class="users-action-group">
+
+                                        @Html.ActionLink(
+                                            "Detalles",
+                                            "DetallesDelUsuario",
+                                            new { cedula = u.Cedula },
+                                            new { @class = "btn btn-sm btn-outline-info users-detail-button" })
+
+                                        @Html.ActionLink(
+                                            "Editar",
+                                            "EditarUsuario",
+                                            new { cedula = u.Cedula },
+                                            new { @class = "btn btn-sm btn-outline-warning users-edit-button" })
+
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-secondary dropdown-toggle users-dropdown-button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                            Acciones
+                                        </button>
+
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <button class="dropdown-item btn-inactivar-user text-danger"
+                                                        data-cedula="@u.Cedula">
+                                                    Inactivar usuario
+                                                </button>
+                                            </li>
+
+                                            <li><hr class="dropdown-divider" /></li>
+
+                                            <li>
+                                                <a class="dropdown-item"
+                                                   href="@Url.Action("DetallesDelUsuario","Usuarios", new { cedula = u.Cedula })">
+                                                    Ver perfil
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="users-empty">
+                                No hay usuarios registrados
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>
 
 <script>

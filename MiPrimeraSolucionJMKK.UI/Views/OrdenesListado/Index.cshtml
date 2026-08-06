@@ -4,88 +4,736 @@
     ViewBag.Title = "Ordenes";
 }
 
-<div class="container py-3">
-    <div class="card-modern">
-        <h2>Ordenes de Compra</h2>
+<style>
+    :root {
+        --orders-blue-950: #06142f;
+        --orders-blue-900: #0a1f46;
+        --orders-blue-800: #10376b;
+        --orders-blue-700: #185695;
+        --orders-blue-600: #2878bd;
+        --orders-blue-500: #4298d4;
+        --orders-blue-400: #68a5d8;
+        --orders-blue-300: #9acced;
+        --orders-blue-200: #c9e5f6;
+        --orders-blue-100: #e7f3fb;
+        --orders-blue-50: #f5faff;
+        --orders-white: #ffffff;
+        --orders-text: #14263a;
+        --orders-muted: #718397;
+        --orders-border: #dce9f3;
+        --orders-border-light: #eaf1f7;
+        --orders-shadow-sm: 0 7px 22px rgba(6, 20, 47, .08);
+        --orders-shadow-md: 0 18px 42px rgba(6, 20, 47, .12);
+        --orders-shadow-lg: 0 28px 65px rgba(6, 20, 47, .16);
+    }
 
-@if (TempData["MensajeExitoOrden"] != null)
-{
-    <div class="alert alert-success">@TempData["MensajeExitoOrden"]</div>
-}
+    .orders-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
-@if (TempData["MensajeError"] != null)
-{
-    <div class="alert alert-danger">@TempData["MensajeError"]</div>
-}
+    /* =====================================================
+       HERO
+       ===================================================== */
 
-<div class="mb-3">
-    @Html.ActionLink("Crear Orden", "Crear", "Ordenes", null, new { @class = "btn btn-pubrock btn-primary" })
-</div>
+    .orders-hero {
+        position: relative;
+        min-height: 245px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 85% 20%, rgba(104, 165, 216, .25), transparent 30%), radial-gradient(circle at 15% 90%, rgba(40, 120, 189, .18), transparent 32%), linear-gradient(135deg, var(--orders-blue-950), var(--orders-blue-800));
+        box-shadow: var(--orders-shadow-lg);
+        overflow: hidden;
+    }
 
-<form method="get" action="@Url.Action("Search","OrdenesListado")" class="row g-2 mb-3">
-    <div class="col-auto">
-        <input type="text" name="termino" class="form-control" placeholder="Numero o cliente" />
-    </div>
-    <div class="col-auto">
-        <input type="date" name="fecha" class="form-control" />
-    </div>
-    <div class="col-auto">
-        <select name="estado" class="form-control">
-            <option value="">Todos</option>
-            <option value="1">Pendiente</option>
-            <option value="2">Confirmada</option>
-            <option value="3">Preparando</option>
-            <option value="4">En camino</option>
-            <option value="5">Entregada</option>
-            <option value="6">Cancelada</option>
-        </select>
-    </div>
-    <div class="col-auto">
-        <button class="btn btn-secondary" type="submit">Buscar</button>
-    </div>
-</form>
-
-<table class="table-modern">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Fecha</th>
-            <th>Observaciones</th>
-            <th>Items</th>
-            <th>Estado</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var o in Model)
-        {
-            <tr>
-                <td>@o.IdOrden</td>
-                <td>@o.FechaOrden.ToString("dd/MM/yyyy")</td>
-                <td>@o.Observaciones</td>
-                <td>@o.CantidadItems</td>
-                <td>
-                    @o.EstadoOrdenDescripcion
-                    <div class="mt-1">
-                        <div class="btn-group" role="group">
-                            @Html.ActionLink("Editar", "Editar", "Ordenes", new { id = o.IdOrden }, new { @class = "btn btn-sm btn-outline-warning" })
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Acciones</button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    @using (Html.BeginForm("Eliminar", "OrdenesListado", FormMethod.Post, new { @class = "m-0 p-0" }))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        @Html.Hidden("id", o.IdOrden)
-                                        <button type="submit" class="dropdown-item text-danger">Eliminar orden</button>
-                                    }
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+        .orders-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255, 255, 255, .035);
+            border-radius: 50%;
         }
-    </tbody>
 
-</table>
+        .orders-hero::after {
+            content: "ORDENES";
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255, 255, 255, .035);
+            font-size: clamp(4rem, 8vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .orders-heading,
+    .orders-hero-actions {
+        position: relative;
+        z-index: 2;
+    }
+
+    .orders-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--orders-blue-400);
+        color: var(--orders-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .orders-heading h1 {
+        margin: 0 0 13px;
+        color: var(--orders-white) !important;
+        font-size: clamp(2.3rem, 4vw, 4.1rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .orders-heading p {
+        max-width: 650px;
+        margin: 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .orders-create-button {
+        min-width: 180px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, .52);
+        border-radius: 999px;
+        color: var(--orders-blue-950) !important;
+        background: var(--orders-white);
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, .14);
+    }
+
+        .orders-create-button:hover {
+            color: var(--orders-white) !important;
+            background: var(--orders-blue-500);
+            border-color: var(--orders-blue-500);
+            transform: translateY(-2px);
+        }
+
+    /* =====================================================
+       ALERTAS
+       ===================================================== */
+
+    .orders-alerts {
+        margin-top: 24px;
+    }
+
+        .orders-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6, 20, 47, .05);
+        }
+
+        .orders-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .orders-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    /* =====================================================
+       FILTROS
+       ===================================================== */
+
+    .orders-filters {
+        margin-top: 24px;
+        padding: 22px 24px;
+        border: 1px solid var(--orders-border);
+        border-radius: 18px;
+        background: linear-gradient( 180deg, var(--orders-white), var(--orders-blue-50) );
+        box-shadow: var(--orders-shadow-sm);
+    }
+
+    .orders-filters-header {
+        margin-bottom: 18px;
+    }
+
+        .orders-filters-header h2 {
+            margin: 0 0 5px;
+            color: var(--orders-blue-950);
+            font-size: 1.02rem;
+            font-weight: 800;
+        }
+
+        .orders-filters-header p {
+            margin: 0;
+            color: var(--orders-muted);
+            font-size: .8rem;
+        }
+
+    .orders-filter-form {
+        display: grid !important;
+        grid-template-columns: minmax(180px, 1.2fr) minmax(160px, .8fr) minmax(180px, .9fr) 110px;
+        gap: 12px !important;
+        margin: 0 !important;
+    }
+
+        .orders-filter-form .form-control {
+            min-height: 46px;
+            padding: 11px 14px;
+            border: 1px solid var(--orders-border);
+            border-radius: 10px;
+            color: var(--orders-text);
+            background: var(--orders-white);
+            box-shadow: 0 2px 8px rgba(6, 20, 47, .04);
+        }
+
+            .orders-filter-form .form-control:hover {
+                border-color: var(--orders-blue-300);
+            }
+
+            .orders-filter-form .form-control:focus {
+                border-color: var(--orders-blue-500);
+                box-shadow: 0 0 0 4px rgba(66, 152, 212, .11);
+            }
+
+    .orders-search-button {
+        min-height: 46px;
+        border: 1px solid var(--orders-blue-700) !important;
+        border-radius: 10px !important;
+        color: var(--orders-white) !important;
+        background: var(--orders-blue-700) !important;
+        font-size: .8rem;
+        font-weight: 800;
+    }
+
+        .orders-search-button:hover {
+            background: var(--orders-blue-800) !important;
+            border-color: var(--orders-blue-800) !important;
+        }
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    .orders-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--orders-border);
+        border-radius: 20px;
+        background: var(--orders-white);
+        box-shadow: var(--orders-shadow-md);
+        overflow: hidden;
+    }
+
+    .orders-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--orders-border-light);
+    }
+
+        .orders-table-heading h2 {
+            margin: 0;
+            color: var(--orders-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .orders-table-heading span {
+            color: var(--orders-muted);
+            font-size: .78rem;
+        }
+
+    .orders-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .orders-table {
+        width: 100%;
+        min-width: 900px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--orders-text);
+    }
+
+        .orders-table thead th {
+            padding: 15px 17px;
+            color: var(--orders-blue-800);
+            background: var(--orders-blue-50);
+            border-bottom: 1px solid var(--orders-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .orders-table tbody td {
+            padding: 16px 17px;
+            border-bottom: 1px solid var(--orders-border-light);
+            font-size: .86rem;
+            vertical-align: middle;
+        }
+
+        .orders-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+    .orders-id {
+        display: inline-flex;
+        align-items: center;
+        min-height: 29px;
+        padding: 5px 10px;
+        border: 1px solid var(--orders-blue-100);
+        border-radius: 999px;
+        color: var(--orders-blue-700);
+        background: var(--orders-blue-50);
+        font-size: .75rem;
+        font-weight: 800;
+    }
+
+    .orders-date {
+        color: var(--orders-blue-900);
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .orders-observations {
+        max-width: 300px;
+        color: var(--orders-muted);
+        line-height: 1.55;
+    }
+
+    .orders-items {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        min-height: 30px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        color: var(--orders-blue-800);
+        background: var(--orders-blue-100);
+        font-weight: 800;
+    }
+
+    .orders-status-cell {
+        min-width: 210px;
+    }
+
+    .orders-status-name {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        border: 1px solid var(--orders-blue-200);
+        border-radius: 999px;
+        color: var(--orders-blue-800);
+        background: var(--orders-blue-50);
+        font-size: .72rem;
+        font-weight: 800;
+    }
+
+        .orders-status-name::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--orders-blue-500);
+        }
+
+    /* =====================================================
+       ACCIONES
+       ===================================================== */
+
+    .orders-actions {
+        margin-top: 9px;
+    }
+
+        .orders-actions .btn-group {
+            gap: 7px;
+        }
+
+    .orders-edit-button,
+    .orders-dropdown-button {
+        min-height: 34px;
+        padding: 7px 12px !important;
+        border-radius: 8px !important;
+        font-size: .73rem !important;
+        font-weight: 800 !important;
+    }
+
+    .orders-edit-button {
+        color: #966500 !important;
+        background: #fff9e8 !important;
+        border-color: #edd68d !important;
+    }
+
+        .orders-edit-button:hover {
+            color: #725000 !important;
+            background: #fff1c5 !important;
+            border-color: #dfbd52 !important;
+        }
+
+    .orders-dropdown-button {
+        color: var(--orders-blue-700) !important;
+        background: var(--orders-white) !important;
+        border-color: var(--orders-blue-200) !important;
+    }
+
+        .orders-dropdown-button:hover {
+            color: var(--orders-white) !important;
+            background: var(--orders-blue-700) !important;
+            border-color: var(--orders-blue-700) !important;
+        }
+
+    .orders-actions .dropdown-menu {
+        min-width: 190px;
+        padding: 7px;
+        border: 1px solid var(--orders-border);
+        border-radius: 11px;
+        box-shadow: var(--orders-shadow-md);
+    }
+
+    .orders-actions .dropdown-item {
+        padding: 10px 12px;
+        border-radius: 7px;
+        font-size: .8rem;
+        font-weight: 700;
+    }
+
+        .orders-actions .dropdown-item.text-danger:hover {
+            color: #8c1f29 !important;
+            background: #fff0f2;
+        }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 991.98px) {
+        .orders-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .orders-hero-actions,
+        .orders-create-button {
+            width: 100%;
+        }
+
+        .orders-filter-form {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .orders-search-button {
+            width: 100%;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .orders-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .orders-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .orders-filters {
+            padding: 18px;
+            border-radius: 15px;
+        }
+
+        .orders-filter-form {
+            grid-template-columns: 1fr;
+        }
+
+        .orders-table-section {
+            border-radius: 16px;
+        }
+    }
+</style>
+
+<div class="orders-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <section class="orders-hero">
+
+        <div class="orders-heading">
+
+            <span class="orders-eyebrow">
+                Gestión de compras
+            </span>
+
+            <h1>
+                Órdenes de compra
+            </h1>
+
+            <p>
+                Consulta, filtra y administra todas las órdenes registradas
+                en el sistema.
+            </p>
+
+        </div>
+
+        <div class="orders-hero-actions">
+
+            @Html.ActionLink(
+                "Crear orden",
+                "Crear",
+                "Ordenes",
+                null,
+                new
+                {
+                    @class = "orders-create-button"
+                })
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         ALERTAS
+         ===================================================== -->
+    <div class="orders-alerts">
+
+        @if (TempData["MensajeExitoOrden"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["MensajeExitoOrden"]
+            </div>
+        }
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
+            </div>
+        }
+
     </div>
+
+    <!-- =====================================================
+         FILTROS
+         ===================================================== -->
+    <section class="orders-filters">
+
+        <div class="orders-filters-header">
+
+            <h2>
+                Buscar órdenes
+            </h2>
+
+            <p>
+                Filtra por número, cliente, fecha o estado.
+            </p>
+
+        </div>
+
+        <form method="get"
+              action="@Url.Action("Search","OrdenesListado")"
+              class="orders-filter-form">
+
+            <input type="text"
+                   name="termino"
+                   class="form-control"
+                   placeholder="Número o cliente" />
+
+            <input type="date"
+                   name="fecha"
+                   class="form-control" />
+
+            <select name="estado"
+                    class="form-control">
+
+                <option value="">Todos</option>
+                <option value="1">Pendiente</option>
+                <option value="2">Confirmada</option>
+                <option value="3">Preparando</option>
+                <option value="4">En camino</option>
+                <option value="5">Entregada</option>
+                <option value="6">Cancelada</option>
+
+            </select>
+
+            <button class="btn btn-secondary orders-search-button"
+                    type="submit">
+                Buscar
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+    <section class="orders-table-section">
+
+        <div class="orders-table-heading">
+
+            <h2>
+                Órdenes registradas
+            </h2>
+
+            <span>
+                Seguimiento de compras y estados
+            </span>
+
+        </div>
+
+        <div class="orders-table-scroll">
+
+            <table class="orders-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Observaciones</th>
+                        <th>Items</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var o in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                <span class="orders-id">
+                                    @o.IdOrden
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="orders-date">
+                                    @o.FechaOrden.ToString("dd/MM/yyyy")
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="orders-observations">
+                                    @o.Observaciones
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="orders-items">
+                                    @o.CantidadItems
+                                </span>
+                            </td>
+
+                            <td class="orders-status-cell">
+
+                                <span class="orders-status-name">
+                                    @o.EstadoOrdenDescripcion
+                                </span>
+
+                                <div class="orders-actions">
+
+                                    <div class="btn-group"
+                                         role="group">
+
+                                        @Html.ActionLink(
+    "Editar",
+    "Editar",
+    "Ordenes",
+    new { id = o.IdOrden },
+    new
+    {
+        @class = "btn btn-sm btn-outline-warning orders-edit-button"
+    }
+)
+
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle orders-dropdown-button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                            Acciones
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+
+                                            <li>
+
+                                                @using (Html.BeginForm(
+                                                    "Eliminar",
+                                                    "OrdenesListado",
+                                                    FormMethod.Post,
+                                                    new
+                                                    {
+                                                        @class = "m-0 p-0"
+                                                    }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+
+                                                    @Html.Hidden(
+                                                        "id",
+                                                        o.IdOrden
+                                                    )
+
+                                                    <button type="submit"
+                                                            class="dropdown-item text-danger">
+                                                        Eliminar orden
+                                                    </button>
+                                                }
+
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>

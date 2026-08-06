@@ -4,82 +4,717 @@
     ViewBag.Title = "Promociones";
 }
 
-<div class="container py-5">
-    <div class="card-modern p-3">
+<style>
+    :root {
+        --promo-blue-950: #06142f;
+        --promo-blue-900: #0a1f46;
+        --promo-blue-800: #10376b;
+        --promo-blue-700: #185695;
+        --promo-blue-600: #2878bd;
+        --promo-blue-500: #4298d4;
+        --promo-blue-400: #68a5d8;
+        --promo-blue-300: #9acced;
+        --promo-blue-200: #c9e5f6;
+        --promo-blue-100: #e7f3fb;
+        --promo-blue-50: #f5faff;
+        --promo-white: #ffffff;
+        --promo-text: #14263a;
+        --promo-muted: #718397;
+        --promo-border: #dce9f3;
+        --promo-border-light: #eaf1f7;
+        --promo-shadow-sm: 0 7px 22px rgba(6,20,47,.08);
+        --promo-shadow-md: 0 18px 42px rgba(6,20,47,.12);
+        --promo-shadow-lg: 0 28px 65px rgba(6,20,47,.16);
+    }
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Promociones</h2>
+    .promo-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
 
+    .promo-hero {
+        position: relative;
+        min-height: 230px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 28px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 85% 20%, rgba(104,165,216,.25), transparent 30%), radial-gradient(circle at 15% 90%, rgba(40,120,189,.18), transparent 32%), linear-gradient(135deg, var(--promo-blue-950), var(--promo-blue-800));
+        box-shadow: var(--promo-shadow-lg);
+        overflow: hidden;
+    }
+
+        .promo-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255,255,255,.035);
+            border-radius: 50%;
+        }
+
+        .promo-hero::after {
+            content: attr(data-word);
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255,255,255,.035);
+            font-size: clamp(4rem,8vw,8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .promo-heading,
+    .promo-hero-actions {
+        position: relative;
+        z-index: 2;
+    }
+
+    .promo-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--promo-blue-400);
+        color: var(--promo-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .promo-heading h1 {
+        margin: 0 0 13px;
+        color: var(--promo-white) !important;
+        font-size: clamp(2.3rem,4vw,4.1rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .promo-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: rgba(255,255,255,.74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .promo-primary-link {
+        min-width: 185px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,.52);
+        border-radius: 999px;
+        color: var(--promo-blue-950) !important;
+        background: var(--promo-white);
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0,0,0,.14);
+    }
+
+        .promo-primary-link:hover {
+            color: var(--promo-white) !important;
+            background: var(--promo-blue-500);
+            border-color: var(--promo-blue-500);
+            transform: translateY(-2px);
+        }
+
+    .promo-alerts {
+        margin-top: 24px;
+    }
+
+        .promo-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6,20,47,.05);
+        }
+
+        .promo-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .promo-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+        .promo-alerts .alert-info {
+            color: var(--promo-blue-900);
+            background: var(--promo-blue-50);
+            border-color: var(--promo-blue-200);
+        }
+
+    .promo-shell {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: minmax(0,1.35fr) minmax(260px,.65fr);
+        gap: 24px;
+    }
+
+    .promo-panel {
+        padding: 32px;
+        border: 1px solid var(--promo-border);
+        border-radius: 20px;
+        background: linear-gradient(180deg,var(--promo-white),var(--promo-blue-50));
+        box-shadow: var(--promo-shadow-md);
+    }
+
+    .promo-panel-header {
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--promo-border-light);
+    }
+
+        .promo-panel-header h2 {
+            margin: 0 0 7px;
+            color: var(--promo-blue-950);
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .promo-panel-header p {
+            margin: 0;
+            color: var(--promo-muted);
+            font-size: .86rem;
+            line-height: 1.6;
+        }
+
+    .promo-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .promo-field {
+        margin-bottom: 18px;
+    }
+
+        .promo-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .promo-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--promo-text);
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .promo-field .form-control,
+        .promo-field .form-select {
+            min-height: 50px;
+            padding: 12px 15px;
+            color: var(--promo-text);
+            background: var(--promo-white);
+            border: 1px solid var(--promo-border);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(6,20,47,.04);
+        }
+
+        .promo-field textarea.form-control {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        .promo-field .form-control:hover,
+        .promo-field .form-select:hover {
+            border-color: var(--promo-blue-300);
+        }
+
+        .promo-field .form-control:focus,
+        .promo-field .form-select:focus {
+            border-color: var(--promo-blue-500);
+            box-shadow: 0 0 0 4px rgba(66,152,212,.12);
+        }
+
+        .promo-field .text-danger {
+            display: block;
+            margin-top: 6px;
+            font-size: .78rem;
+        }
+
+    .promo-actions {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .promo-submit,
+    .promo-cancel {
+        min-height: 50px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px !important;
+        font-size: .86rem;
+        font-weight: 800;
+        text-decoration: none !important;
+    }
+
+    .promo-submit {
+        border: 1px solid var(--promo-blue-600) !important;
+        color: var(--promo-white) !important;
+        background: linear-gradient(135deg,var(--promo-blue-600),var(--promo-blue-700)) !important;
+        box-shadow: 0 9px 22px rgba(40,120,189,.22);
+    }
+
+        .promo-submit:hover {
+            color: var(--promo-white) !important;
+            background: linear-gradient(135deg,var(--promo-blue-700),var(--promo-blue-800)) !important;
+            transform: translateY(-2px);
+        }
+
+    .promo-cancel {
+        border: 1px solid var(--promo-blue-200) !important;
+        color: var(--promo-blue-700) !important;
+        background: var(--promo-white) !important;
+    }
+
+        .promo-cancel:hover {
+            color: var(--promo-white) !important;
+            background: var(--promo-blue-700) !important;
+            border-color: var(--promo-blue-700) !important;
+            transform: translateY(-2px);
+        }
+
+    .promo-aside {
+        padding: 30px;
+        border: 1px solid var(--promo-border);
+        border-radius: 20px;
+        background: radial-gradient(circle at top right,rgba(104,165,216,.13),transparent 35%), var(--promo-white);
+        box-shadow: var(--promo-shadow-sm);
+    }
+
+    .promo-aside-number {
+        margin-bottom: 20px;
+        color: var(--promo-blue-100);
+        font-size: 5.2rem;
+        font-weight: 800;
+        letter-spacing: -.08em;
+        line-height: .85;
+    }
+
+    .promo-aside h3 {
+        margin-bottom: 12px;
+        color: var(--promo-blue-950);
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .promo-aside p {
+        margin-bottom: 0;
+        color: var(--promo-muted);
+        font-size: .88rem;
+        line-height: 1.7;
+    }
+
+    .promo-search-section {
+        margin-top: 24px;
+        padding: 22px 24px;
+        border: 1px solid var(--promo-border);
+        border-radius: 18px;
+        background: linear-gradient(180deg,var(--promo-white),var(--promo-blue-50));
+        box-shadow: var(--promo-shadow-sm);
+    }
+
+    .promo-search-header {
+        margin-bottom: 16px;
+    }
+
+        .promo-search-header h2 {
+            margin: 0 0 5px;
+            color: var(--promo-blue-950);
+            font-size: 1.02rem;
+            font-weight: 800;
+        }
+
+        .promo-search-header p {
+            margin: 0;
+            color: var(--promo-muted);
+            font-size: .8rem;
+        }
+
+    .promo-search {
+        max-width: 560px;
+        display: flex;
+        border: 1px solid var(--promo-border);
+        border-radius: 999px;
+        background: var(--promo-white);
+        box-shadow: 0 3px 10px rgba(6,20,47,.045);
+        overflow: hidden;
+    }
+
+        .promo-search:focus-within {
+            border-color: var(--promo-blue-400);
+            box-shadow: 0 0 0 4px rgba(66,152,212,.10);
+        }
+
+        .promo-search .form-control {
+            min-height: 46px;
+            padding: 11px 18px;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .promo-search .btn {
+            min-width: 115px;
+            border: 0 !important;
+            border-radius: 999px !important;
+            color: var(--promo-white) !important;
+            background: var(--promo-blue-700) !important;
+            font-size: .8rem;
+            font-weight: 800;
+        }
+
+            .promo-search .btn:hover {
+                background: var(--promo-blue-800) !important;
+            }
+
+    .promo-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--promo-border);
+        border-radius: 20px;
+        background: var(--promo-white);
+        box-shadow: var(--promo-shadow-md);
+        overflow: hidden;
+    }
+
+    .promo-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--promo-border-light);
+    }
+
+        .promo-table-heading h2 {
+            margin: 0;
+            color: var(--promo-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .promo-table-heading span {
+            color: var(--promo-muted);
+            font-size: .78rem;
+        }
+
+    .promo-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .promo-table {
+        width: 100%;
+        min-width: 1120px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--promo-text);
+    }
+
+        .promo-table thead th {
+            padding: 15px 17px;
+            color: var(--promo-blue-800);
+            background: var(--promo-blue-50);
+            border-bottom: 1px solid var(--promo-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .promo-table tbody td {
+            padding: 16px 17px;
+            border-bottom: 1px solid var(--promo-border-light);
+            font-size: .84rem;
+            vertical-align: middle;
+        }
+
+        .promo-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+    .promo-id {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border: 1px solid var(--promo-blue-100);
+        border-radius: 999px;
+        color: var(--promo-blue-700);
+        background: var(--promo-blue-50);
+        font-size: .74rem;
+        font-weight: 800;
+    }
+
+    .promo-name {
+        color: var(--promo-blue-950);
+        font-weight: 800;
+    }
+
+    .promo-description {
+        max-width: 310px;
+        color: var(--promo-muted);
+        line-height: 1.5;
+    }
+
+    .promo-discount {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 58px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        color: var(--promo-blue-800);
+        background: var(--promo-blue-100);
+        font-weight: 800;
+    }
+
+    .promo-period {
+        color: var(--promo-blue-900);
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+        .promo-period small {
+            color: var(--promo-muted);
+            font-weight: 600;
+        }
+
+    .promo-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: .73rem;
+        font-weight: 800;
+    }
+
+        .promo-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .promo-status.active {
+            color: #1f6942;
+            background: #effaf4;
+            border: 1px solid #bfe7cf;
+        }
+
+        .promo-status.inactive {
+            color: #842029;
+            background: #fff2f3;
+            border: 1px solid #f3c5ca;
+        }
+
+    .promo-row-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+        .promo-row-actions .btn {
+            min-height: 34px;
+            padding: 7px 11px;
+            border-radius: 8px !important;
+            font-size: .72rem;
+            font-weight: 800;
+        }
+
+    .promo-edit-button {
+        color: #966500 !important;
+        background: #fff9e8 !important;
+        border-color: #edd68d !important;
+    }
+
+    .promo-disable-button {
+        color: #9a2531 !important;
+        background: #fff1f2 !important;
+        border-color: #efbdc2 !important;
+    }
+
+    .promo-disabled-button {
+        color: var(--promo-muted) !important;
+        background: #f1f4f7 !important;
+        border-color: var(--promo-border) !important;
+        opacity: .8;
+    }
+
+    .promo-empty {
+        padding: 55px 20px !important;
+        color: var(--promo-muted);
+        text-align: center;
+    }
+
+    @@media (max-width: 991.98px) {
+        .promo-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .promo-hero-actions,
+        .promo-primary-link {
+            width: 100%;
+        }
+
+        .promo-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .promo-aside {
+            order: -1;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .promo-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .promo-field.full-width {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .promo-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .promo-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .promo-panel,
+        .promo-aside {
+            padding: 24px 20px;
+            border-radius: 16px;
+        }
+
+        .promo-actions {
+            flex-direction: column;
+        }
+
+        .promo-submit,
+        .promo-cancel {
+            width: 100%;
+        }
+
+        .promo-search {
+            flex-direction: column;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            overflow: visible;
+        }
+
+            .promo-search .form-control {
+                margin-bottom: 8px;
+                border: 1px solid var(--promo-border) !important;
+                border-radius: 10px !important;
+                background: var(--promo-white) !important;
+            }
+
+            .promo-search .btn {
+                width: 100%;
+                min-height: 44px;
+                border-radius: 10px !important;
+            }
+    }
+</style>
+
+<div class="promo-page">
+
+    <section class="promo-hero" data-word="PROMOS">
+
+        <div class="promo-heading">
+            <span class="promo-eyebrow">Gestión comercial</span>
+
+            <h1>Promociones</h1>
+
+            <p>
+                Consulta, busca, edita y desactiva las promociones registradas.
+            </p>
+        </div>
+
+        <div class="promo-hero-actions">
             @Html.ActionLink(
                 "Nueva Promocion",
                 "AgregarPromocion",
                 "Promocion",
                 null,
-                new { @class = "btn btn-primary" }
+                new { @class = "promo-primary-link" }
             )
         </div>
 
+    </section>
+
+    <section class="promo-search-section">
+
+        <div class="promo-search-header">
+            <h2>Buscar promociones</h2>
+            <p>Filtra por nombre de promoción o producto.</p>
+        </div>
+
         <form method="post"
-              action="@Url.Action("Buscar", "Promocion")"
-              class="mb-4">
+              action="@Url.Action("Buscar", "Promocion")">
 
-            @Html.AntiForgeryToken()
+            <div class="promo-search">
 
-            <div class="row g-2 align-items-end">
+                <input type="text"
+                       name="criterio"
+                       class="form-control form-control-sm"
+                       placeholder="Buscar por nombre de promocion o producto" />
 
-                <div class="col-md-6">
-
-                    <label class="form-label fw-semibold">
-                        Promoción o producto
-                    </label>
-
-                    <input type="text"
-                           name="criterio"
-                           value="@ViewBag.Criterio"
-                           class="form-control"
-                           placeholder="Buscar por nombre de promoción o producto" />
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <label class="form-label fw-semibold">
-                        Estado
-                    </label>
-
-                    <select name="idEstado"
-                            class="form-select">
-
-                        <option value="">
-                            Todos los estados
-                        </option>
-
-                        <option value="1"
-                                @(Convert.ToString(ViewBag.IdEstado) == "1" ? "selected" : "")>
-                            Activa
-                        </option>
-
-                        <option value="2"
-                                @(Convert.ToString(ViewBag.IdEstado) == "2" ? "selected" : "")>
-                            Inactiva
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <button class="btn btn-primary w-100"
-                            type="submit">
-                        Consultar
-                    </button>
-
-                </div>
+                <button class="btn btn-outline-secondary btn-sm"
+                        type="submit">
+                    Consultar
+                </button>
 
             </div>
 
         </form>
+
+    </section>
+
+    <div class="promo-alerts">
 
         @if (TempData["MensajeExito"] != null)
         {
@@ -102,104 +737,140 @@
             </div>
         }
 
-    <table class="table table-hover table-bordered">
+    </div>
 
-        <thead style="background-color:#1f6f8b; color:white;">
-            <tr>
-                <th>ID</th>
-                <th>Promocion</th>
-                <th>Descripcion</th>
-                <th>Descuento</th>
-                <th>Vigencia</th>
-                <th>Producto</th>
-                <th>Estado</th>
-                <th style="width:220px;">Acciones</th>
-            </tr>
-        </thead>
+    <section class="promo-table-section">
 
-        <tbody>
+        <div class="promo-table-heading">
+            <h2>Promociones registradas</h2>
+            <span>Control de descuento, vigencia y estado</span>
+        </div>
 
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
-                {
+        <div class="promo-table-scroll">
+
+            <table class="promo-table">
+
+                <thead>
                     <tr>
+                        <th>ID</th>
+                        <th>Promocion</th>
+                        <th>Descripcion</th>
+                        <th>Descuento</th>
+                        <th>Vigencia</th>
+                        <th>Producto</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
 
-                        <td>@item.IdPromocion</td>
+                <tbody>
 
-                        <td>@item.NombrePromocion</td>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
 
-                        <td>
-                            @(item.Descripcion != null && item.Descripcion.Length > 40
-                            ? item.Descripcion.Substring(0, 40) + "..."
-                            : item.Descripcion)
-                        </td>
+                                <td>
+                                    <span class="promo-id">@item.IdPromocion</span>
+                                </td>
 
-                        <td>@item.PorcentajeDescuento %</td>
+                                <td>
+                                    <span class="promo-name">@item.NombrePromocion</span>
+                                </td>
 
-                        <td>
-                            @item.FechaInicio.ToString("dd/MM/yyyy")
-                            <br />
-                            <small>al @item.FechaFin.ToString("dd/MM/yyyy")</small>
-                        </td>
+                                <td>
+                                    <div class="promo-description">
+                                        @(item.Descripcion != null && item.Descripcion.Length > 40
+                                        ? item.Descripcion.Substring(0, 40) + "..."
+                                        : item.Descripcion)
+                                    </div>
+                                </td>
 
-                        <td>@item.IdProducto</td>
+                                <td>
+                                    <span class="promo-discount">
+                                        @item.PorcentajeDescuento %
+                                    </span>
+                                </td>
 
-                        <td>
-                            @(item.IdEstado == 1 ? "Activa" : "Inactiva")
-                        </td>
+                                <td>
+                                    <div class="promo-period">
+                                        @item.FechaInicio.ToString("dd/MM/yyyy")
+                                        <br />
+                                        <small>al @item.FechaFin.ToString("dd/MM/yyyy")</small>
+                                    </div>
+                                </td>
 
-                        <td>
+                                <td>@item.IdProducto</td>
 
-                            <div class="d-flex gap-2 align-items-center">
-
-                                @Html.ActionLink(
-                                    "Editar",
-                                    "EditarPromocion",
-                                    "Promocion",
-                                    new { id = item.IdPromocion },
-                                    new { @class = "btn btn-sm btn-outline-warning" }
-                                )
-
-                                @using (Html.BeginForm("DesactivarPromocion", "Promocion", FormMethod.Post, new { @class = "m-0 p-0" }))
-                                {
-                                    @Html.AntiForgeryToken()
-
-                                    @Html.Hidden("id", item.IdPromocion)
-
-                                    if (item.IdEstado == 1)
+                                <td>
+                                    @if (item.IdEstado == 1)
                                     {
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            Desactivar
-                                        </button>
+                                        <span class="promo-status active">Activa</span>
                                     }
                                     else
                                     {
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" disabled>
-                                            Inactiva
-                                        </button>
+                                        <span class="promo-status inactive">Inactiva</span>
                                     }
-                                }
+                                </td>
 
-                            </div>
+                                <td>
 
-                        </td>
+                                    <div class="promo-row-actions">
 
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="8" class="text-center text-muted">
-                        No hay promociones registradas.
-                    </td>
-                </tr>
-            }
+                                        @Html.ActionLink(
+                                            "Editar",
+                                            "EditarPromocion",
+                                            "Promocion",
+                                            new { id = item.IdPromocion },
+                                            new { @class = "btn btn-sm btn-outline-warning promo-edit-button" }
+                                        )
 
-        </tbody>
+                                        @using (Html.BeginForm("DesactivarPromocion", "Promocion", FormMethod.Post, new { @class = "m-0 p-0" }))
+                                        {
+                                            @Html.AntiForgeryToken()
 
-    </table>
+                                            @Html.Hidden("id", item.IdPromocion)
 
-    </div>
+                                            if (item.IdEstado == 1)
+                                            {
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger promo-disable-button">
+                                                    Desactivar
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-secondary promo-disabled-button"
+                                                        disabled>
+                                                    Inactiva
+                                                </button>
+                                            }
+                                        }
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="promo-empty">
+                                No hay promociones registradas.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>

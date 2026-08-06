@@ -4,96 +4,724 @@
     ViewBag.Title = "Publicaciones";
 }
 
-<div class="container py-5">
-    <div class="card-modern p-3">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Publicaciones</h2>
+<style>
+    :root {
+        --marketing-blue-950: #06142f;
+        --marketing-blue-900: #0a1f46;
+        --marketing-blue-800: #10376b;
+        --marketing-blue-700: #185695;
+        --marketing-blue-600: #2878bd;
+        --marketing-blue-500: #4298d4;
+        --marketing-blue-400: #68a5d8;
+        --marketing-blue-300: #9acced;
+        --marketing-blue-200: #c9e5f6;
+        --marketing-blue-100: #e7f3fb;
+        --marketing-blue-50: #f5faff;
+        --marketing-white: #ffffff;
+        --marketing-text: #14263a;
+        --marketing-muted: #718397;
+        --marketing-border: #dce9f3;
+        --marketing-border-light: #eaf1f7;
+        --marketing-shadow-sm: 0 7px 22px rgba(6,20,47,.08);
+        --marketing-shadow-md: 0 18px 42px rgba(6,20,47,.12);
+        --marketing-shadow-lg: 0 28px 65px rgba(6,20,47,.16);
+    }
+
+    .marketing-page {
+        width: 100%;
+        padding: 18px 0 35px;
+    }
+
+    .marketing-hero {
+        position: relative;
+        min-height: 230px;
+        padding: 42px 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 28px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 85% 20%, rgba(104,165,216,.25), transparent 30%), radial-gradient(circle at 15% 90%, rgba(40,120,189,.18), transparent 32%), linear-gradient(135deg, var(--marketing-blue-950), var(--marketing-blue-800));
+        box-shadow: var(--marketing-shadow-lg);
+        overflow: hidden;
+    }
+
+        .marketing-hero::before {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            right: -140px;
+            top: -160px;
+            border: 54px solid rgba(255,255,255,.035);
+            border-radius: 50%;
+        }
+
+        .marketing-hero::after {
+            content: attr(data-word);
+            position: absolute;
+            right: 30px;
+            bottom: -12px;
+            color: rgba(255,255,255,.035);
+            font-size: clamp(4rem,8vw,8rem);
+            font-weight: 800;
+            letter-spacing: -.08em;
+            line-height: .8;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+    .marketing-heading,
+    .marketing-hero-actions {
+        position: relative;
+        z-index: 2;
+    }
+
+    .marketing-eyebrow {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--marketing-blue-400);
+        color: var(--marketing-blue-100);
+        font-size: .7rem;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .marketing-heading h1 {
+        margin: 0 0 13px;
+        color: var(--marketing-white) !important;
+        font-size: clamp(2.3rem,4vw,4.1rem);
+        font-weight: 800;
+        line-height: 1.03;
+        letter-spacing: -.055em;
+    }
+
+    .marketing-heading p {
+        max-width: 680px;
+        margin: 0;
+        color: rgba(255,255,255,.74);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .marketing-primary-link {
+        min-width: 185px;
+        min-height: 48px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,.52);
+        border-radius: 999px;
+        color: var(--marketing-blue-950) !important;
+        background: var(--marketing-white);
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none !important;
+        box-shadow: 0 12px 28px rgba(0,0,0,.14);
+    }
+
+        .marketing-primary-link:hover {
+            color: var(--marketing-white) !important;
+            background: var(--marketing-blue-500);
+            border-color: var(--marketing-blue-500);
+            transform: translateY(-2px);
+        }
+
+    .marketing-alerts {
+        margin-top: 24px;
+    }
+
+        .marketing-alerts .alert {
+            margin-bottom: 12px;
+            padding: 14px 17px;
+            border-radius: 12px;
+            font-size: .86rem;
+            font-weight: 600;
+            box-shadow: 0 5px 14px rgba(6,20,47,.05);
+        }
+
+        .marketing-alerts .alert-success {
+            color: #1f6942;
+            background: #effaf4;
+            border-color: #bfe7cf;
+        }
+
+        .marketing-alerts .alert-danger {
+            color: #842029;
+            background: #fff2f3;
+            border-color: #f3c5ca;
+        }
+
+    .marketing-shell {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: minmax(0,1.35fr) minmax(260px,.65fr);
+        gap: 24px;
+    }
+
+    .marketing-panel {
+        padding: 32px;
+        border: 1px solid var(--marketing-border);
+        border-radius: 20px;
+        background: linear-gradient(180deg,var(--marketing-white),var(--marketing-blue-50));
+        box-shadow: var(--marketing-shadow-md);
+    }
+
+    .marketing-panel-header {
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--marketing-border-light);
+    }
+
+        .marketing-panel-header h2 {
+            margin: 0 0 7px;
+            color: var(--marketing-blue-950);
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .marketing-panel-header p {
+            margin: 0;
+            color: var(--marketing-muted);
+            font-size: .86rem;
+            line-height: 1.6;
+        }
+
+    .marketing-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .marketing-field {
+        margin-bottom: 18px;
+    }
+
+        .marketing-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .marketing-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--marketing-text);
+            font-size: .82rem;
+            font-weight: 700;
+        }
+
+        .marketing-field .form-control,
+        .marketing-field .form-select {
+            min-height: 50px;
+            padding: 12px 15px;
+            color: var(--marketing-text);
+            background: var(--marketing-white);
+            border: 1px solid var(--marketing-border);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(6,20,47,.04);
+        }
+
+        .marketing-field textarea.form-control {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        .marketing-field .form-control:hover,
+        .marketing-field .form-select:hover {
+            border-color: var(--marketing-blue-300);
+        }
+
+        .marketing-field .form-control:focus,
+        .marketing-field .form-select:focus {
+            border-color: var(--marketing-blue-500);
+            box-shadow: 0 0 0 4px rgba(66,152,212,.12);
+        }
+
+        .marketing-field .form-control:disabled {
+            color: var(--marketing-muted);
+            background: #eef4f9;
+        }
+
+        .marketing-field .text-danger {
+            display: block;
+            margin-top: 6px;
+            font-size: .78rem;
+        }
+
+    .marketing-actions {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .marketing-submit,
+    .marketing-cancel {
+        min-height: 50px;
+        padding: 12px 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px !important;
+        font-size: .86rem;
+        font-weight: 800;
+        text-decoration: none !important;
+    }
+
+    .marketing-submit {
+        border: 1px solid var(--marketing-blue-600) !important;
+        color: var(--marketing-white) !important;
+        background: linear-gradient(135deg,var(--marketing-blue-600),var(--marketing-blue-700)) !important;
+        box-shadow: 0 9px 22px rgba(40,120,189,.22);
+    }
+
+        .marketing-submit:hover {
+            color: var(--marketing-white) !important;
+            background: linear-gradient(135deg,var(--marketing-blue-700),var(--marketing-blue-800)) !important;
+            transform: translateY(-2px);
+        }
+
+    .marketing-cancel {
+        border: 1px solid var(--marketing-blue-200) !important;
+        color: var(--marketing-blue-700) !important;
+        background: var(--marketing-white) !important;
+    }
+
+        .marketing-cancel:hover {
+            color: var(--marketing-white) !important;
+            background: var(--marketing-blue-700) !important;
+            border-color: var(--marketing-blue-700) !important;
+            transform: translateY(-2px);
+        }
+
+    .marketing-aside {
+        padding: 30px;
+        border: 1px solid var(--marketing-border);
+        border-radius: 20px;
+        background: radial-gradient(circle at top right,rgba(104,165,216,.13),transparent 35%), var(--marketing-white);
+        box-shadow: var(--marketing-shadow-sm);
+    }
+
+    .marketing-aside-number {
+        margin-bottom: 20px;
+        color: var(--marketing-blue-100);
+        font-size: 5.2rem;
+        font-weight: 800;
+        letter-spacing: -.08em;
+        line-height: .85;
+    }
+
+    .marketing-aside h3 {
+        margin-bottom: 12px;
+        color: var(--marketing-blue-950);
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .marketing-aside p {
+        margin-bottom: 0;
+        color: var(--marketing-muted);
+        font-size: .88rem;
+        line-height: 1.7;
+    }
+
+    .marketing-table-section {
+        margin-top: 24px;
+        border: 1px solid var(--marketing-border);
+        border-radius: 20px;
+        background: var(--marketing-white);
+        box-shadow: var(--marketing-shadow-md);
+        overflow: hidden;
+    }
+
+    .marketing-table-heading {
+        padding: 21px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--marketing-border-light);
+    }
+
+        .marketing-table-heading h2 {
+            margin: 0;
+            color: var(--marketing-blue-950);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .marketing-table-heading span {
+            color: var(--marketing-muted);
+            font-size: .78rem;
+        }
+
+    .marketing-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .marketing-table {
+        width: 100%;
+        min-width: 980px;
+        margin: 0;
+        border-collapse: collapse;
+        color: var(--marketing-text);
+    }
+
+        .marketing-table thead th {
+            padding: 15px 17px;
+            color: var(--marketing-blue-800);
+            background: var(--marketing-blue-50);
+            border-bottom: 1px solid var(--marketing-blue-200);
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .marketing-table tbody td {
+            padding: 16px 17px;
+            border-bottom: 1px solid var(--marketing-border-light);
+            font-size: .84rem;
+            vertical-align: middle;
+        }
+
+        .marketing-table tbody tr:hover {
+            background: #f9fcff;
+        }
+
+    .marketing-id {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border: 1px solid var(--marketing-blue-100);
+        border-radius: 999px;
+        color: var(--marketing-blue-700);
+        background: var(--marketing-blue-50);
+        font-size: .74rem;
+        font-weight: 800;
+    }
+
+    .marketing-title {
+        color: var(--marketing-blue-950);
+        font-weight: 800;
+    }
+
+    .marketing-content {
+        max-width: 320px;
+        color: var(--marketing-muted);
+        line-height: 1.5;
+    }
+
+    .marketing-date {
+        color: var(--marketing-blue-900);
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .marketing-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: .73rem;
+        font-weight: 800;
+    }
+
+        .marketing-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .marketing-status.active {
+            color: #1f6942;
+            background: #effaf4;
+            border: 1px solid #bfe7cf;
+        }
+
+        .marketing-status.inactive {
+            color: #842029;
+            background: #fff2f3;
+            border: 1px solid #f3c5ca;
+        }
+
+    .marketing-row-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+        .marketing-row-actions .btn {
+            min-height: 34px;
+            padding: 7px 11px;
+            border-radius: 8px !important;
+            font-size: .72rem;
+            font-weight: 800;
+        }
+
+    .marketing-edit-button {
+        color: #966500 !important;
+        background: #fff9e8 !important;
+        border-color: #edd68d !important;
+    }
+
+    .marketing-disable-button {
+        color: #9a2531 !important;
+        background: #fff1f2 !important;
+        border-color: #efbdc2 !important;
+    }
+
+    .marketing-enable-button {
+        color: #1f6942 !important;
+        background: #effaf4 !important;
+        border-color: #bfe7cf !important;
+    }
+
+    .marketing-empty {
+        padding: 55px 20px !important;
+        color: var(--marketing-muted);
+        text-align: center;
+    }
+
+    @@media (max-width: 991.98px) {
+        .marketing-hero {
+            min-height: 290px;
+            padding: 36px 32px;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+        }
+
+        .marketing-hero-actions,
+        .marketing-primary-link {
+            width: 100%;
+        }
+
+        .marketing-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .marketing-aside {
+            order: -1;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .marketing-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .marketing-field.full-width {
+            grid-column: auto;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .marketing-hero {
+            min-height: 320px;
+            padding: 30px 22px;
+            border-radius: 18px;
+        }
+
+        .marketing-heading h1 {
+            font-size: 2.4rem;
+        }
+
+        .marketing-panel,
+        .marketing-aside {
+            padding: 24px 20px;
+            border-radius: 16px;
+        }
+
+        .marketing-actions {
+            flex-direction: column;
+        }
+
+        .marketing-submit,
+        .marketing-cancel {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="marketing-page">
+
+    <section class="marketing-hero" data-word="MARKETING">
+
+        <div class="marketing-heading">
+            <span class="marketing-eyebrow">Comunicación y promociones</span>
+
+            <h1>Publicaciones</h1>
+
+            <p>
+                Consulta, edita, activa y desactiva el contenido publicado.
+            </p>
+        </div>
+
+        <div class="marketing-hero-actions">
 
             @Html.ActionLink(
                 "Nueva Publicacion",
                 "AgregarPublicacion",
                 "Marketing",
                 null,
-                new { @class = "btn btn-primary" }
+                new { @class = "marketing-primary-link" }
             )
+
         </div>
 
-    @if (TempData["MensajeExito"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["MensajeExito"]
+    </section>
+
+    <div class="marketing-alerts">
+
+        @if (TempData["MensajeExito"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["MensajeExito"]
+            </div>
+        }
+
+        @if (TempData["MensajeError"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["MensajeError"]
+            </div>
+        }
+
+    </div>
+
+    <section class="marketing-table-section">
+
+        <div class="marketing-table-heading">
+            <h2>Publicaciones registradas</h2>
+            <span>Control de contenido y estado</span>
         </div>
-    }
 
-    @if (TempData["MensajeError"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["MensajeError"]
-        </div>
-    }
+        <div class="marketing-table-scroll">
 
-    <table class="table table-hover table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Titulo</th>
-                <th>Contenido</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th style="width: 220px;">Acciones</th>
-            </tr>
-        </thead>
+            <table class="marketing-table">
 
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
-                {
+                <thead>
                     <tr>
-                        <td>@item.IdPublicacion</td>
-                        <td>@item.Titulo</td>
-                        <td>
-                            @(item.Contenido != null && item.Contenido.Length > 40
-                            ? item.Contenido.Substring(0, 40) + "..."
-                            : item.Contenido)
-                        </td>
-                        <td>@item.FechaPublicacion.ToString("dd/MM/yyyy")</td>
-                        <td>
-                            @(item.IdEstado == 1 ? "Activa" : "Inactiva")
-                        </td>
+                        <th>ID</th>
+                        <th>Titulo</th>
+                        <th>Contenido</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
 
-            <td>
-                            <div class="d-flex gap-2 align-items-center">
-                                @Html.ActionLink("Editar", "EditarPublicacion", "Marketing", new { id = item.IdPublicacion }, new { @class = "btn btn-sm btn-outline-warning" })
+                <tbody>
 
-                                @using (Html.BeginForm(item.IdEstado == 1 ? "DesactivarPublicacion" : "ActivarPublicacion", "Marketing", FormMethod.Post, new { @class = "m-0 p-0" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.Hidden("id", item.IdPublicacion)
-                                    if(item.IdEstado == 1)
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <span class="marketing-id">@item.IdPublicacion</span>
+                                </td>
+
+                                <td>
+                                    <span class="marketing-title">@item.Titulo</span>
+                                </td>
+
+                                <td>
+                                    <div class="marketing-content">
+                                        @(item.Contenido != null && item.Contenido.Length > 40
+                                        ? item.Contenido.Substring(0, 40) + "..."
+                                        : item.Contenido)
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="marketing-date">
+                                        @item.FechaPublicacion.ToString("dd/MM/yyyy")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @if (item.IdEstado == 1)
                                     {
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">Desactivar</button>
+                                        <span class="marketing-status active">Activa</span>
                                     }
                                     else
                                     {
-                                        <button type="submit" class="btn btn-sm btn-outline-success">Activar</button>
+                                        <span class="marketing-status inactive">Inactiva</span>
                                     }
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="6" class="text-center text-muted">
-                        No hay publicaciones registradas
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                                </td>
 
-    </div>
+                                <td>
+
+                                    <div class="marketing-row-actions">
+
+                                        @Html.ActionLink(
+                                            "Editar",
+                                            "EditarPublicacion",
+                                            "Marketing",
+                                            new { id = item.IdPublicacion },
+                                            new { @class = "btn btn-sm btn-outline-warning marketing-edit-button" })
+
+                                        @using (Html.BeginForm(
+                                            item.IdEstado == 1 ? "DesactivarPublicacion" : "ActivarPublicacion",
+                                            "Marketing",
+                                            FormMethod.Post,
+                                            new { @class = "m-0 p-0" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("id", item.IdPublicacion)
+
+                                            if (item.IdEstado == 1)
+                                            {
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger marketing-disable-button">
+                                                    Desactivar
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-success marketing-enable-button">
+                                                    Activar
+                                                </button>
+                                            }
+                                        }
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="marketing-empty">
+                                No hay publicaciones registradas
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
 </div>
